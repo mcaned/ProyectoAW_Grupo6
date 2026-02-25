@@ -1,6 +1,6 @@
 # Bistro FDI - Práctica 2
 Proyecto de Aplicaciones Web 2025/2026.
-Grupo [TU NUMERO DE GRUPO].
+Grupo 6.
 
 ## Instrucciones de instalación local:
 1. Clonar este repositorio en `htdocs`.
