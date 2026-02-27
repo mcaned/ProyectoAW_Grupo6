@@ -1,4 +1,4 @@
-<header style="background-color: #333; color: white; padding: 40px; position: relative; text-align: center;">
+<header style="background-color: #333; color: white; padding: 25px; position: relative; text-align: center;">
     <div style="position: absolute; left: 40px; top: 50%; transform: translateY(-50%);">
         <img src="img/logo.png" style="width: 280px;">
     </div>
