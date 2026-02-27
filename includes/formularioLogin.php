@@ -18,15 +18,17 @@ class FormularioLogin extends Formulario {
 EOF;
     }
 
-    protected function procesaFormulario($datos) {
-        $user = Usuario::login($datos['nombreUsuario'], $datos['password']);
-        if ($user) {
-            $_SESSION['login'] = true;
-            $_SESSION['nombre'] = $user->getNombreUsuario();
-            $_SESSION['rol'] = $user->getRol();
-            header('Location: index.php'); 
-            exit();
-        }
-        return ["Usuario o contraseña incorrectos."];
+ protected function procesaFormulario($datos) {
+    // 'nombreUsuario' es el name del input en tu HTML
+    $user = Usuario::login($datos['nombreUsuario'], $datos['password']);
+    
+    if ($user) {
+        $_SESSION['login'] = true;
+        $_SESSION['nombre'] = $user->getNombreUsuario();
+        $_SESSION['rol'] = $user->getRol();
+        header('Location: index.php');
+        exit();
     }
+    return ["Usuario o contraseña incorrectos"];
+}
 }
