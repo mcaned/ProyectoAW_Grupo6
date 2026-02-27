@@ -1,5 +1,5 @@
 <?php
-// includes/FormularioLogin.php
+
 require_once 'Formulario.php';
 require_once 'Aplicacion.php';
 

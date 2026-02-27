@@ -1,5 +1,5 @@
 <?php
-// includes/Formulario.php
+
 
 abstract class Formulario {
     protected $idForm;
