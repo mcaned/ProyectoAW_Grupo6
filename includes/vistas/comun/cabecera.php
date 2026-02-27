@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="<?= RUTA_CSS ?>style.css">
     <title>Bistro FDI</title>
 </head>
 <body>
@@ -22,8 +22,13 @@
         </div>
         
         <div style="position: absolute; bottom: 10px; right: 20px; font-size: 0.9rem;">
-            Usuario desconocido. 
-            <a href="login.php" style="color: white; font-weight: bold; text-decoration: none;">Login</a> 
-            <a href="registro.php" style="color: white; font-weight: bold; text-decoration: none;">Registro</a>
+            <?php if (isset($_SESSION['login']) && $_SESSION['login']): ?>
+                Bienvenido, <strong><?= $_SESSION['nombre'] ?></strong>. 
+                <a href="logout.php" style="color: white; font-weight: bold; text-decoration: none; margin-left: 10px; border: 1px solid white; padding: 2px 5px;">Salir</a>
+            <?php else: ?>
+                Usuario desconocido. 
+                <a href="login.php" style="color: white; font-weight: bold; text-decoration: none;">Login</a> | 
+                <a href="registro.php" style="color: white; font-weight: bold; text-decoration: none;">Registro</a>
+            <?php endif; ?>
         </div>
     </header>
