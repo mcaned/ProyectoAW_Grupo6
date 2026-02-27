@@ -33,31 +33,19 @@ class FormularioRegistro extends Formulario {
 EOF;
     }
 
-    protected function procesaFormulario($datos) {
-        $errores = [];
-        $user = $datos['nombreUsuario'] ?? null;
-        $pass = $datos['password'] ?? null;
+   protected function procesaFormulario($datos) {
+    $user = $datos['nombreUsuario'] ?? null;
+    $pass = $datos['password'] ?? null;
 
-        if (empty($user) || empty($pass)) {
-            $errores[] = "El usuario y la contraseña son obligatorios.";
-        }
+    if (Usuario::buscaUsuario($user)) {
+        return ["El usuario ya existe"];
+    }
 
-        if (count($errores) === 0) {
-            $app = Aplicacion::getInstance();
-            $conn = $app->conexionBd();
-
-            $user = $conn->real_escape_string($user);
-            $passwordHash = password_hash($pass, PASSWORD_DEFAULT);
-
-            $query = "INSERT INTO usuarios (nombreUsuario, password) VALUES ('$user', '$passwordHash')";
-            
-            if ($conn->query($query)) {
-                header('Location: login.php?registro=exito');
-                exit();
-            } else {
-                $errores[] = "Error al registrar el usuario: El nombre ya podría estar en uso.";
-            }
-        }
-        return $errores;
+    $nuevoUsuario = Usuario::crea($user, $pass);
+    if ($nuevoUsuario) {
+        header('Location: login.php?registro=exito');
+        exit();
+    }
+    return ["Error al crear el usuario"];
     }
 }
