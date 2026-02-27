@@ -1,8 +1,11 @@
 <?php
-require_once 'Formulario.php';
+require_once __DIR__ . '/Formulario.php';
+require_once __DIR__ . '/Usuario.php';
 
 class FormularioLogin extends Formulario {
-    public function __construct() { parent::__construct('formLogin'); }
+    public function __construct() { 
+        parent::__construct('formLogin'); 
+    }
 
     protected function generaCamposFormulario($datosIniciales) {
         return <<<EOF
@@ -21,7 +24,8 @@ EOF;
             $_SESSION['login'] = true;
             $_SESSION['nombre'] = $user->getNombreUsuario();
             $_SESSION['rol'] = $user->getRol();
-            header('Location: index.php'); exit();
+            header('Location: index.php'); 
+            exit();
         }
         return ["Usuario o contraseña incorrectos."];
     }

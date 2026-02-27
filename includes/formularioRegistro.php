@@ -1,11 +1,9 @@
 <?php
-
-require_once 'Formulario.php';
-require_once 'Aplicacion.php';
+require_once __DIR__ . '/Formulario.php';
+require_once __DIR__ . '/Usuario.php'; 
 
 class FormularioRegistro extends Formulario {
     public function __construct() {
-
         parent::__construct('formRegistro', ['action' => 'registro.php']);
     }
 
@@ -15,37 +13,32 @@ class FormularioRegistro extends Formulario {
             <span style="position: absolute; top: -12px; left: 15px; background: #333; color: white; padding: 2px 10px; font-size: 0.85rem; font-weight: bold;">
                 Datos de registro
             </span>
-            
             <div style="margin-bottom: 15px;">
-                <label style="display: block; margin-bottom: 5px; font-size: 0.9rem;">Nombre de usuario:</label>
-                <input type="text" name="nombreUsuario" required style="width: 250px; padding: 3px; border: 1px solid #777;">
+                <label style="display: block; margin-bottom: 5px;">Nombre de usuario:</label>
+                <input type="text" name="nombreUsuario" required style="width: 250px; border: 1px solid #777;">
             </div>
-
             <div style="margin-bottom: 15px;">
-                <label style="display: block; margin-bottom: 5px; font-size: 0.9rem;">Password:</label>
-                <input type="password" name="password" required style="width: 250px; padding: 3px; border: 1px solid #000;">
+                <label style="display: block; margin-bottom: 5px;">Password:</label>
+                <input type="password" name="password" required style="width: 250px; border: 1px solid #000;">
             </div>
-            
-            <button type="submit" style="padding: 3px 20px; cursor: pointer; background-color: #f0f0f0; border: 1px solid #777; font-size: 0.9rem;">
-                Registrarme
-            </button>
+            <button type="submit">Registrarme</button>
         </div>
 EOF;
     }
 
-   protected function procesaFormulario($datos) {
-    $user = $datos['nombreUsuario'] ?? null;
-    $pass = $datos['password'] ?? null;
+    protected function procesaFormulario($datos) {
+        $user = $datos['nombreUsuario'] ?? null;
+        $pass = $datos['password'] ?? null;
 
-    if (Usuario::buscaUsuario($user)) {
-        return ["El usuario ya existe"];
-    }
+        if (Usuario::buscaUsuario($user)) {
+            return ["El usuario ya existe"];
+        }
 
-    $nuevoUsuario = Usuario::crea($user, $pass);
-    if ($nuevoUsuario) {
-        header('Location: login.php?registro=exito');
-        exit();
-    }
-    return ["Error al crear el usuario"];
+        $nuevoUsuario = Usuario::crea($user, $pass);
+        if ($nuevoUsuario) {
+            header('Location: login.php?registro=exito');
+            exit();
+        }
+        return ["Error al crear el usuario"];
     }
 }
