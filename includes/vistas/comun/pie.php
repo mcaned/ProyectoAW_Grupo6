@@ -1,6 +1,6 @@
 </main>
     
-    <?php include 'sidebar_right.php'; ?>
+    <?php include 'sideBarDer.php'; ?>
 </div>
 
 <footer style="background-color: #333; color: white; padding: 20px; text-align: center; border-top: 3px solid #000; font-family: sans-serif;">
