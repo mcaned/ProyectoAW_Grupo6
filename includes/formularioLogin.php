@@ -15,22 +15,38 @@ class FormularioLogin extends Formulario {
             <label>Password:</label><br><input type="password" name="password" required><br><br>
             <button type="submit">Entrar</button>
         </fieldset>
-EOF;
+        EOF;
     }
-
- protected function procesaFormulario($datos) {
-    // 'nombreUsuario' es el name del input en tu HTML
+   protected function procesaFormulario($datos) {
     $user = Usuario::login($datos['nombreUsuario'], $datos['password']);
     
     if ($user) {
         $_SESSION['login'] = true;
         $_SESSION['nombre'] = $user->getNombreUsuario();
-        $_SESSION['rol'] = $user->getRol();
         $_SESSION['idUsuario'] = $user->getId();
-        header('Location: index.php');
+        
+        // Limpiamos el rol: quitamos espacios y pasamos a minúsculas
+        $rol = strtolower(trim($user->getRol())); 
+        $_SESSION['rol'] = $rol;
+
+        // Redirección usando la ruta completa del proyecto
+            
+        switch ($rol) {
+            case 'gerente':
+                header('Location: ' . RUTA_APP . '/admin.php');
+                break;
+            case 'camarero':
+                header('Location: ' . RUTA_APP . '/gestion_pedidos.php');
+                break;
+            case 'cocinero':
+                header('Location: ' . RUTA_APP . '/cocina.php');
+                break;
+            default:
+                header('Location: ' . RUTA_APP . '/index.php');
+                break;
+        }
         exit();
     }
     return ["Usuario o contraseña incorrectos"];
 }
-
 }
