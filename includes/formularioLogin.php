@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/Formulario.php';
-require_once __DIR__ . '/Usuario.php';
+require_once __DIR__ . '/formulario.php';
+require_once __DIR__ . '/usuario.php';
 
 class FormularioLogin extends Formulario {
     public function __construct() { 
@@ -32,4 +32,5 @@ EOF;
     }
     return ["Usuario o contraseña incorrectos"];
 }
+
 }
