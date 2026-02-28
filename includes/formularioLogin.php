@@ -26,6 +26,7 @@ EOF;
         $_SESSION['login'] = true;
         $_SESSION['nombre'] = $user->getNombreUsuario();
         $_SESSION['rol'] = $user->getRol();
+        $_SESSION['idUsuario'] = $user->getId();
         header('Location: index.php');
         exit();
     }
