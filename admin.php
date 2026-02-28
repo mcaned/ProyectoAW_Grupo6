@@ -1,9 +1,9 @@
 <?php
 require_once __DIR__ . '/includes/config.php';
-require_once __DIR__ . '/includes/Aplicacion.php';
+require_once __DIR__ . '/includes/aplicacion.php';
 $app = Aplicacion::getInstance(); $app->init();
 
-if (!isset($_SESSION['login']) || $_SESSION['rol'] !== 'admin') {
+if (!isset($_SESSION['login']) || $_SESSION['rol'] !== 'gerente') {
     header('Location: index.php'); exit();
 }
 
@@ -17,4 +17,5 @@ include 'includes/vistas/comun/cabecera.php';
     </main>
     <?php include 'includes/vistas/comun/sideBarDer.php'; ?>
 </div>
+
 <?php include 'includes/vistas/comun/pie.php'; ?>
