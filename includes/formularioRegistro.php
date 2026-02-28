@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/Formulario.php';
-require_once __DIR__ . '/Usuario.php'; 
+require_once __DIR__ . '/formulario.php';
+require_once __DIR__ . '/usuario.php'; 
 
 class FormularioRegistro extends Formulario {
     public function __construct() {
@@ -86,3 +86,4 @@ EOF;
     return ["Error al crear el usuario. Inténtalo de nuevo."];
 }
 }
+
