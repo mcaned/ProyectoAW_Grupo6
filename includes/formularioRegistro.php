@@ -39,40 +39,50 @@ class FormularioRegistro extends Formulario {
                 <label style="display: block; margin-bottom: 5px;">Password:</label>
                 <input type="password" name="password" required style="width: 250px; border: 1px solid #000;">
             </div>
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 5px;">Rol:</label>
+                <select name="rol" style="width: 250px; border: 1px solid #777;">
+                    <option value="cliente">Cliente</option>
+                    <option value="camarero">Camarero</option>
+                    <option value="cocinero">Cocinero</option>
+                    <option value="gerente">Gerente</option>
+                </select>
+            </div>
 
             <button type="submit" style="cursor: pointer; padding: 5px 15px;">Registrarme</button>
         </div>
 EOF;
     }
 
-    protected function procesaFormulario($datos) {
-        $user = $datos['nombreUsuario'] ?? null;
-        $pass = $datos['password'] ?? null;
-        $nombre = $datos['nombre'] ?? null;
-        $apellidos = $datos['apellidos'] ?? null;
-        $email = $datos['email'] ?? null;
+   protected function procesaFormulario($datos) {
+    $user = $datos['nombreUsuario'] ?? null;
+    $pass = $datos['password'] ?? null;
+    $nombre = $datos['nombre'] ?? null;
+    $apellidos = $datos['apellidos'] ?? null;
+    $email = $datos['email'] ?? null;
+    $rol = $datos['rol'] ?? 'cliente';
 
-        // Validaciones básicas
-        if (empty($user) || empty($pass) || empty($nombre) || empty($apellidos) || empty($email)) {
-            return ["Todos los campos son obligatorios"];
-        }
-
-        if (Usuario::buscaUsuario($user)) {
-            return ["El nombre de usuario ya está en uso"];
-        }
-        if (Usuario::buscaPorEmail($email)) {
-        return ["Ese correo electrónico ya está registrado por otro usuario"];
-        }
-
-        // Llamamos al método crea con la nueva firma de Usuario.php
-        // Por defecto el rol será 'cliente' y el avatar el de 'defecto.png'
-        $nuevoUsuario = Usuario::crea($user, $pass, $nombre, $apellidos, $email);
-        
-        if ($nuevoUsuario) {
-            header('Location: login.php?registro=exito');
-            exit();
-        }
-        
-        return ["Error al crear el usuario. Inténtalo de nuevo."];
+    // Validaciones básicas de los campos que SÍ están en el HTML
+    if (empty($user) || empty($pass) || empty($nombre) || empty($apellidos) || empty($email)) {
+        return ["Todos los campos son obligatorios"];
     }
+
+    if (Usuario::buscaUsuario($user)) {
+        return ["El nombre de usuario ya está en uso"];
+    }
+    
+    if (Usuario::buscaPorEmail($email)) {
+        return ["Ese correo electrónico ya está registrado por otro usuario"];
+    }
+
+    // Enviamos los 5 datos + el rol por defecto
+    $nuevoUsuario = Usuario::crea($user, $pass, $nombre, $apellidos, $email, $rol);
+    
+    if ($nuevoUsuario) {
+        header('Location: login.php?registro=exito');
+        exit();
+    }
+    
+    return ["Error al crear el usuario. Inténtalo de nuevo."];
+}
 }
