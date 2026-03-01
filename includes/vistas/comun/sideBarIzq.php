@@ -1,8 +1,17 @@
-<aside style="width: 200px; background-color: #d1d1d1; padding: 20px; min-height: 500px;">
-    <h3 style="margin-top: 0;">Navegación</h3>
-    <ul style="list-style-type: disc; color: red; padding-left: 20px;">
-        <li><a href="../login.php" style="color: red; text-decoration: none;">Inicio</a></li>
-        <li><a href="#" style="color: red; text-decoration: none;">Ver contenido</a></li>
-        <li><a href="#" style="color: red; text-decoration: none;">Administrar</a></li>
+<div style="padding: 20px;">
+    <ul style="list-style: none; padding: 0;">
+        <li style="margin-bottom: 15px;">
+            <a href="<?= RUTA_APP ?>/includes/carta.php" style="text-decoration: none; color: #333; font-weight: bold;">🍴 Carta</a>
+        </li>
+        
+        <li style="margin-bottom: 15px;">
+            <a href="<?= RUTA_APP ?>/includes/pedido.php" style="text-decoration: none; color: #333; font-weight: bold;">
+                📋 <?= (isset($_SESSION['rol']) && $_SESSION['rol'] === 'gerente') ? 'Gestionar Pedidos' : 'Ver mis pedidos' ?>
+            </a>
+        </li>
+
+        <li style="margin-bottom: 15px;">
+            <a href="<?= RUTA_APP ?>/includes/carrito.php" style="text-decoration: none; color: #333; font-weight: bold;">🛒 Carrito</a>
+        </li>
     </ul>
-</aside>
+</div>
