@@ -24,14 +24,13 @@ class FormularioLogin extends Formulario {
         $_SESSION['login'] = true;
         $_SESSION['nombre'] = $user->getNombreUsuario();
         $_SESSION['idUsuario'] = $user->getId();
-        
-        // Limpiamos el rol: quitamos espacios y pasamos a minúsculas
+
+
+
         $rol = strtolower(trim($user->getRol())); 
         $_SESSION['rol'] = $rol;
-
-        // Redirección usando la ruta completa del proyecto
             
-        switch ($rol) {
+        switch ($rol) { //segun el rol redirigimos
             case 'gerente':
                 header('Location: ' . RUTA_APP . '/admin.php');
                 break;
