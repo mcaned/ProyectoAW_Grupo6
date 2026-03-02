@@ -8,7 +8,7 @@ require_once __DIR__ . '/includes/FormularioRegistro.php';
 include 'includes/vistas/comun/cabecera.php'; 
 ?>
 
-<div style="display: flex; background-color: #e0e0e0; min-height: 85vh; font-family: sans-serif;">
+<div style="display: flex; min-height: 85vh;">
 
     <?php include 'includes/vistas/comun/sideBarIzq.php'; ?>
 
@@ -32,4 +32,5 @@ include 'includes/vistas/comun/cabecera.php';
 
 <?php 
 include 'includes/vistas/comun/pie.php'; 
+
 ?>
