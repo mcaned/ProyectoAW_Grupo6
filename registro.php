@@ -12,7 +12,7 @@ include 'includes/vistas/comun/cabecera.php';
 
     <?php include 'includes/vistas/comun/sideBarIzq.php'; ?>
 
-    <main style="flex-grow: 1; background-color: white; padding: 40px; border-left: 1px solid #ccc; border-right: 1px solid #ccc;">
+    <main style="flex-grow: 1; background-color: white; padding: 40px;">
         
         <h2 style="font-family: serif; font-size: 1.8rem; margin-top: 0;">Crear cuenta en Bistro FDI</h2>
         
@@ -34,3 +34,4 @@ include 'includes/vistas/comun/cabecera.php';
 include 'includes/vistas/comun/pie.php'; 
 
 ?>
+
