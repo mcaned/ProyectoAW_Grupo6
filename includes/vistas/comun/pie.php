@@ -1,17 +1,13 @@
 </main>
-    
     <?php include 'sideBarDer.php'; ?>
 </div>
 
-<footer style="background-color: #333; color: white; padding: 20px; text-align: center; border-top: 3px solid #000; font-family: sans-serif;">
-    <p style="margin: 0; font-size: 0.9rem;">
+<footer style="background-color: grey; color: white; padding: 20; text-align: center; border-top: 5 solid black; font-family: sans-serif;">
+    <p style="margin: 0; font-size: 10;">
         &copy; <?php echo date("Y"); ?> - <strong>Mi gran página web</strong> 
-        | Todos los derechos reservados.
+        | Hecho por: Gonzalo Gayá, Marta Cañedo, Felipe López y Ángel Gallego.
     </p>
-    <div style="margin-top: 10px; font-size: 0.8rem; color: #ccc;">
-        <a href="#" style="color: #ccc; text-decoration: none;">Política de Privacidad</a> | 
-        <a href="#" style="color: #ccc; text-decoration: none;">Términos de Uso</a>
-    </div>
+    
 </footer>
 
 </body>
