@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/formulario.php';
-require_once __DIR__ . '/usuario.php'; 
+require_once __DIR__ . '/Formulario.php';
+require_once __DIR__ . '/Usuario.php'; 
 
 class FormularioRegistro extends Formulario {
     public function __construct() {
@@ -8,7 +8,7 @@ class FormularioRegistro extends Formulario {
     }
 
     protected function generaCamposFormulario($datosIniciales) {
-        // Mantenemos el estilo visual que ya tenías
+        
         return <<<EOF
         <div style="border: 1px solid #999; padding: 25px; margin-top: 10px; position: relative; width: 450px; background-color: #fff; font-family: sans-serif;">
             <span style="position: absolute; top: -12px; left: 15px; background: #333; color: white; padding: 2px 10px; font-size: 0.85rem; font-weight: bold;">
@@ -62,21 +62,18 @@ EOF;
     $email = $datos['email'] ?? null;
     $rol = $datos['rol'] ?? 'cliente';
 
-    // Validaciones básicas de los campos que SÍ están en el HTML
-    if (empty($user) || empty($pass) || empty($nombre) || empty($apellidos) || empty($email)) {
+    if (empty($user) || empty($pass) || empty($nombre) || empty($apellidos) || empty($email)) { //aqui validamos si los campos estan rellenos o no
         return ["Todos los campos son obligatorios"];
     }
 
-    if (Usuario::buscaUsuario($user)) {
+    if (Usuario::buscaUsuario($user)) { //aqui buscamos ese usuario para evitar repeticiones
         return ["El nombre de usuario ya está en uso"];
     }
     
     if (Usuario::buscaPorEmail($email)) {
         return ["Ese correo electrónico ya está registrado por otro usuario"];
     }
-
-    // Enviamos los 5 datos + el rol por defecto
-    $nuevoUsuario = Usuario::crea($user, $pass, $nombre, $apellidos, $email, $rol);
+    $nuevoUsuario = Usuario::crea($user, $pass, $nombre, $apellidos, $email, $rol); //creamos new User
     
     if ($nuevoUsuario) {
         header('Location: login.php?registro=exito');
