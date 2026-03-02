@@ -22,7 +22,6 @@ $result = $conn->query($query);
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #000000; padding-bottom: 10px; margin-bottom: 20px;">
             <h1 style="margin: 0;">👨‍🍳 PANEL DE COCINA</h1>
             <div style="text-align: right;">
-                <span style="font-size: 1.2rem;"><?= htmlspecialchars($_SESSION['nombre']) ?></span><br>
                 <small style="color: #00e676; font-weight: bold;">EN SERVICIO</small>
             </div>
         </div>
@@ -62,4 +61,3 @@ $result = $conn->query($query);
 </div>
 
 <?php include 'includes/vistas/comun/pie.php'; ?>
-
