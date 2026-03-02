@@ -17,7 +17,7 @@ $idUsuario = $_SESSION['idUsuario'];
 // 1. Definir la consulta según el rol
 if ($rol === 'gerente') {
     // El gerente ve todos los pedidos, ordenados por fecha (más recientes primero)
-    $query = "SELECT p.*, u.nombreUsuario 
+    $query = "SELECT p.*, u.nombre 
               FROM Pedidos p 
               JOIN Usuarios u ON p.id_cliente = u.id 
               ORDER BY p.fecha_hora DESC";
@@ -65,7 +65,7 @@ include 'vistas/comun/cabecera.php';
                         <tr style="border-bottom: 1px solid #ddd;">
                             <td style="padding: 12px;">#<?= $pedido['numero_pedido'] ?></td>
                             <?php if ($rol === 'gerente'): ?>
-                                <td style="padding: 12px;"><?= htmlspecialchars($pedido['nombreUsuario']) ?></td>
+                                <td style="padding: 12px;"><?= htmlspecialchars($pedido['nombre']) ?></td>
                             <?php endif; ?>
                             <td style="padding: 12px;"><?= date('d/m/Y H:i', strtotime($pedido['fecha_hora'])) ?></td>
                             <td style="padding: 12px;"><?= $pedido['tipo'] ?></td>
@@ -89,5 +89,6 @@ include 'vistas/comun/cabecera.php';
 
     <?php include 'vistas/comun/sideBarDer.php'; ?>
 </div>
+
 
 <?php include 'vistas/comun/pie.php'; ?>
