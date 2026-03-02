@@ -16,7 +16,6 @@ $result = $conn->query($query);
 ?>
 
 <div style="display: flex; min-height: 85vh;">
-    <?php include 'includes/vistas/comun/sideBarIzq.php'; ?>
 
     <main style="flex-grow: 1; background-color: #ffffff; padding: 30px;">
         
@@ -63,3 +62,4 @@ $result = $conn->query($query);
 </div>
 
 <?php include 'includes/vistas/comun/pie.php'; ?>
+
