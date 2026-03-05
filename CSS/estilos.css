@@ -1,0 +1,294 @@
+/* --- ESTILOS GENERALES Y RESET --- */
+body {
+    font-family: sans-serif;
+    margin: 0;
+}
+
+/* --- CABECERA (cabecera.php) --- */
+.header-bistro {
+    background-color: grey;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-section {
+    flex: 1; 
+}
+
+.header-logo img {
+    width: 230px;
+    height: auto;
+    display: block;
+}
+
+.header-titles {
+    text-align: center;
+}
+
+.header-titles h1 { 
+    margin: 0; 
+    font-size: 40px; 
+}
+
+.header-titles h2 { 
+    margin: 0; 
+    font-size: 17px; 
+    color: white; 
+    font-style: italic; 
+}
+
+.header-links {
+    text-align: right;
+    font-size: 17px;
+    padding-right: 20px;
+}
+
+.header-links a { 
+    color: white;  
+    font-weight: bold; 
+    text-decoration: none;
+}
+
+.header-links a:hover { 
+    text-decoration: underline; 
+}
+
+/* --- PIE DE PÁGINA (pie.php) --- */
+.main-footer {
+    background-color: grey; 
+    color: white; 
+    padding: 20px; 
+    text-align: center; 
+    border-top: 5px solid black;
+}
+
+.footer-copy {
+    margin: 0; 
+    font-size: 10px;
+}
+
+/* --- SIDEBAR DERECHO (sideBarDer.php) --- */
+.sidebar-right {
+    width: 200px; 
+    background-color: #cccccc4a; 
+    padding: 15px; 
+    color: #333; 
+    font-size: 14px;
+}
+
+.user-profile-info {
+    text-align: center; 
+    border-bottom: 1px solid #999; 
+    padding-bottom: 10px; 
+    margin-bottom: 10px;
+}
+
+.user-avatar {
+    width: 80px; 
+    height: 80px; 
+    border-radius: 50%; 
+    object-fit: cover; 
+    border: 2px solid #666; 
+    margin-bottom: 10px;
+}
+
+.user-name {
+    margin: 0; 
+    font-weight: bold; 
+    font-size: 16px;
+}
+
+.user-role {
+    margin: 5px 0 0 0; 
+    font-style: italic; 
+    color: #666;
+}
+
+.sidebar-right-list {
+    list-style: none; 
+    padding: 0; 
+    margin: 0; 
+    text-align: center;
+}
+
+.sidebar-right-link {
+    text-decoration: none; 
+    color: #333; 
+    font-weight: bold;
+}
+
+.no-session-text {
+    text-align: center; 
+    color: #666;
+}
+
+/* --- SIDEBAR IZQUIERDO (sideBarIzq.php) --- */
+.sidebar-left-container {
+    padding: 20px; 
+    background-color: #cccccc4a; 
+    border-radius: 8px;
+}
+
+.sidebar-left-list {
+    list-style: none; 
+    padding: 0; 
+    margin: 0;
+}
+
+.sidebar-left-item {
+    margin-bottom: 15px;
+}
+
+.sidebar-left-link {
+    text-decoration: none; 
+    color: #555; 
+    font-weight: bold;
+}
+
+.btn-rojo {
+    display: inline-block; 
+    background-color: #d32f2f; 
+    color: white; 
+    padding: 15px 30px; 
+    text-decoration: none; 
+    font-weight: bold; 
+    border-radius: 5px; 
+    font-size: 1.2rem;
+}
+
+.btn-oscuro {
+    display: inline-block; 
+    background-color: #333; 
+    color: white; 
+    padding: 10px 20px; 
+    text-decoration: none; 
+    border-radius: 5px;
+}
+
+/* --- LAYOUT Y CONTENEDORES --- */
+.contenedor-principal {
+    display: flex; 
+    background-color: #e0e0e0; 
+    min-height: 85vh;
+}
+
+.contenido-central {
+    flex-grow: 1; 
+    background-color: white; 
+    padding: 40px;
+}
+
+/* --- PANEL DE COCINA (cocina.php) --- */
+.cocina-header {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    border-bottom: 2px solid #000; 
+    padding-bottom: 10px; 
+    margin-bottom: 20px;
+}
+
+.status-online {
+    color: #00e676; 
+    font-weight: bold;
+}
+
+.grid-pedidos {
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+    gap: 20px;
+}
+
+.tarjeta-cocina {
+    background: grey; 
+    padding: 20px; 
+    display: flex; 
+    flex-direction: column;
+}
+
+.id-pedido {
+    margin: 0;  
+    color: #ffeb3b;
+}
+
+.tipo-pedido {
+    color: red; 
+    padding: 6px 10px; 
+    font-size: 1rem; 
+    font-weight: bold;
+}
+
+.btn-listo {
+    width: 100%; 
+    background: #00e676; 
+    color: #494848; 
+    border: none; 
+    padding: 15px; 
+    font-size: 1.2rem; 
+    font-weight: bold; 
+    border-radius: 8px; 
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.cocina-vacia {
+    grid-column: 1 / -1; 
+    text-align: center; 
+    padding: 50px; 
+    background: #706e6e;
+    color: white;
+}
+
+/* --- GESTIÓN DE PEDIDOS (gestion_pedidos.php) --- */
+.contenedor-columnas {
+    display: flex;
+    gap: 10px;
+    padding: 20px;
+    background-color: #ffffff;
+    flex-grow: 1;
+    overflow-x: auto; 
+}
+
+.columna {
+    flex: 1;
+    min-width: 250px; 
+    padding: 10px;
+}
+
+.titulo-columna {
+    text-align: center;
+    font-size: 15px;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+}
+
+.tarjeta-kanban {
+    background: white;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.btn-estado-kanban {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+/* Colores de columnas */
+.col-pendiente { background-color: #ffcccc; }
+.col-cocina { background-color: #b9e4b5; }
+.col-extras { background-color: #c5a17e; }
+.col-entregar { background-color: #cce5ff; }
+
+/* --- OTROS ELEMENTOS --- */
+.texto-error { color: red; font-weight: bold; }
+.alerta-extras { margin: 10px 0; background: #fff9c4; padding: 5px; }
