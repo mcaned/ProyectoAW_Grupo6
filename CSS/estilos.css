@@ -1,10 +1,9 @@
-/* --- ESTILOS GENERALES Y RESET --- */
+
 body {
     font-family: sans-serif;
     margin: 0;
 }
 
-/* --- CABECERA (cabecera.php) --- */
 .header-bistro {
     background-color: grey;
     color: white;
@@ -55,7 +54,7 @@ body {
     text-decoration: underline; 
 }
 
-/* --- PIE DE PÁGINA (pie.php) --- */
+
 .main-footer {
     background-color: grey; 
     color: white; 
@@ -69,7 +68,7 @@ body {
     font-size: 10px;
 }
 
-/* --- SIDEBAR DERECHO (sideBarDer.php) --- */
+
 .sidebar-right {
     width: 200px; 
     background-color: #cccccc4a; 
@@ -124,7 +123,7 @@ body {
     color: #666;
 }
 
-/* --- SIDEBAR IZQUIERDO (sideBarIzq.php) --- */
+
 .sidebar-left-container {
     padding: 20px; 
     background-color: #cccccc4a; 
@@ -167,7 +166,7 @@ body {
     border-radius: 5px;
 }
 
-/* --- LAYOUT Y CONTENEDORES --- */
+
 .contenedor-principal {
     display: flex; 
     background-color: #e0e0e0; 
@@ -180,7 +179,6 @@ body {
     padding: 40px;
 }
 
-/* --- PANEL DE COCINA (cocina.php) --- */
 .cocina-header {
     display: flex; 
     justify-content: space-between; 
@@ -241,7 +239,6 @@ body {
     color: white;
 }
 
-/* --- GESTIÓN DE PEDIDOS (gestion_pedidos.php) --- */
 .contenedor-columnas {
     display: flex;
     gap: 10px;
@@ -283,7 +280,6 @@ body {
     border-radius: 4px;
 }
 
-/* Colores de columnas */
 .col-pendiente { background-color: #ffcccc; }
 .col-cocina { background-color: #b9e4b5; }
 .col-extras { background-color: #c5a17e; }
@@ -291,4 +287,5 @@ body {
 
 /* --- OTROS ELEMENTOS --- */
 .texto-error { color: red; font-weight: bold; }
+
 .alerta-extras { margin: 10px 0; background: #fff9c4; padding: 5px; }
