@@ -24,6 +24,7 @@ class FormularioLogin extends Formulario {
         $_SESSION['login'] = true;
         $_SESSION['nombre'] = $user->getNombreUsuario();
         $_SESSION['idUsuario'] = $user->getId();
+        $_SESSION['avatar'] = $user->getAvatar() ? $user->getAvatar() : 'defecto.png';
 
 
 
