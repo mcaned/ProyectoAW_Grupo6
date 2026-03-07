@@ -15,7 +15,12 @@ if ($id) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nom = $conn->real_escape_string($_POST['nombre']);
     $des = $conn->real_escape_string($_POST['descripcion']);
+    
+    // --- LÓGICA DE IMAGEN POR DEFECTO ---
     $img = $conn->real_escape_string($_POST['imagen_url']);
+    if (empty($img)) {
+        $img = 'categorias/default.jpg'; // Si no escribe nada, ponemos esta ruta
+    }
 
     if ($id) {
         $query = "UPDATE Categorias SET nombre='$nom', descripcion='$des', imagen_url='$img' WHERE id=$id";
