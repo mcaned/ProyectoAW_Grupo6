@@ -3,13 +3,26 @@ require_once __DIR__ . '/includes/config.php';
 require_once __DIR__ . '/includes/aplicacion.php';
 $app = Aplicacion::getInstance(); $app->init();
 
+// --- 1. SEGURIDAD: Solo el gerente puede entrar ---
+if (!isset($_SESSION['login']) || $_SESSION['rol'] !== 'gerente') {
+    header('Location: index.php'); exit();
+}
+
 $conn = $app->conexionBd();
 $id = $_GET['id'] ?? null;
-$cat = ['nombre' => '', 'descripcion' => '', 'imagen_url' => ''];
+
+// Valores por defecto para una categoría nueva
+$cat = [
+    'nombre' => '', 
+    'descripcion' => '', 
+    'imagen_url' => 'categorias/default.jpg' // Ponemos el defecto aquí también
+];
 
 if ($id) {
     $res = $conn->query("SELECT * FROM Categorias WHERE id = ".intval($id));
-    $cat = $res->fetch_assoc();
+    if ($res && $res->num_rows > 0) {
+        $cat = $res->fetch_assoc();
+    }
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -19,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // --- LÓGICA DE IMAGEN POR DEFECTO ---
     $img = $conn->real_escape_string($_POST['imagen_url']);
     if (empty($img)) {
-        $img = 'categorias/default.jpg'; // Si no escribe nada, ponemos esta ruta
+        $img = 'categorias/default.jpg'; 
     }
 
     if ($id) {
@@ -33,15 +46,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 include 'includes/vistas/comun/cabecera.php';
 ?>
-<div style="display: flex; min-height: 85vh;">
-    <main style="flex-grow: 1; padding: 40px; background: white;">
-        <h1><?= $id ? 'Editar' : 'Crear' ?> Categoría</h1>
+<div style="display: flex; min-height: 85vh; background-color: #f0f0f0;">
+    <!-- --- 2. AÑADIMOS EL SIDEBAR PARA MANTENER EL DISEÑO --- -->
+    <?php include 'includes/vistas/comun/sideBarIzq.php'; ?>
+
+    <main style="flex-grow: 1; padding: 40px; background: white; margin: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+        <h1><?= $id ? '📝 Editar Categoría' : '➕ Crear Nueva Categoría' ?></h1>
+        <hr><br>
+
         <form method="POST" style="max-width: 500px;">
-            Nombre: <input type="text" name="nombre" value="<?= $cat['nombre'] ?>" required style="width:100%"><br><br>
-            Descripción: <textarea name="descripcion" style="width:100%"><?= $cat['descripcion'] ?></textarea><br><br>
-            URL Imagen: <input type="text" name="imagen_url" value="<?= $cat['imagen_url'] ?>" style="width:100%"><br><br>
-            <button type="submit" style="padding: 10px 20px; background: green; color: white; border: none;">Guardar</button>
-            <a href="gestion_categorias.php">Cancelar</a>
+            <p>
+                <label><strong>Nombre de la Categoría:</strong></label><br>
+                <input type="text" name="nombre" value="<?= htmlspecialchars($cat['nombre']) ?>" required style="width:100%; padding: 8px;">
+            </p>
+
+            <p>
+                <label><strong>Descripción:</strong></label><br>
+                <textarea name="descripcion" rows="4" style="width:100%; padding: 8px;"><?= htmlspecialchars($cat['descripcion']) ?></textarea>
+            </p>
+
+            <p>
+                <label><strong>Ruta de la Imagen:</strong></label><br>
+                <input type="text" name="imagen_url" value="<?= htmlspecialchars($cat['imagen_url']) ?>" placeholder="categorias/ejemplo.jpg" style="width:100%; padding: 8px;">
+                <small style="color: #666;">Si se deja vacío, se usará: <em>categorias/default.jpg</em></small>
+            </p>
+
+            <div style="margin-top: 30px;">
+                <button type="submit" style="padding: 12px 25px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">
+                    💾 GUARDAR CATEGORÍA
+                </button>
+                <a href="gestion_categorias.php" style="margin-left: 15px; text-decoration: none; color: #666;">Cancelar</a>
+            </div>
         </form>
     </main>
 </div>
