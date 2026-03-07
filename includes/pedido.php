@@ -75,8 +75,9 @@ include 'vistas/comun/cabecera.php';
                                 </span>
                             </td>
                             <td style="padding: 12px;"><strong><?= number_format($pedido['total'], 2) ?>€</strong></td>
-                            <td style="padding: 12px;">
-                                <a href="detallePedido.php?id=<?= $pedido['id'] ?>" style="color: #333; text-decoration: underline;">Ver detalle</a>
+                           <td style="padding: 12px;">
+                             <!-- Añadimos RUTA_APP para que lo busque en la raíz -->
+                             <a href="<?= RUTA_APP ?>/detallePedido.php?id=<?= $pedido['id'] ?>" style="color: #333; text-decoration: underline;">Ver detalle</a>
                             </td>
                         </tr>
                     <?php endwhile; ?>
