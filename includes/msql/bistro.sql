@@ -25,6 +25,7 @@ CREATE TABLE Productos (
     id_categoria INT NOT NULL,
     nombre VARCHAR(100) NOT NULL,
     descripcion TEXT,
+    imagen_url VARCHAR(255) DEFAULT 'productos/default.png',
     precio_base DECIMAL(10,2) NOT NULL,
     iva ENUM('4', '10', '21') NOT NULL,
     disponible BOOLEAN DEFAULT TRUE,
