@@ -1,4 +1,5 @@
 <?php
+// Ya estamos en la carpeta 'includes', así que no hace falta poner '/includes/' en el require
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/aplicacion.php';
 
@@ -12,79 +13,98 @@ if (!isset($_SESSION['login'])) {
 
 $conn = $app->conexionBd();
 
-// Modificamos la consulta para traer el nombre de la categoría y ordenar por ella
+// Lógica de filtrado por categoría
+$idCatFiltrada = isset($_GET['cat']) ? intval($_GET['cat']) : null;
+
+// 1. Obtener todas las categorías para el selector superior
+$res_cats = $conn->query("SELECT * FROM Categorias");
+
+// 2. Obtener productos (filtrados o todos)
 $query = "SELECT p.*, c.nombre AS nombre_cat 
           FROM Productos p 
           JOIN Categorias c ON p.id_categoria = c.id 
-          WHERE p.disponible = 1 AND p.ofertado = 1 
-          ORDER BY c.nombre, p.nombre";
+          WHERE p.disponible = 1 AND p.ofertado = 1";
+
+if ($idCatFiltrada) {
+    $query .= " AND p.id_categoria = $idCatFiltrada";
+}
+
+$query .= " ORDER BY c.nombre, p.nombre";
 $result = $conn->query($query);
 
-include 'vistas/comun/cabecera.php';
+// La carpeta vistas está dentro de includes, así que la ruta es esta:
+include __DIR__ . '/vistas/comun/cabecera.php';
 ?>
 
 <div style="display: flex; background-color: #e0e0e0; min-height: 85vh;">
-    <?php include 'vistas/comun/sideBarIzq.php'; ?>
+    <?php include __DIR__ . '/vistas/comun/sideBarIzq.php'; ?>
 
-    <main style="flex-grow: 1; background-color: white; padding: 40px; display: flex; flex-direction: column;">
+    <main style="flex-grow: 1; background-color: white; padding: 40px;">
         
-        <?php if (isset($_GET['status']) && $_GET['status'] == 'added'): ?>
-            <div style="background-color: #d4edda; color: #155724; padding: 10px; border: 1px solid #c3e6cb; margin-bottom: 20px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center;">
-                <span>✓ Producto añadido con éxito.</span>
-                <a href="carrito.php" style="color: #155724; font-weight: bold; text-decoration: underline;">Ver cesta</a>
-            </div>
-        <?php endif; ?>
-
         <h1>Nuestra Carta</h1>
-        
+
+        <!-- SELECTOR DE CATEGORÍAS -->
+        <div style="display: flex; gap: 20px; overflow-x: auto; padding: 20px 0; border-bottom: 1px solid #eee; margin-bottom: 30px;">
+            <a href="carta.php" style="text-align: center; text-decoration: none; color: #333; min-width: 80px;">
+                <div style="width: 60px; height: 60px; background: #333; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 5px;">TODOS</div>
+                <small>Todos</small>
+            </a>
+            <?php while($cat = $res_cats->fetch_assoc()): ?>
+                <a href="?cat=<?= $cat['id'] ?>" style="text-align: center; text-decoration: none; color: #333; min-width: 80px;">
+                    <img src="<?= RUTA_APP ?>/img/<?= ($cat['imagen_url'] ?? 'categorias/default.png') ?>" 
+                         style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid <?= ($idCatFiltrada == $cat['id']) ? '#d32f2f' : '#ddd' ?>; margin-bottom: 5px;"
+                         onerror="this.src='<?= RUTA_APP ?>/img/categorias/default.png'">
+                    <br><small><?= htmlspecialchars($cat['nombre']) ?></small>
+                </a>
+            <?php endwhile; ?>
+        </div>
+
+        <!-- LISTADO DE PRODUCTOS -->
         <?php 
         if ($result && $result->num_rows > 0): 
-            $categoriaActual = "";
+            echo '<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px;">';
             while ($prod = $result->fetch_assoc()): 
-                // Si la categoría cambia, imprimimos un nuevo encabezado
-                if ($prod['nombre_cat'] !== $categoriaActual): 
-                    if ($categoriaActual !== "") echo '</div>'; // Cerramos el grid anterior
-                    $categoriaActual = $prod['nombre_cat'];
-                    echo "<h2 style='border-bottom: 2px solid #333; margin-top: 30px; padding-bottom: 5px;'>{$categoriaActual}</h2>";
-                    echo '<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-top: 15px;">';
-                endif;
         ?>
-                <div style="border: 1px solid #ccc; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between;">
-                    <div>
-                        <h3 style="margin: 0 0 10px 0;"><?= htmlspecialchars($prod['nombre']) ?></h3>
-                        <p style="color: #666; font-size: 0.9rem; margin-bottom: 15px;"><?= htmlspecialchars($prod['descripcion']) ?></p>
-                    </div>
+                <div style="border: 1px solid #eee; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); background: white; display: flex; flex-direction: column;">
                     
-                    <div style="border-top: 1px solid #eee; pt: 15px;">
-                        <p style="font-size: 1.1rem; color: #d32f2f; font-weight: bold; margin-bottom: 10px;">
-                            <?= number_format($prod['precio_base'] * (1 + $prod['iva']/100), 2) ?>€
-                        </p>
+                    <!-- Imagen del Producto -->
+                    <img src="<?= RUTA_APP ?>/img/<?= ($prod['imagen_url'] ?? 'productos/default.png') ?>" 
+                         style="width: 100%; height: 180px; object-fit: cover;"
+                         onerror="this.src='<?= RUTA_APP ?>/img/productos/default.png'">
+
+                    <div style="padding: 15px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <span style="font-size: 0.7rem; color: #d32f2f; font-weight: bold; text-transform: uppercase;"><?= $prod['nombre_cat'] ?></span>
+                            <h3 style="margin: 5px 0;"><?= htmlspecialchars($prod['nombre']) ?></h3>
+                            <p style="color: #666; font-size: 0.85rem; margin-bottom: 15px;"><?= htmlspecialchars($prod['descripcion']) ?></p>
+                        </div>
                         
-                        <form action="procesarCarrito.php" method="POST" style="display: flex; gap: 10px; align-items: center;">
-                            <input type="hidden" name="id_producto" value="<?= $prod['id'] ?>">
-                            <input type="number" name="cantidad" value="1" min="1" style="width: 45px; padding: 5px; border: 1px solid #ccc;">
-                            <button type="submit" style="background: #333; color: white; border: none; padding: 8px 12px; cursor: pointer; flex-grow: 1; border-radius: 4px;">
-                                Añadir
-                            </button>
-                        </form>
+                        <div>
+                            <p style="font-size: 1.2rem; font-weight: bold; margin-bottom: 10px;">
+                                <?= number_format($prod['precio_base'] * (1 + $prod['iva']/100), 2) ?>€
+                            </p>
+                            
+                            <form action="procesarCarrito.php" method="POST" style="display: flex; gap: 8px;">
+                                <input type="hidden" name="id_producto" value="<?= $prod['id'] ?>">
+                                <input type="number" name="cantidad" value="1" min="1" style="width: 40px; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                                <button type="submit" style="background: #d32f2f; color: white; border: none; padding: 10px; cursor: pointer; flex-grow: 1; border-radius: 4px; font-weight: bold;">
+                                    AGREGAR
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
         <?php 
             endwhile; 
-            echo '</div>'; // Cerramos el último grid
+            echo '</div>';
         else: 
         ?>
-            <p>Actualmente no hay productos disponibles.</p>
+            <p style="text-align: center; color: #999; margin-top: 50px;">No hay productos en esta categoría.</p>
         <?php endif; ?>
 
-        <div style="margin-top: 50px; text-align: center; border-top: 2px solid #eee; padding-top: 30px;">
-            <a href="carrito.php" style="background-color: #28a745; color: white; padding: 15px 40px; text-decoration: none; font-weight: bold; border-radius: 30px; font-size: 1.2rem; display: inline-block; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                🛒 Ir a mi cesta
-            </a>
-        </div>
     </main>
 
-    <?php include 'vistas/comun/sideBarDer.php'; ?>
+    <?php include __DIR__ . '/vistas/comun/sideBarDer.php'; ?>
 </div>
 
-<?php include 'vistas/comun/pie.php'; ?>
+<?php include __DIR__ . '/vistas/comun/pie.php'; ?>
