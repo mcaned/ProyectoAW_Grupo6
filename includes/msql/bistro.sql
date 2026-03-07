@@ -16,7 +16,7 @@ CREATE TABLE Categorias (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     descripcion TEXT,
-    imagen_url VARCHAR(255)
+    imagen_url VARCHAR(255) DEFAULT 'categorias/default.jpg';
 );
 
 -- 3. Productos (Funcionalidad 1)
@@ -25,7 +25,7 @@ CREATE TABLE Productos (
     id_categoria INT NOT NULL,
     nombre VARCHAR(100) NOT NULL,
     descripcion TEXT,
-    imagen_url VARCHAR(255) DEFAULT 'productos/default.png',
+    imagen_url VARCHAR(255) DEFAULT 'productos/default.jpg',
     precio_base DECIMAL(10,2) NOT NULL,
     iva ENUM('4', '10', '21') NOT NULL,
     disponible BOOLEAN DEFAULT TRUE,
