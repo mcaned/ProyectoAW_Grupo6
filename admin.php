@@ -16,9 +16,10 @@ include 'includes/vistas/comun/cabecera.php';
         <div style="display: flex; gap: 20px; margin-top: 20px;">
             <a href="gestion_categorias.php" style="padding: 20px; background: #333; color: white; text-decoration: none; border-radius: 10px;">📁 Gestionar Categorías</a>
             <a href="gestion_productos.php" style="padding: 20px; background: #333; color: white; text-decoration: none; border-radius: 10px;">🍔 Gestionar Productos</a>
-            <a href="includes/pedido.php" style="padding: 20px; background: #333; color: white; text-decoration: none; border-radius: 10px;">📋 Ver Pedidos Globales</a>
+            <a href="pedidos_globales.php" style="padding: 20px; background: #333; color: white; text-decoration: none; border-radius: 10px;">📋 Ver Pedidos Globales</a>
         </div>
     </main>
     <?php include 'includes/vistas/comun/sideBarDer.php'; ?>
 </div>
 <?php include 'includes/vistas/comun/pie.php'; ?>
+
