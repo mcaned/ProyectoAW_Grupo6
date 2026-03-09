@@ -16,7 +16,7 @@
         </div>
         <ul class="lista-barra-derecha">
             <li>
-                <a href="<?= RUTA_APP ?>/perfil.php" class="btn-editar-perfil">
+                <a href="<?= RUTA_APP ?>/includes/perfil.php" class="btn-editar-perfil">
                     ✏️ Editar Perfil
                 </a>
             </li>
