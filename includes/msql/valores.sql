@@ -1,5 +1,5 @@
 
-INSERT INTO `categorias` (`id`, `nombre`, `descripcion`, `imagen_url`) VALUES
+INSERT INTO `Categorias` (`id`, `nombre`, `descripcion`, `imagen_url`) VALUES
 (1, 'Pizzas', 'Hechas al horno de leña', 'categorias/pizzas.jpg'),
 (2, 'Entrantes', 'Aperitivos para compartir', 'categorias/entrantes.jpg'),
 (3, 'Hamburguesas', 'Hamburguesas gourmet con pan brioche', 'categorias/hamburguesas.jpg'),
@@ -12,7 +12,7 @@ INSERT INTO `categorias` (`id`, `nombre`, `descripcion`, `imagen_url`) VALUES
 (10, 'Especialidades', 'Platos especiales de la casa', 'categorias/especialidades.jpg');
 
 
-INSERT INTO `productos` (`id`, `id_categoria`, `nombre`, `descripcion`, `imagen_url`, `precio_base`, `iva`, `disponible`, `ofertado`) VALUES
+INSERT INTO `Productos` (`id`, `id_categoria`, `nombre`, `descripcion`, `imagen_url`, `precio_base`, `iva`, `disponible`, `ofertado`) VALUES
 (1, 1, 'Pizza Margherita', 'Tomate, mozzarella y albahaca','productos/pizzamargarita.jpg', 7.27, '10', 1, 1),
 (2, 1, 'Pizza Barbacoa', 'Carne picada, salsa BBQ y mozzarella','productos/pizzabarba.jpg', 9.50, '10', 1, 1),
 (3, 1, 'Pizza Cuatro Quesos', 'Mozzarella, gorgonzola, parmesano y cheddar','productos/pizza4quesos.jpg', 10.00, '10', 1, 1),
