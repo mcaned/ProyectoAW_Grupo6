@@ -54,4 +54,4 @@ CREATE TABLE Lineas_Pedido (
     PRIMARY KEY (id_pedido, id_producto),
     FOREIGN KEY (id_pedido) REFERENCES Pedidos(id),
     FOREIGN KEY (id_producto) REFERENCES Productos(id)
-);SELECT * FROM `categorias` WHERE 1
+);
