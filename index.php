@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/config.php';
-require_once __DIR__ . '/includes/aplicacion.php';
-require_once __DIR__ . '/includes/usuario.php';
+require_once __DIR__ . '/includes/clases/aplicacion.php';
+require_once __DIR__ . '/includes/clases/usuario.php';
 
 $app = Aplicacion::getInstance(); $app->init();
 include 'includes/vistas/comun/cabecera.php';

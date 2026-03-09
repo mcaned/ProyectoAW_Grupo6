@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/includes/config.php';
-require_once __DIR__ . '/includes/aplicacion.php';
+require_once __DIR__ . '/includes/clases/aplicacion.php';
 $app = Aplicacion::getInstance(); $app->init();
 
 if (!isset($_SESSION['login']) || $_SESSION['rol'] !== 'cocinero') {
@@ -11,7 +11,7 @@ if (!isset($_SESSION['login']) || $_SESSION['rol'] !== 'cocinero') {
 include 'includes/vistas/comun/cabecera.php';
 $conn = $app->conexionBd();
 
-// Consulta para obtener pedidos que están en preparación
+// obtener pedidos que están en preparación
 $query = "SELECT * FROM pedidos WHERE estado = 'En preparación' ORDER BY fecha_hora ASC";
 $result = $conn->query($query);
 ?>
