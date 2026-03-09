@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/config.php'; 
-require_once __DIR__ . '/includes/Aplicacion.php';
-require_once __DIR__ . '/includes/FormularioRegistro.php';
+require_once __DIR__ . '/includes/aplicacion.php';
+require_once __DIR__ . '/includes/formularioRegistro.php';
 
 include 'includes/vistas/comun/cabecera.php'; 
 ?>
@@ -22,5 +22,6 @@ include 'includes/vistas/comun/cabecera.php';
 
     <?php include 'includes/vistas/comun/sideBarDer.php'; ?>
 </div>
+
 
 <?php include 'includes/vistas/comun/pie.php'; ?>
