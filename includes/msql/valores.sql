@@ -33,6 +33,3 @@ INSERT INTO `productos` (`id`, `id_categoria`, `nombre`, `descripcion`, `imagen_
 (18, 7, 'Agua Mineral', 'Botella 50cl','productos/aguamineral.jpg', 1.80, '10', 1, 1);
 
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
