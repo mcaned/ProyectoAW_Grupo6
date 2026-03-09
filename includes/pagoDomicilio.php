@@ -1,55 +1,57 @@
 <?php
 require_once __DIR__ . '/config.php';
-require_once __DIR__ . '/aplicacion.php';
+require_once __DIR__ . '/clases/aplicacion.php';
 
 $app = Aplicacion::getInstance();
 $app->init();
 include __DIR__ . '/vistas/comun/cabecera.php';
 ?>
 
-<div style="display: flex; background-color: #e0e0e0; min-height: 85vh;">
+<div class="contenedor-principal">
     <?php include __DIR__ . '/vistas/comun/sideBarIzq.php'; ?>
 
-    <main style="flex-grow: 1; background-color: white; padding: 40px;">
+    <main class="contenido-central">
         <h1>Pago y Envío a Domicilio</h1>
-        <div style="background: #fff3cd; padding: 15px; border: 1px solid #ffeeba; margin-bottom: 20px;">
-            Estás finalizando un pedido para <strong>Llevar</strong>.
+        
+        <div class="alerta-error-critico">
+            Estás finalizando un pedido para Llevar.
         </div>
-
-        <form action="finalizarProceso.php" method="POST" style="max-width: 500px;" id="formPago">
-            <div style="margin-bottom: 15px;">
-                <label><strong>Dirección de entrega:</strong></label><br>
-                <input type="text" name="direccion" required style="width: 100%; padding: 8px;" placeholder="Calle, número, piso...">
+        <br>
+        <form action="finalizarProceso.php" method="POST" class="formulario-estandar" id="formPago">
+            <div class="item-barra-izquierda">
+                <label><strong>Dirección de entrega:</strong></label>
+                <input type="text" name="direccion" required class="input-formulario" placeholder="Calle, número, piso...">
             </div>
 
-            <div style="margin-bottom: 15px;">
-                <label><strong>Método de Pago Online:</strong></label><br>
-                <select name="metodo" id="metodoPago" onchange="toggleTarjeta()" style="width: 100%; padding: 8px;">
+            <div class="item-barra-izquierda">
+                <label><strong>Método de Pago Online:</strong></label>
+                <select name="metodo" id="metodoPago" onchange="Tarjeta()" class="input-formulario">
                     <option value="tarjeta">Tarjeta de Crédito / Débito</option>
                     <option value="paypal">PayPal</option>
-                    <option value="paypal">ApplePay</option>
+                    <option value="applepay">ApplePay</option>
                 </select>
             </div>
 
-            <div id="camposTarjeta" style="background: #f8f9fa; padding: 20px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 15px;">
-                <h4 style="margin-top: 0;">Datos de la Tarjeta</h4>
-                <div style="margin-bottom: 10px;">
-                    <label>Número de tarjeta:</label><br>
-                    <input type="text" name="num_tarjeta" placeholder="0000 0000 0000 0000" pattern="\d{16}" title="16 números" style="width: 100%; padding: 8px;">
+            <div id="camposTarjeta" class="bg-gris-claro" >
+                <h4 class="titulo-serif">Datos de la Tarjeta</h4>
+                <div class="item-barra-izquierda">
+                    <label>Número de tarjeta:</label>
+                    <input type="text" name="num_tarjeta" class="input-formulario" placeholder="0000 0000 0000 0000" pattern="\d{16}" title="16 números">
                 </div>
-                <div style="display: flex; gap: 10px;">
-                    <div style="flex: 1;">
-                        <label>Caducidad:</label><br>
-                        <input type="text" name="caducidad" placeholder="MM/AA" pattern="\d{2}/\d{2}" style="width: 100%; padding: 8px;">
+                
+                <div class="contenedor-info-pedido">
+                    <div class="columna-info">
+                        <label>Caducidad:</label>
+                        <input type="text" name="caducidad" class="input-formulario" placeholder="MM/AA" pattern="\d{2}/\d{2}">
                     </div>
-                    <div style="flex: 1;">
-                        <label>CVV:</label><br>
-                        <input type="password" name="cvv" placeholder="123" pattern="\d{3}" style="width: 100%; padding: 8px;">
+                    <div class="columna-info">
+                        <label>CVV:</label>
+                        <input type="password" name="cvv" class="input-formulario" placeholder="123" pattern="\d{3}"    >
                     </div>
                 </div>
             </div>
-
-            <button type="submit" style="background: #28a745; color: white; padding: 15px 25px; border: none; cursor: pointer; font-weight: bold; width: 100%; border-radius: 5px;">
+            <br>
+            <button type="submit" class="btn-verde">
                 Confirmar y Pagar
             </button>
         </form>
@@ -59,23 +61,20 @@ include __DIR__ . '/vistas/comun/cabecera.php';
 </div>
 
 <script>
-function toggleTarjeta() {
+function Tarjeta() {
     const metodo = document.getElementById('metodoPago').value;
     const campos = document.getElementById('camposTarjeta');
     const inputs = campos.getElementsByTagName('input');
 
     if (metodo === 'tarjeta') {
         campos.style.display = 'block';
-        // Hacer obligatorios si es tarjeta
         for(let i=0; i<inputs.length; i++) inputs[i].required = true;
     } else {
         campos.style.display = 'none';
-        // Quitar obligatoriedad si es PayPal
         for(let i=0; i<inputs.length; i++) inputs[i].required = false;
     }
 }
-// Ejecutar al cargar por si acaso
-toggleTarjeta();
+Tarjeta();
 </script>
 
 <?php include __DIR__ . '/vistas/comun/pie.php'; ?>

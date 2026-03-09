@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/config.php';
-require_once __DIR__ . '/aplicacion.php';
+require_once __DIR__ . '/clases/aplicacion.php';
 
 $app = Aplicacion::getInstance();
 $app->init(); 
@@ -20,7 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['carrito'] = [];
         }
 
-        //si el producto estaba en el carro, sumamos la cantidas, si no estaba, lo creamos
         if (isset($_SESSION['carrito'][$id_producto])) {
             $_SESSION['carrito'][$id_producto] += $cantidad;
         } else {
@@ -29,6 +28,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Redirigimos de vuelta a la carta para que el usuario siga comprando
-header('Location: carta.php?status=added');
+header("Location: carta.php?añadido=1");
 exit();
