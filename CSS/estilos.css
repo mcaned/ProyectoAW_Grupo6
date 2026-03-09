@@ -108,7 +108,7 @@ body { font-family: sans-serif; margin: 0; }
 
 /* BOTONES Y UTILIDADES */
 .btn-gris { background: #666; color: white; padding: 10px 20px; text-decoration: none;  }
-.btn-oscuro { background: #333; color: white; padding: 12px 20px; text-decoration: none; font-weight: bold; }
+.btn-oscuro { background: #333; color: white; padding: 12px 20px; text-decoration: none; font-weight: bold; cursor: pointer}
 .btn-verde { padding: 12px 25px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
 .texto-rojo { color: #d32f2f; }
 .texto-centrado { text-align: center; }
