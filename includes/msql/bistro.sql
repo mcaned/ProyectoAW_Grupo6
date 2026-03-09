@@ -16,7 +16,7 @@ CREATE TABLE Categorias (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     descripcion TEXT,
-    imagen_url VARCHAR(255) DEFAULT 'categorias/default.jpg';
+    imagen_url VARCHAR(255) DEFAULT 'categorias/default.jpg'
 );
 
 -- 3. Productos (Funcionalidad 1)
