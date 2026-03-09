@@ -1,15 +1,15 @@
 
 INSERT INTO `categorias` (`id`, `nombre`, `descripcion`, `imagen_url`) VALUES
-(1, 'Pizzas', 'Hechas al horno de leña', NULL),
-(2, 'Entrantes', 'Aperitivos para compartir', 'img/categorias/entrantes.jpg'),
-(3, 'Hamburguesas', 'Hamburguesas gourmet con pan brioche', 'img/categorias/hamburguesas.jpg'),
-(4, 'Pastas', 'Pastas frescas italianas', 'img/categorias/pastas.jpg'),
-(5, 'Ensaladas', 'Ensaladas frescas y saludables', 'img/categorias/ensaladas.jpg'),
-(6, 'Postres', 'Postres caseros', 'img/categorias/postres.jpg'),
-(7, 'Bebidas', 'Refrescos y bebidas variadas', 'img/categorias/bebidas.jpg'),
-(8, 'Bebidas Alcohólicas', 'Cervezas y vinos', 'img/categorias/alcohol.jpg'),
-(9, 'Menús', 'Menús combinados especiales', 'img/categorias/menus.jpg'),
-(10, 'Especialidades', 'Platos especiales de la casa', 'img/categorias/especialidades.jpg');
+(1, 'Pizzas', 'Hechas al horno de leña', 'categorias/pizzas.jpg'),
+(2, 'Entrantes', 'Aperitivos para compartir', 'categorias/entrantes.jpg'),
+(3, 'Hamburguesas', 'Hamburguesas gourmet con pan brioche', 'categorias/hamburguesas.jpg'),
+(4, 'Pastas', 'Pastas frescas italianas', 'categorias/pastas.jpg'),
+(5, 'Ensaladas', 'Ensaladas frescas y saludables', 'categorias/ensaladas.jpg'),
+(6, 'Postres', 'Postres caseros', 'categorias/postres.jpg'),
+(7, 'Bebidas', 'Refrescos y bebidas variadas', 'categorias/bebidas.jpg'),
+(8, 'Bebidas Alcohólicas', 'Cervezas y vinos', 'categorias/alcohol.jpg'),
+(9, 'Menús', 'Menús combinados especiales', 'categorias/menus.jpg'),
+(10, 'Especialidades', 'Platos especiales de la casa', 'categorias/especialidades.jpg');
 
 
 INSERT INTO `productos` (`id`, `id_categoria`, `nombre`, `descripcion`, `precio_base`, `iva`, `disponible`, `ofertado`) VALUES
