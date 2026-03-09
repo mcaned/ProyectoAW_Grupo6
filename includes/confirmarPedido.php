@@ -1,7 +1,7 @@
 <?php
 // 1. Cargar configuración (está en la misma carpeta)
 require_once __DIR__ . '/config.php';
-require_once __DIR__ . '/Aplicacion.php';
+require_once __DIR__ . '/aplicacion.php';
 
 $app = Aplicacion::getInstance();
 $app->init(); // Esto arranca la sesión
@@ -71,4 +71,5 @@ if ($conn->query($queryPedido)) {
     exit();
 } else {
     die("Error SQL: " . $conn->error);
+
 }
