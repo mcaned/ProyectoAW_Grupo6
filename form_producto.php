@@ -76,19 +76,18 @@ $categorias = $conn->query("SELECT * FROM Categorias");
 include 'includes/vistas/comun/cabecera.php';
 ?>
 
-<div style="display: flex; min-height: 85vh; background-color: #f0f0f0;">
+<div class="contenedor-principal">
     <?php include 'includes/vistas/comun/sideBarIzq.php'; ?>
-
-    <main style="flex-grow: 1; padding: 40px; background: white; margin: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+    <main class="contenido-central bloque-formulario">
         <h1><?= $id ? '📝 Editar Producto' : '➕ Crear Nuevo Producto' ?></h1>
         <hr><br>
 
-        <?php if(isset($error)) echo "<p style='color:red;'>$error</p>"; ?>
+        <?php if(isset($error)) echo "<p class='texto-error'>$error</p>"; ?>
 
-        <form method="POST" style="max-width: 600px;">
+        <form method="POST" class="formulario-estandar">
             <p>
                 <label><strong>Categoría:</strong></label><br>
-                <select name="id_categoria" required style="width:100%; padding: 8px;">
+                <select name="id_categoria" required class="input-formulario">
                     <option value="">-- Selecciona una categoría --</option>
                     <?php while($c = $categorias->fetch_assoc()): ?>
                         <option value="<?= $c['id'] ?>" <?= ($p['id_categoria'] == $c['id']) ? 'selected' : '' ?>>
@@ -100,29 +99,29 @@ include 'includes/vistas/comun/cabecera.php';
 
             <p>
                 <label><strong>Nombre del Producto:</strong></label><br>
-                <input type="text" name="nombre" value="<?= htmlspecialchars($p['nombre']) ?>" required style="width:100%; padding: 8px;">
+                <input type="text" name="nombre" value="<?= htmlspecialchars($p['nombre']) ?>" required class="input-formulario">
             </p>
 
             <p>
                 <label><strong>Descripción:</strong></label><br>
-                <textarea name="descripcion" rows="4" style="width:100%; padding: 8px;"><?= htmlspecialchars($p['descripcion']) ?></textarea>
+                <textarea name="descripcion" rows="4" class="input-formulario"><?= htmlspecialchars($p['descripcion']) ?></textarea>
             </p>
 
             <p>
                 <label><strong>Ruta de la Imagen:</strong></label><br>
-                <input type="text" name="imagen_url" value="<?= htmlspecialchars($p['imagen_url']) ?>" placeholder="productos/ejemplo.jpg" style="width:100%; padding: 8px;">
-                <small style="color: #666;">Si se deja vacío, se usará: <em>productos/default.jpg</em></small>
+                <input type="text" name="imagen_url" value="<?= htmlspecialchars($p['imagen_url']) ?>" placeholder="productos/ejemplo.jpg" class="input-formulario">
+                <small class="texto-ayuda">Si se deja vacío, se usará: <em>productos/default.jpg</em></small>
             </p>
 
-            <div style="display: flex; gap: 20px;">
-                <p style="flex: 1;">
+            <div class="grupo-formulario-flex">
+                <p class="flex-1">
                     <label><strong>Precio Base (€):</strong></label><br>
-                    <input type="number" step="0.01" name="precio_base" id="base" value="<?= $p['precio_base'] ?>" required style="width:100%; padding: 8px;" oninput="recalc()">
+                    <input type="number" step="0.01" name="precio_base" id="base" value="<?= $p['precio_base'] ?>" required class="input-formulario" oninput="recalc()">
                 </p>
 
-                <p style="flex: 1;">
+                <p class="flex-1">
                     <label><strong>IVA (%):</strong></label><br>
-                    <select name="iva" id="iva" style="width:100%; padding: 8px;" onchange="recalc()">
+                    <select name="iva" id="iva" class="input-formulario" onchange="recalc()">
                         <option value="4" <?= $p['iva']=='4'?'selected':'' ?>>4%</option>
                         <option value="10" <?= $p['iva']=='10'?'selected':'' ?>>10%</option>
                         <option value="21" <?= $p['iva']=='21'?'selected':'' ?>>21%</option>
@@ -130,40 +129,33 @@ include 'includes/vistas/comun/cabecera.php';
                 </p>
             </div>
 
-            <!-- USABILIDAD: Cálculo automático del precio final (Punto 5.2) -->
-            <div style="background: #e9ecef; padding: 15px; border-radius: 5px; margin: 20px 0; border: 1px solid #ddd;">
-                <span style="font-size: 1.1rem; font-weight: bold;">Precio Final (Base + IVA): </span>
-                <span id="total" style="font-size: 1.3rem; color: #d32f2f; font-weight: bold;">0.00</span> 
-                <span style="font-size: 1.3rem; color: #d32f2f; font-weight: bold;">€</span>
+            <div class="caja-precio-final">
+                <span class="etiqueta-precio">Precio Final (Base + IVA): </span>
+                <span id="total" class="valor-precio">0.00</span> 
+                <span class="valor-precio">€</span>
             </div>
 
             <p>
-                <label>
+                <label class="label-checkbox">
                     <input type="checkbox" name="disponible" <?= $p['disponible'] ? 'checked' : '' ?>> 
                     <strong>¿Producto disponible para la venta? (Stock)</strong>
                 </label>
             </p>
 
-            <div style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
-                <button type="submit" style="padding: 12px 25px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">
-                    💾 GUARDAR PRODUCTO
-                </button>
-                <a href="gestion_productos.php" style="margin-left: 15px; text-decoration: none; color: #666;">Cancelar y volver</a>
+            <div class="acciones-formulario">
+                <button type="submit" class="btn-verde">💾 GUARDAR PRODUCTO</button>
+                <a href="gestion_productos.php" class="enlace-cancelar">Cancelar y volver</a>
             </div>
         </form>
     </main>
 </div>
-
 <script>
-// Función para calcular el precio final automáticamente (Punto 5.2)
 function recalc() {
     let base = parseFloat(document.getElementById('base').value) || 0;
     let iva = parseInt(document.getElementById('iva').value);
     let total = base * (1 + iva/100);
     document.getElementById('total').innerText = total.toFixed(2);
 }
-// Ejecutar al cargar para que si editamos ya salga el total
 window.onload = recalc;
 </script>
-
 <?php include 'includes/vistas/comun/pie.php'; ?>

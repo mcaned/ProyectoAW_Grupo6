@@ -11,46 +11,59 @@ if (!isset($_SESSION['login']) || $_SESSION['rol'] !== 'cocinero') {
 include 'includes/vistas/comun/cabecera.php';
 $conn = $app->conexionBd();
 
+// Consulta para obtener pedidos que están en preparación
 $query = "SELECT * FROM pedidos WHERE estado = 'En preparación' ORDER BY fecha_hora ASC";
 $result = $conn->query($query);
 ?>
 
-<div style="display: flex; min-height: 85vh;">
+<div class="contenedor-principal">
+    <?php include 'includes/vistas/comun/sideBarIzq.php'; ?>
 
-    <main style="flex-grow: 1; background-color: #ffffff; padding: 30px;">
-        
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #000000; padding-bottom: 10px; margin-bottom: 20px;">
-            <h1 style="margin: 0;">👨‍🍳 PANEL DE COCINA</h1>
-            <div style="text-align: right;">
-                <small style="color: #00e676; font-weight: bold;">EN SERVICIO</small>
+    <main class="contenido-central">
+        <div class="cabecera-seccion-flexible">
+            <h1>👨‍🍳 PANEL DE COCINA</h1>
+            <div class="estado-servicio">
+                <small class="estado-en-linea">EN SERVICIO</small>
             </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+        <div class="cuadricula-pedidos">
             <?php if ($result && $result->num_rows > 0): ?>
                 <?php while ($row = $result->fetch_assoc()): ?>
-                    <div style="background: grey; padding: 20px; display: flex; flex-direction: column;">
-                        <div>
-                            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                                <h2 style="margin: 0;  color: #ffeb3b;">#<?= $row['id'] ?></h2>
-                                <span style=" color: red; padding: 6px 10px; font-size: 1rem; font-weight: bold;">
-                                    <?= strtoupper($row['tipo']) ?>
-                                </span>
-                            </div>
+                    <div class="tarjeta">
+                        <div class="info-tarjeta">
+                            <h2 class="id-pedido">#<?= $row['id'] ?></h2>
+                            <span class="tipo-pedido"><?= strtoupper($row['tipo']) ?></span>
                         </div>
 
-                        <form action="includes/actualizarEstado.php" method="POST" style="margin-top: 15px;">
+                        <div class="lista-productos-cocina">
+                            <ul>
+                                <?php 
+                                $idPedido = $row['id'];
+                                $queryItems = "SELECT lp.cantidad, pr.nombre 
+                                               FROM Lineas_Pedido lp 
+                                               JOIN Productos pr ON lp.id_producto = pr.id 
+                                               WHERE lp.id_pedido = $idPedido";
+                                $items = $conn->query($queryItems);
+                                
+                                while ($item = $items->fetch_assoc()): ?>
+                                    <li>
+                                        <strong><?= $item['cantidad'] ?>x</strong> 
+                                        <?= htmlspecialchars($item['nombre']) ?>
+                                    </li>
+                                <?php endwhile; ?>
+                            </ul>
+                        </div>
+
+                        <form action="includes/actualizarEstado.php" method="POST">
                             <input type="hidden" name="id_pedido" value="<?= $row['id'] ?>">
                             <input type="hidden" name="nuevo_estado" value="Listo cocina">
-                            <button type="submit" style="width: 100%; background: #00e676; color: #494848; border: none; padding: 15px; font-size: 1.2rem; font-weight: bold; border-radius: 8px; cursor: pointer;">
-                                ✅ LISTO COCINA!
-                            </button>
+                            <button type="submit" class="btn-listo">✅ LISTO COCINA!</button>
                         </form>
                     </div>
                 <?php endwhile; ?>
             <?php else: ?>
-                <div style="grid-column: 1 / -1; text-align: center; padding: 50px; background: #706e6e; ">
-            <!-- el grid column ayuda a que ocupe toda la pantalla y no solo una columna -->
+                <div class="cocina-vacia">
                     <h3>No hay pedidos pendientes en cocina.</h3>
                 </div>
             <?php endif; ?>

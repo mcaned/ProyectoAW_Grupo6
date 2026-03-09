@@ -6,25 +6,22 @@ require_once __DIR__ . '/includes/FormularioPerfil.php';
 $app = Aplicacion::getInstance();
 $app->init();
 
-// Si el usuario no está logueado, lo redirigimos al login
 if (!isset($_SESSION['login'])) {
     header('Location: login.php');
     exit();
 }
 
 $tituloPagina = 'Mi Perfil - Bistro FDI';
-
 include __DIR__ . '/includes/vistas/comun/cabecera.php';
 ?>
 
-<div style="display: flex; min-height: 85vh; background-color: #e0e0e0;">
+<div class="contenedor-principal">
     <?php include __DIR__ . '/includes/vistas/comun/sideBarIzq.php'; ?>
 
-    <main style="flex-grow: 1; padding: 40px; background: white;">
-        <h1 style="text-align: center; margin-bottom: 30px;">Mi Perfil</h1>
+    <main class="contenido-central">
+        <h1 class="texto-centrado margen-inferior-grande">Mi Perfil</h1>
         
         <?php
-            // Instanciamos y renderizamos el formulario de perfil
             $form = new FormularioPerfil();
             echo $form->gestiona();
         ?>

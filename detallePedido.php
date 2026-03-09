@@ -30,39 +30,38 @@ $items = $conn->query($queryItems);
 include 'includes/vistas/comun/cabecera.php';
 ?>
 
-<div style="display: flex; min-height: 85vh; background-color: #f0f0f0;">
+<div class="contenedor-principal bg-gris-claro">
     <?php include 'includes/vistas/comun/sideBarIzq.php'; ?>
 
-    <main style="flex-grow: 1; padding: 40px; background: white; margin: 20px; border-radius: 10px;">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
+    <main class="contenido-central tarjeta-detalle-pedido">
+        <div class="cabecera-seccion-flexible">
             <h1>📄 Detalle del Pedido #<?= $pedido['numero_pedido'] ?></h1>
-            <!-- Botón para volver a la lista de pedidos -->
-            <a href="includes/pedido.php" style="background: #666; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">⬅️ Volver a la Lista</a>
+            <a href="pedidos_globales.php" class="btn-gris">⬅️ Volver a la Lista</a>
         </div>
-        <hr>
+        <hr class="separador">
 
-        <div style="display: flex; gap: 40px; margin-top: 20px;">
-            <div style="flex: 1;">
+        <div class="contenedor-info-pedido">
+            <div class="columna-info">
                 <h3>Datos del Cliente</h3>
                 <p><strong>Nombre:</strong> <?= $pedido['nombre'] ?> <?= $pedido['apellidos'] ?></p>
                 <p><strong>Email:</strong> <?= $pedido['email'] ?></p>
             </div>
-            <div style="flex: 1;">
+            <div class="columna-info">
                 <h3>Datos del Pedido</h3>
                 <p><strong>Fecha:</strong> <?= date('d/m/Y H:i', strtotime($pedido['fecha_hora'])) ?></p>
                 <p><strong>Tipo:</strong> <?= $pedido['tipo'] ?></p>
-                <p><strong>Estado:</strong> <span style="background: #333; color: white; padding: 5px 10px; border-radius: 5px;"><?= $pedido['estado'] ?></span></p>
+                <p><strong>Estado:</strong> <span class="etiqueta-estado"><?= $pedido['estado'] ?></span></p>
             </div>
         </div>
 
-        <h3 style="margin-top: 40px;">Productos Solicitados</h3>
-        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+        <h3 class="margen-superior-grande">Productos Solicitados</h3>
+        <table class="tabla-detalle">
             <thead>
-                <tr style="background: #eee;">
-                    <th style="padding: 10px; text-align: left;">Producto</th>
-                    <th style="padding: 10px;">Precio (IVA inc.)</th>
-                    <th style="padding: 10px;">Cantidad</th>
-                    <th style="padding: 10px;">Subtotal</th>
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio (IVA inc.)</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
                 </tr>
             </thead>
             <tbody>
@@ -70,20 +69,19 @@ include 'includes/vistas/comun/cabecera.php';
                     $p_final = $it['precio_base'] * (1 + $it['iva']/100);
                     $subtotal = $p_final * $it['cantidad'];
                 ?>
-                <tr style="border-bottom: 1px solid #ddd;">
-                    <td style="padding: 10px;"><?= $it['nombre'] ?></td>
-                    <td style="padding: 10px; text-align: center;"><?= number_format($p_final, 2) ?>€</td>
-                    <td style="padding: 10px; text-align: center;"><?= $it['cantidad'] ?></td>
-                    <td style="padding: 10px; text-align: center;"><strong><?= number_format($subtotal, 2) ?>€</strong></td>
+                <tr>
+                    <td><?= $it['nombre'] ?></td>
+                    <td class="texto-centrado"><?= number_format($p_final, 2) ?>€</td>
+                    <td class="texto-centrado"><?= $it['cantidad'] ?></td>
+                    <td class="texto-centrado"><strong><?= number_format($subtotal, 2) ?>€</strong></td>
                 </tr>
                 <?php endwhile; ?>
             </tbody>
         </table>
 
-        <div style="text-align: right; margin-top: 30px;">
-            <h2 style="color: #d32f2f;">TOTAL PAGADO: <?= number_format($pedido['total'], 2) ?>€</h2>
+        <div class="bloque-total-pedido">
+            <h2 class="texto-rojo">TOTAL PAGADO: <?= number_format($pedido['total'], 2) ?>€</h2>
         </div>
     </main>
 </div>
-
 <?php include 'includes/vistas/comun/pie.php'; ?>

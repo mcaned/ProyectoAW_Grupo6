@@ -46,36 +46,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 include 'includes/vistas/comun/cabecera.php';
 ?>
-<div style="display: flex; min-height: 85vh; background-color: #f0f0f0;">
-    <!-- --- 2. AÑADIMOS EL SIDEBAR PARA MANTENER EL DISEÑO --- -->
+<div class="contenedor-principal bg-gris-claro">
     <?php include 'includes/vistas/comun/sideBarIzq.php'; ?>
-
-    <main style="flex-grow: 1; padding: 40px; background: white; margin: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+    <main class="contenido-central tarjeta-formulario">
         <h1><?= $id ? '📝 Editar Categoría' : '➕ Crear Nueva Categoría' ?></h1>
         <hr><br>
 
-        <form method="POST" style="max-width: 500px;">
+        <form method="POST" class="formulario-estandar">
             <p>
                 <label><strong>Nombre de la Categoría:</strong></label><br>
-                <input type="text" name="nombre" value="<?= htmlspecialchars($cat['nombre']) ?>" required style="width:100%; padding: 8px;">
+                <input type="text" name="nombre" value="<?= htmlspecialchars($cat['nombre']) ?>" required class="input-formulario">
             </p>
 
             <p>
                 <label><strong>Descripción:</strong></label><br>
-                <textarea name="descripcion" rows="4" style="width:100%; padding: 8px;"><?= htmlspecialchars($cat['descripcion']) ?></textarea>
+                <textarea name="descripcion" rows="4" class="input-formulario"><?= htmlspecialchars($cat['descripcion']) ?></textarea>
             </p>
 
             <p>
                 <label><strong>Ruta de la Imagen:</strong></label><br>
-                <input type="text" name="imagen_url" value="<?= htmlspecialchars($cat['imagen_url']) ?>" placeholder="categorias/ejemplo.jpg" style="width:100%; padding: 8px;">
-                <small style="color: #666;">Si se deja vacío, se usará: <em>categorias/default.jpg</em></small>
+                <input type="text" name="imagen_url" value="<?= htmlspecialchars($cat['imagen_url']) ?>" placeholder="categorias/ejemplo.jpg" class="input-formulario">
+                <small class="texto-ayuda">Si se deja vacío, se usará: <em>categorias/default.jpg</em></small>
             </p>
 
-            <div style="margin-top: 30px;">
-                <button type="submit" style="padding: 12px 25px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">
-                    💾 GUARDAR CATEGORÍA
-                </button>
-                <a href="gestion_categorias.php" style="margin-left: 15px; text-decoration: none; color: #666;">Cancelar</a>
+            <div class="acciones-formulario">
+                <button type="submit" class="btn-verde">💾 GUARDAR CATEGORÍA</button>
+                <a href="gestion_categorias.php" class="enlace-cancelar">Cancelar</a>
             </div>
         </form>
     </main>
