@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/config.php';
 require_once __DIR__ . '/includes/aplicacion.php';
-require_once __DIR__ . '/includes/FormularioPerfil.php';
+require_once __DIR__ . '/includes/formularioPerfil.php';
 
 $app = Aplicacion::getInstance();
 $app->init();
@@ -29,5 +29,6 @@ include __DIR__ . '/includes/vistas/comun/cabecera.php';
 
     <?php include __DIR__ . '/includes/vistas/comun/sideBarDer.php'; ?>
 </div>
+
 
 <?php include __DIR__ . '/includes/vistas/comun/pie.php'; ?>
