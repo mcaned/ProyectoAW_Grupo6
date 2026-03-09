@@ -61,7 +61,7 @@ body { font-family: sans-serif; margin: 0; }
 .columna { flex: 1; min-width: 250px; 
     padding: 10px; 
 }
-.tarjeta { background: white; padding: 15px; margin-bottom: 10px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+.tarjeta { background: white; padding: 15px; margin-bottom: 10px; }
 .col-pendiente { background-color: #ffcccc; }
 .col-cocina { background-color: #b9e4b5; }
 .col-extras { background-color: #c5a17e; }
@@ -88,7 +88,7 @@ body { font-family: sans-serif; margin: 0; }
 }
 
 .lista-productos-cocina li {
-    padding: 8px 0; border-bottom: 1px; font-size: 14rem;
+    padding: 8px 0; border-bottom: 1px; font-size: 14;
 }
 
 .lista-productos-cocina li strong {
@@ -107,11 +107,13 @@ body { font-family: sans-serif; margin: 0; }
 }
 
 /* BOTONES Y UTILIDADES */
-.btn-gris { background: #666; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; }
-.btn-oscuro { background: #333; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; }
+.btn-gris { background: #666; color: white; padding: 10px 20px; text-decoration: none;  }
+.btn-oscuro { background: #333; color: white; padding: 12px 20px; text-decoration: none; font-weight: bold; }
 .btn-verde { padding: 12px 25px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
 .texto-rojo { color: #d32f2f; }
 .texto-centrado { text-align: center; }
-.alerta-error-critico { background: #ffcccc; color: #cc0000; padding: 15px; border: 1px solid #cc0000; margin-top: 20px; border-radius: 5px; }
+.alerta-error-critico { background: #ffcccc; color: #cc0000; padding: 15px; border: 1px solid #cc0000; margin-top: 20px; }
 .separador { border: 0; border-top: 1px solid #ddd; }
 
+.titulo-serif { font-family: serif; font-size: 20; margin-top: 0; }
+.margen-superior { margin-top: 20px; }
