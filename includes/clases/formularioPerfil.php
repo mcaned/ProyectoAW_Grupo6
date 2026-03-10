@@ -78,12 +78,29 @@ EOF;
         $user->setAvatar($avatar);
 
         if ($user->actualiza()) {
-            $_SESSION['avatar'] = $avatar ? $avatar : 'defecto.png';
-            return "<div>
-                        Perfil actualizado correctamente.
-                    </div>";
-        } else {
-            return ["Ha ocurrido un error al intentar actualizar el perfil."];
+        $_SESSION['avatar'] = $avatar ? $avatar : 'defecto.png';
+        $_SESSION['mensaje_perfil'] = "¡Perfil actualizado con éxito!";
+
+        // Determinamos el destino según el rol
+        $rol = $_SESSION['rol'];
+        $destino = 'index.php'; 
+
+        switch ($rol) {
+            case 'gerente':
+                $destino = 'admin.php';
+                break;
+            case 'cocinero':
+                $destino = 'cocina.php';
+                break;
+            case 'camarero':
+                $destino = 'gestion_pedidos.php';
+                break;
         }
+
+        header("Location: " . RUTA_APP . "/" . $destino);
+        exit();
+    } else {
+        return ["Error al actualizar los datos."];
+    }
     }
 }
