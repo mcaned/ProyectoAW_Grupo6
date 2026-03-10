@@ -12,6 +12,10 @@ include 'includes/vistas/comun/cabecera.php';
 <div class="contenedor-principal">
     <?php include 'includes/vistas/comun/sideBarIzq.php'; ?>
     <main class="contenido-central">
+        <?php if (isset($_SESSION['mensaje_perfil'])): ?>
+            <div class="alerta-exito"><?= $_SESSION['mensaje_perfil'] ?></div>
+            <?php unset($_SESSION['mensaje_perfil']); ?>
+        <?php endif; ?>
         <h1>⚙️ Panel de Administración</h1>
         <div class="contenedor-enlaces-admin">
             <a href="includes/gestion_categorias.php" class="btn-panel-admin">📁 Gestionar Categorías</a>

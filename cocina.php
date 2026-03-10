@@ -20,6 +20,10 @@ $result = $conn->query($query);
     <?php include 'includes/vistas/comun/sideBarIzq.php'; ?>
 
     <main class="contenido-central">
+        <?php if (isset($_SESSION['mensaje_perfil'])): ?>
+            <div class="alerta-exito"><?= $_SESSION['mensaje_perfil'] ?></div>
+            <?php unset($_SESSION['mensaje_perfil']); ?>
+        <?php endif; ?>
         <div class="cabecera-seccion-flexible">
             <h1>👨‍🍳 PANEL DE COCINA</h1>
             <div class="estado-servicio">

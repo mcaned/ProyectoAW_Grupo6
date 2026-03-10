@@ -10,6 +10,10 @@ include 'includes/vistas/comun/cabecera.php';
     <?php include 'includes/vistas/comun/sideBarIzq.php'; ?>
     
     <main class="contenido-central">
+        <?php if (isset($_SESSION['mensaje_perfil'])): ?>
+            <div class="alerta-exito"><?= $_SESSION['mensaje_perfil'] ?></div>
+            <?php unset($_SESSION['mensaje_perfil']); ?>
+        <?php endif; ?>
         <?php if (isset($_SESSION['login'])): ?>
             <h1>Hola, <?= $_SESSION['nombre'] ?></h1>
             <p>Bienvenido al sistema del Bistro FDI.</p>

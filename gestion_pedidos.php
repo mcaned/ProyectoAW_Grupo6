@@ -21,6 +21,10 @@ while ($row = $result->fetch_assoc()) {
 
 <div class="contenedor-principal">
     <main class="contenido-central flex-col">
+        <?php if (isset($_SESSION['mensaje_perfil'])): ?>
+            <div class="alerta-exito"><?= $_SESSION['mensaje_perfil'] ?></div>
+            <?php unset($_SESSION['mensaje_perfil']); ?>
+        <?php endif; ?>
         <div class="cabecera-seccion-kanban">
             <h1>Gestión de Pedidos</h1>
         </div>
