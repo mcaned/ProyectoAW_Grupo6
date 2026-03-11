@@ -12,7 +12,7 @@ include 'includes/vistas/comun/cabecera.php';
 $conn = $app->conexionBd();
 
 // obtener pedidos que están en preparación
-$query = "SELECT * FROM pedidos WHERE estado = 'En preparación' ORDER BY fecha_hora ASC";
+$query = "SELECT * FROM Pedidos WHERE estado = 'En preparación' ORDER BY fecha_hora ASC";
 $result = $conn->query($query);
 ?>
 

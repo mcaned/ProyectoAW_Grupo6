@@ -13,11 +13,11 @@ $htmlFormulario = $form->gestiona();
 include __DIR__ . '/includes/vistas/comun/cabecera.php';
 ?>
 <div class="contenedor-principal">
-    <?php include __DIR__ . '/includes/vistas/comun/sidebarIzq.php'; ?> 
+    <?php include __DIR__ . '/includes/vistas/comun/sideBarIzq.php'; ?> 
     <main class="contenido-central">
         <h1>Acceso al sistema</h1>
         <?= $htmlFormulario ?>
     </main>
-    <?php include __DIR__ . '/includes/vistas/comun/sidebarDer.php'; ?> 
+    <?php include __DIR__ . '/includes/vistas/comun/sideBarDer.php'; ?> 
 </div>
 <?php include __DIR__ . '/includes/vistas/comun/pie.php'; ?>
