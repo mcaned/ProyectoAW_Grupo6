@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     $conn = $app->conexionBd();
     
-    $stmt = $conn->prepare("UPDATE pedidos SET estado = ? WHERE id = ?");
+    $stmt = $conn->prepare("UPDATE Pedidos SET estado = ? WHERE id = ?");
     $stmt->bind_param("si", $nuevo_estado, $id_pedido);
     
     if ($stmt->execute()) {

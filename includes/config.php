@@ -3,10 +3,10 @@
 /**
  * Parámetros de conexión a la BD
  */
-define('BD_HOST', 'localhost');
-define('BD_NAME', 'gluen');
-define('BD_USER', 'root');
-define('BD_PASS', '');
+define('BD_HOST', 'vm008.db.swarm.test');
+define('BD_NAME', 'Grupo06');
+define('BD_USER', 'Grupo06');
+define('BD_PASS', 'Grupo06');
 
 /**
  * Parámetros de configuración utilizados para generar las URLs y las rutas a ficheros en la aplicación
