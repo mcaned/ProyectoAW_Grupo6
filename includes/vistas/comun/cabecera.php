@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Bistro FDI</title>
-    <link rel="stylesheet" type="text/css" href="<?= RUTA_APP ?>/css/estilos.css">
+    <link rel="stylesheet" type="text/css" href="<?= RUTA_APP ?>/CSS/estilos.css">
 </head>
 <body>
     
