@@ -29,6 +29,7 @@ include 'vistas/comun/cabecera.php';
                         <th>Precio Base</th>
                         <th>IVA</th>
                         <th>Subtotal</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,10 +46,28 @@ include 'vistas/comun/cabecera.php';
                     ?>
                         <tr>
                             <td><?= htmlspecialchars($f['nombre']) ?></td>
-                            <td><?= $cantidad ?></td>
+                            <td class="texto-centrado">
+                                <form action="procesarCarrito.php" method="POST" class="form-cantidad">
+                                    <input type="hidden" name="id_producto" value="<?= $id_prod ?>">
+                                    <input type="hidden" name="action" value="update">
+                                    
+                                    <button type="submit" name="cantidad" value="<?= $cantidad - 1 ?>" class="btn-gris" <?= ($cantidad <= 1) ? 'disabled' : '' ?>>-</button>
+                                    <span class="cantidad-numero"><?= $cantidad ?></span>
+                                    <button type="submit" name="cantidad" value="<?= $cantidad + 1 ?>" class="btn-gris">+</button>
+                                </form>
+                            </td>
                             <td><?= number_format($f['precio_base'], 2) ?>€</td>
                             <td><?= $f['iva'] ?>%</td>
                             <td><strong><?= number_format($subtotal_con_iva, 2) ?>€</strong></td>
+                            <td class="texto-centrado">
+                                <form action="procesarCarrito.php" method="POST">
+                                    <input type="hidden" name="id_producto" value="<?= $id_prod ?>">
+                                    <input type="hidden" name="action" value="remove">
+                                    <button type="submit" class="btn-eliminar">
+                                        Eliminar
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                     <?php endif; endforeach; ?>
                 </tbody>
