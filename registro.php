@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/config.php'; 
 require_once __DIR__ . '/includes/clases/aplicacion.php';
-require_once __DIR__ . '/includes/clases/formularioRegistro.php';
+require_once __DIR__ . '/includes/clases/usuarios/formularioRegistro.php';
 
 include 'includes/vistas/comun/cabecera.php'; 
 ?>
