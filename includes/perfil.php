@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/clases/aplicacion.php';
-require_once __DIR__ . '/clases/formularioPerfil.php';
+require_once __DIR__ . '/clases/usuarios/formularioPerfil.php';
 
 $app = Aplicacion::getInstance();
 $app->init();
