@@ -21,6 +21,7 @@ include 'includes/vistas/comun/cabecera.php';
             <a href="includes/gestion_categorias.php" class="btn-panel-admin">📁 Gestionar Categorías</a>
             <a href="includes/gestion_productos.php" class="btn-panel-admin">🍔 Gestionar Productos</a>
             <a href="includes/pedidos_globales.php" class="btn-panel-admin">📋 Ver Pedidos Globales</a>
+            <a href="includes/gestion_usuarios.php" class="btn-panel-admin">👥 Gestionar Usuarios</a>
         </div>
     </main>
     <?php include 'includes/vistas/comun/sideBarDer.php'; ?>
