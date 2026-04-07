@@ -1,4 +1,4 @@
-<div class="contenedor-barra-izquierda">
+<div class="barra-izquierda">
     <ul class="lista-barra-izquierda">
         <?php if (isset($_SESSION['login'])): ?>
             
