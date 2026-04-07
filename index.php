@@ -9,7 +9,7 @@ include 'includes/vistas/comun/cabecera.php';
 <div class="contenedor-principal">
     <?php include 'includes/vistas/comun/sideBarIzq.php'; ?>
     
-    <main class="contenido-central">
+    <main class="contenido-central texto-centrado">
         <?php if (isset($_SESSION['mensaje_perfil'])): ?>
             <div class="alerta-exito"><?= $_SESSION['mensaje_perfil'] ?></div>
             <?php unset($_SESSION['mensaje_perfil']); ?>
@@ -18,15 +18,15 @@ include 'includes/vistas/comun/cabecera.php';
             <h1>Hola, <?= $_SESSION['nombre'] ?></h1>
             <p>Bienvenido al sistema del Bistro FDI.</p>
             
-            <div class="bloque-bienvenida">
+            <div class="bienvenida">
                 <h3>¿Tienes hambre?</h3>
-                <a href="includes/carta.php" class="btn-oscuro">Ver la Carta y Pedir</a>
+                <a href="includes/carta.php" class="btn tamano-grande">Ver la Carta y Pedir</a>
             </div>
 
         <?php else: ?>
-            <h1>Bienvenido</h1>
+            <h1>Bienvenid@</h1>
             <p>Por favor, identifícate para acceder a las funciones.</p>
-            <a href="login.php" class="btn-oscuro">Ir al Login</a>
+            <a href="login.php" class="btn">Ir al Login</a>
         <?php endif; ?>
     </main>
     
