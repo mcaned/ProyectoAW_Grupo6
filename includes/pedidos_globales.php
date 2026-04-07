@@ -18,7 +18,7 @@ include __DIR__ . '/vistas/comun/cabecera.php';
     <main class="contenido-central">
         <div class="cabecera-seccion-flexible">
             <h1>Gestión Global de Pedidos</h1>
-            <a href="../admin.php" class="btn-gris">Volver al Panel</a>
+            <a href="../admin.php" class="btn">Volver al Panel</a>
         </div>
 
         <?php if ($result && $result->num_rows > 0): ?>
@@ -42,7 +42,7 @@ include __DIR__ . '/vistas/comun/cabecera.php';
                             <td><?= date('d/m/Y H:i', strtotime($pedido['fecha_hora'])) ?></td>
                             <td><?= $pedido['tipo'] ?></td>
                             <td>
-                                <span class="badge-estado">
+                                <span>
                                     <?= $pedido['estado'] ?>
                                 </span>
                             </td>

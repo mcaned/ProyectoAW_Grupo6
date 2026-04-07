@@ -40,7 +40,7 @@ include 'vistas/comun/cabecera.php';
         <?php endif; ?>
 
         <div class="contenedor-acciones-superior">
-            <a href="form_categoria.php" class="btn-oscuro">+ NUEVA CATEGORÍA</a>
+            <a href="categoria.php" class="btn-oscuro">+ NUEVA CATEGORÍA</a>
         </div>
         
         <table class="tabla-gestion">
@@ -57,7 +57,7 @@ include 'vistas/comun/cabecera.php';
                     <td><?= htmlspecialchars($c['nombre']) ?></td>
                     <td><?= htmlspecialchars($c['descripcion']) ?></td>
                     <td>
-                        <a href="form_categoria.php?id=<?= $c['id'] ?>" class="enlace-editar">📝 Editar</a>
+                        <a href="categoria.php?id=<?= $c['id'] ?>" class="enlace-editar">📝 Editar</a>
                         <a href="?delete=<?= $c['id'] ?>" class="enlace-borrar" onclick="return confirm('¿Borrar categoría?')">🗑️ Borrar</a>
                     </td>
                 </tr>

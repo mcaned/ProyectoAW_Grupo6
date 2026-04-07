@@ -32,7 +32,7 @@ include __DIR__ . '/vistas/comun/cabecera.php';
                 </select>
             </div>
 
-            <div id="camposTarjeta" class="bg-gris-claro" >
+            <div id="camposTarjeta">
                 <h4 class="titulo-serif">Datos de la Tarjeta</h4>
                 <div class="item-barra-izquierda">
                     <label>Número de tarjeta:</label>
@@ -51,7 +51,7 @@ include __DIR__ . '/vistas/comun/cabecera.php';
                 </div>
             </div>
             <br>
-            <button type="submit" class="btn-verde">
+            <button type="submit" class="btn">
                 Confirmar y Pagar
             </button>
         </form>

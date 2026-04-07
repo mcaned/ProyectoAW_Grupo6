@@ -40,22 +40,23 @@ include __DIR__ . '/vistas/comun/cabecera.php';
         <h1>Nuestra Carta</h1>
 
         <?php if ($mensajeExito): ?>
-            <div class="col-cocina">
-                <?= $mensajeExito ?>
+            <div class="alerta-exito">
+                <span class="check-icon">✓</span>
+                <div class="contenido-alerta">
+                    <?= $mensajeExito ?>
+                    <a href="carrito.php" class="link-carrito">Ver mi pedido</a>
+                </div>
             </div>
         <?php endif; ?>
 
         <div class="contenedor-columnas">
-            <a href="carta.php" >
-                <div class="btn-gris">
-                    <small>TODOS</small>
-                </div>
-                <small>Todos</small>
+            <a href="carta.php" class = "btn">
+                TODOS
             </a>
             
             <?php while($cat = $res_cats->fetch_assoc()): ?>
                 <?php $claseActiva = ($idCatFiltrada == $cat['id']) ?>
-                <a href="?cat=<?= $cat['id'] ?>" class="texto-centrado">
+                <a href="?cat=<?= $cat['id'] ?>" class="texto-ops">
                     <img src="<?= RUTA_APP ?>/img/<?= ($cat['imagen_url'] ?? 'defecto.png') ?>" 
                          class="avatar-usuario" 
                          onerror="this.src='<?= RUTA_APP ?>/img/defecto.png'">
@@ -69,7 +70,7 @@ include __DIR__ . '/vistas/comun/cabecera.php';
                 <?php while ($prod = $result->fetch_assoc()): ?>
                     <div class="tarjeta tarjeta-formulario">
                         
-                        <img src="<?= RUTA_APP ?>/img/<?= ($prod['imagen_url'] ?? 'defecto.png') ?>" 
+                        <img class = "imagen-carta" src="<?= RUTA_APP ?>/img/<?= ($prod['imagen_url'] ?? 'defecto.png') ?>" 
                              onerror="this.src='<?= RUTA_APP ?>/img/defecto.png'">
 
                         <div>

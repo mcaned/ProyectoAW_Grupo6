@@ -31,7 +31,7 @@ include 'vistas/comun/cabecera.php';
         </div>
 
         <div class="contenedor-acciones-superior">
-            <a href="form_producto.php" class="btn-oscuro">+ NUEVO PRODUCTO</a>
+            <a href="producto.php" class="btn">+ NUEVO PRODUCTO</a>
         </div>
 
         <table class="tabla-gestion">
@@ -52,7 +52,7 @@ include 'vistas/comun/cabecera.php';
                     <td><?= htmlspecialchars($p['cat_nom']) ?></td>
                     <td><strong><?= number_format($final, 2) ?>€</strong></td>
                     <td>
-                        <a href="form_producto.php?id=<?= $p['id'] ?>" class="enlace-editar">📝 Editar</a> | 
+                        <a href="producto.php?id=<?= $p['id'] ?>" class="enlace-editar">📝 Editar</a> | 
                         <a href="?retirar=<?= $p['id'] ?>" class="enlace-borrar" onclick="return confirm('¿Retirar de la carta?')">🚫 Retirar</a>
                     </td>
                 </tr>

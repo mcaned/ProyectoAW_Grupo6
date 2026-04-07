@@ -59,7 +59,7 @@ include 'vistas/comun/cabecera.php';
         <?php endif; ?>
 
         <div class="contenedor-acciones-superior">
-            <a href="form_usuario.php" class="btn-oscuro">+ NUEVO USUARIO</a>
+            <a href="usuarios.php" class="btn-oscuro">+ NUEVO USUARIO</a>
         </div>
         
         <table class="tabla-gestion">
@@ -78,7 +78,7 @@ include 'vistas/comun/cabecera.php';
                     <td><?= htmlspecialchars($u['nombre']) ?></td>
                     <td><span class="etiqueta-rol <?= $u['rol'] ?>"><?= strtoupper($u['rol']) ?></span></td>
                     <td>
-                        <a href="form_usuario.php?id=<?= $u['id'] ?>" class="enlace-editar">📝 Editar</a> | 
+                        <a href="usuarios.php?id=<?= $u['id'] ?>" class="enlace-editar">📝 Editar</a> | 
                         <a href="?delete=<?= $u['id'] ?>" class="enlace-borrar" 
                            onclick="return confirm('<?= $confirmMsg ?>')">🗑️ Borrar</a>
                     </td>

@@ -23,7 +23,7 @@ include __DIR__ . '/vistas/comun/cabecera.php';
     <?php include __DIR__ . '/vistas/comun/sideBarIzq.php'; ?>
 
     <main class="contenido-central texto-centrado">
-        <div class="col-cocina">
+        <div>
             <h1 class="titulo-serif" s>¡Gracias por tu pedido!</h1>
             
             <p>
@@ -35,7 +35,7 @@ include __DIR__ . '/vistas/comun/cabecera.php';
             </p>
             
             <div class="margen-superior-grande">
-                <a href="../index.php" class="btn-oscuro">
+                <a href="../index.php" class="btn">
                     Volver al Inicio
                 </a>
             </div>

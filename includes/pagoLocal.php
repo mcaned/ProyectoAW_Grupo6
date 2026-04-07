@@ -16,9 +16,9 @@ include 'vistas/comun/cabecera.php';
         
         <form action="finalizarProceso.php" method="POST">
             <p>Por favor, indica tu mesa:</p>
-            <input type="number" name="mesa" min="1" max="50" class="input-formulario" >
+            <input type="number" name="mesa" min="1" max="50" class="num-mesa" >
             <br><br>
-            <button type="submit" class="btn-oscuro" >
+            <button type="submit" class="btn" >
                 Confirmar y enviar a cocina
             </button>
             

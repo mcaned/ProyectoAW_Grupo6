@@ -29,7 +29,7 @@ include 'vistas/comun/cabecera.php';
                         <th>Precio Base</th>
                         <th>IVA</th>
                         <th>Subtotal</th>
-                        <th>Acciones</th>
+                        <th>Eliminar</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -51,9 +51,9 @@ include 'vistas/comun/cabecera.php';
                                     <input type="hidden" name="id_producto" value="<?= $id_prod ?>">
                                     <input type="hidden" name="action" value="update">
                                     
-                                    <button type="submit" name="cantidad" value="<?= $cantidad - 1 ?>" class="btn-gris" <?= ($cantidad <= 1) ? 'disabled' : '' ?>>-</button>
+                                    <button type="submit" name="cantidad" value="<?= $cantidad - 1 ?>"  <?= ($cantidad <= 1) ? 'disabled' : '' ?>>-</button>
                                     <span class="cantidad-numero"><?= $cantidad ?></span>
-                                    <button type="submit" name="cantidad" value="<?= $cantidad + 1 ?>" class="btn-gris">+</button>
+                                    <button type="submit" name="cantidad" value="<?= $cantidad + 1 ?>">+</button>
                                 </form>
                             </td>
                             <td><?= number_format($f['precio_base'], 2) ?>€</td>
@@ -63,8 +63,8 @@ include 'vistas/comun/cabecera.php';
                                 <form action="procesarCarrito.php" method="POST">
                                     <input type="hidden" name="id_producto" value="<?= $id_prod ?>">
                                     <input type="hidden" name="action" value="remove">
-                                    <button type="submit" class="btn-eliminar">
-                                        Eliminar
+                                    <button type="submit">
+                                        🗑️
                                     </button>
                                 </form>
                             </td>
@@ -73,19 +73,19 @@ include 'vistas/comun/cabecera.php';
                 </tbody>
             </table>
 
-            <div class="bloque-total-pedido">
+            <div class = "titulo-serif" >
                 <p>Total a pagar (IVA incluido): <strong><?= number_format($total_iva_incluido, 2) ?>€</strong></p>
             </div>
 
-            <form action="confirmarPedido.php" method="POST" class="acciones-formulario">
-                <h3 class="titulo-serif">Detalles del envío</h3>
-                <div class="item-barra-izquierda">
+            <form action="confirmarPedido.php" method="POST">
+                
+                <div class="titulo-serif">
                     <label><strong>Tipo de pedido:</strong></label><br>
                     <input type="radio" name="tipo" value="Local" checked> Consumir en el local
                     <input type="radio" name="tipo" value="Llevar"> Para llevar
                 </div>
                 
-                <button type="submit" class="btn-verde">
+                <button type="submit" class="btn margen-superior">
                     Confirmar y Pagar
                 </button>
             </form>

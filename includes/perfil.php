@@ -19,7 +19,7 @@ include __DIR__ . '/vistas/comun/cabecera.php';
     <?php include __DIR__ . '/vistas/comun/sideBarIzq.php'; ?>
 
     <main class="contenido-central">
-        <h1 class="margen-inferior-grande">Mi Perfil</h1>
+        <h1>Mi Perfil</h1>
         
         <?php
             $form = new FormularioPerfil();
