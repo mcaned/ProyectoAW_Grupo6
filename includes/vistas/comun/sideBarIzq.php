@@ -14,11 +14,7 @@
                 </li>
             <?php endif; ?>
 
-            <?php if ($_SESSION['rol'] === 'gerente'): ?>
-                <li class="item-barra-izquierda">
-                    <a href="<?= RUTA_APP ?>/admin.php" class="enlace-barra-izquierda">⚙️ Panel de Administración</a>
-                </li>
-            <?php endif; ?>
+            
 
         <?php else: ?>
             <li class="item-barra-izquierda">
