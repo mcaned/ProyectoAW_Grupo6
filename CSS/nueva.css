@@ -37,8 +37,7 @@ body {font-family: sans-serif; background-color: #f5f5f5; }
 .item-barra-izquierda { margin-bottom: 15px; }
 .enlace-barra-izquierda { text-decoration: none; color: #555; font-weight: bold; }
 
-/*bienvenida*/
-.bienvenida{margin-top: 60px ; font-family: 'Times New Roman', Times, serif; font-size: 30px;}
+
 
 /*carrito*/
 .cabecera-seccion-flexible { display: flex; justify-content: space-between; align-items: center; }
@@ -87,7 +86,7 @@ body {font-family: sans-serif; background-color: #f5f5f5; }
 
 /* DETALLE DE PEDIDO */
 
-.alerta-error-critico { background: #ffcccc; color: #cc0000; padding: 15px; border: 1px solid #cc0000; margin-top: 20px; }
+.alerta-error-critico { background: #ffcccc; color: #cc0000; padding: 15px; border: 1px solid #cc0000; margin-top: 5px; padding: 8px; box-sizing: border-box; display: inline-flex; margin-bottom: 20px;}
 .contenedor-info-pedido { display: flex; gap: 40px; margin-top: 20px; }
 .columna-info { flex: 1; }
 .etiqueta-estado { background: rgb(69, 85, 78); color: white; padding: 5px 10px; border-radius: 5px; }
@@ -99,15 +98,21 @@ body {font-family: sans-serif; background-color: #f5f5f5; }
 .margen-superior-grande { margin-top: 40px; }
 
 /* FORMULARIOS */
-.tarjeta-formulario { margin: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+.tarjeta-formulario { margin: 20px auto;}
 .formulario-estandar { max-width: 600px; }
-.input-formulario { width: 100%; padding: 8px; box-sizing: border-box; display: inline-flex;  }
+.input-formulario { width: 100%; padding: 8px; box-sizing: border-box; display: inline-flex; margin-top: 10px;}
 
 .acciones-formulario { margin-top: 30px; border-top: 1px solid #e1e1e1; padding-top: 20px; }
 
+.btn-guardar{background-color: rgb(11, 155, 26); text-align: center; color: white; padding: 5px 10px; text-decoration: none;border-radius: 20px; border: none; cursor: pointer; font-weight: 600;
+  font-size: 14px; display: inline-flex; align-items: center; justify-content: center;}
+
+.btn-cancelar{background-color: rgb(201, 7, 7); text-align: center; color: white; padding: 5px 10px; text-decoration: none;border-radius: 20px; border: none; cursor: pointer; font-weight: 600;
+  font-size: 14px; display: inline-flex; align-items: center; justify-content: center;}
+
 /*COCINA */
-.columna { flex: 1; min-width: 250px; padding: 10px; }
-.tarjeta { background: white; padding: 15px; margin-bottom: 10px; }
+.columna { flex: 1; min-width: 250px; padding: 10px; border-radius: 20px; }
+.tarjeta { background: white; padding: 15px; margin-bottom: 10px; border-radius: 20px; border: 2px solid #e0e0e0;}
 .col-pendiente { background-color: #ffcccc; }
 .col-cocina { background-color: #b9e4b5; }
 .col-extras { background-color: #c5a17e; }
@@ -129,7 +134,7 @@ body {font-family: sans-serif; background-color: #f5f5f5; }
 .lista-productos-cocina li strong { color: #d32f2f; margin-right: 5px; }
 
 .btn-listo {
-    width: 100%; background: #28a745; color: white; border: none; padding: 12px; font-size: 1rem; font-weight: bold; cursor: pointer;
+    width: 100%; background: #28a745; color: white; border-radius: 30px ; border: none; padding: 12px; font-size: 1rem; font-weight: bold; cursor: pointer;
 }
 .btn-listo:hover { background: #218838; }
 
@@ -139,11 +144,36 @@ body {font-family: sans-serif; background-color: #f5f5f5; }
 .btn {background-color: rgb(69, 85, 78); text-align: center; color: white; padding: 5px 10px; text-decoration: none;border-radius: 50px; border: none; cursor: pointer; font-weight: 600;
   font-size: 14px; display: inline-flex; letter-spacing: 0.5px; align-items: center; justify-content: center;}
 
-.btn-verde { padding: 12px 25px; background: #0a3213; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
-
 .texto-centrado { text-align: center; }
+
 .separador { border: 0; border-top: 1px solid #ddd; }
 
 .margen-superior { margin-top: 20px; }
 
 .tamano-grande{font-size: 40px; padding: 12px 40px;}
+
+/*gerente*/
+/* Nueva regla para el Panel de Administración */
+.lista-admin { 
+    list-style: none; 
+    padding: 0; 
+    margin-top: 40px; 
+}
+
+.item-admin { 
+    margin-bottom: 15px; 
+    border-bottom: 1px solid #eee; 
+    padding-bottom: 10px; 
+}
+
+.enlace-admin { 
+    text-decoration: none; 
+    color: #45554e; 
+    font-weight: bold; 
+    font-size: 18px; 
+    display: flex; 
+    align-items: center; 
+    gap: 10px;
+}
+.btn-atras { text-align: center; color: rgb(0, 0, 0); padding: 5px 10px; text-decoration: none;border-radius: 50px; border: none; cursor: pointer; font-weight: 600;
+  font-size: 14px; display: inline-flex; align-items: center; justify-content: center;}
