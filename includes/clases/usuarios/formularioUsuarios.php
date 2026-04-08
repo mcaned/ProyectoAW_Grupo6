@@ -75,8 +75,8 @@ class formularioUsuario extends Formulario {
         <input type="password" name="password" $requiredPass class="input-formulario"></p>
 
         <div class="acciones-formulario">
-            <button type="submit" class="btn-verde">💾 GUARDAR</button>
-            <a href="gestion_usuarios.php" class="enlace-cancelar">Cancelar</a>
+            <button type="submit" class="btn-guardar">💾 GUARDAR</button>
+            <a href="gestion_usuarios.php" class="btn-cancelar">❌ CANCELAR Y VOLVER</a>
         </div>
         
         <script>

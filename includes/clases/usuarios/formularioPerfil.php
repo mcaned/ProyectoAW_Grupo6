@@ -44,7 +44,7 @@ class FormularioPerfil extends Formulario {
                 </div>
 
                 <div class="acciones-formulario">
-                    <button type="submit" class="btn-listo">
+                    <button type="submit" class="btn-guardar">
                         Guardar Cambios
                     </button>
                 </div>

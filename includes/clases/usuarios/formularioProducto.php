@@ -74,7 +74,7 @@ class formularioProducto extends formulario {
                 <input type="text" name="imagen_url" value="{$p['imagen_url']}" class="input-formulario">
             </p>
 
-            <div class="grupo-formulario-flex">
+            <div>
                 <p class="flex-1">
                     <label><strong>Precio Base (€):</strong></label><br>
                     <input type="number" step="0.01" name="precio_base" id="base" value="{$p['precio_base']}" required class="input-formulario" oninput="recalc()">
@@ -89,21 +89,21 @@ class formularioProducto extends formulario {
                 </p>
             </div>
 
-            <div class="caja-precio-final">
-                <span class="etiqueta-precio">Precio Final (Base + IVA): </span>
-                <span id="total" class="valor-precio">0.00</span>€
+            <div>
+                <span>Precio Final (Base + IVA): </span>
+                <span id="total">0.00</span>€
             </div>
 
             <p>
-                <label class="label-checkbox">
+                <label>
                     <input type="checkbox" name="disponible" $checkDisponible> 
                     <strong>¿Producto disponible?</strong>
                 </label>
             </p>
 
             <div class="acciones-formulario">
-                <button type="submit" class="btn-verde">💾 GUARDAR PRODUCTO</button>
-                <a href="gestion_productos.php" class="enlace-cancelar">Cancelar</a>
+                <button type="submit" class="btn-guardar">💾 GUARDAR PRODUCTO</button>
+                <a href="gestion_productos.php" class="btn-cancelar">❌ CANCELAR Y VOLVER</a>
             </div>
         </div>
 EOF;

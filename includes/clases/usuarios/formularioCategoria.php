@@ -51,8 +51,8 @@ class formularioCategoria extends formulario {
             </p>
 
             <div class="acciones-formulario">
-                <button type="submit" class="btn-verde">💾 GUARDAR CATEGORÍA</button>
-                <a href="gestion_categorias.php" class="enlace-cancelar">Cancelar y volver</a>
+                <button type="submit" class="btn-guardar">💾 GUARDAR CATEGORÍA</button>
+                <a href="gestion_categorias.php" class="btn-cancelar">❌ CANCELAR Y VOLVER</a>
             </div>
         </div>
 EOF;
