@@ -18,7 +18,7 @@ include __DIR__ . '/vistas/comun/cabecera.php';
 <div class="contenedor-principal">
     <?php include __DIR__ . '/vistas/comun/sideBarIzq.php'; ?>
     
-    <main class="contenido-central bloque-formulario">
+    <main class="contenido-central">
         <h1><?= $id ? '📝 Editar Usuario' : '➕ Crear Usuario' ?></h1>
         
         <?php

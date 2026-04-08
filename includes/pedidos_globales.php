@@ -14,11 +14,10 @@ $result = $conn->query($query);
 include __DIR__ . '/vistas/comun/cabecera.php';
 ?>
 <div class="contenedor-principal">
-    <?php include __DIR__ . '/vistas/comun/sideBarIzq.php'; ?>
     <main class="contenido-central">
         <div class="cabecera-seccion-flexible">
             <h1>Gestión Global de Pedidos</h1>
-            <a href="../admin.php" class="btn">Volver al Panel</a>
+            <a href="../admin.php" class="btn-atras">⬅️ Volver al Panel</a>
         </div>
 
         <?php if ($result && $result->num_rows > 0): ?>

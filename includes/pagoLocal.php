@@ -16,14 +16,15 @@ include 'vistas/comun/cabecera.php';
         
         <form action="finalizarProceso.php" method="POST">
             <p>Por favor, indica tu mesa:</p>
-            <input type="number" name="mesa" min="1" max="50" class="num-mesa" >
+            <input type="number" name="mesa" min="1" max="50" class="num-mesa" required placeholder="nº">
             <br><br>
-            <button type="submit" class="btn" >
+            <button type="submit" class="btn-listo" >
                 Confirmar y enviar a cocina
             </button>
             
         </form> 
     </main>
+    <?php include __DIR__ . '/vistas/comun/sideBarDer.php'; ?>
 </div>
 
 <?php include 'vistas/comun/pie.php'; ?>

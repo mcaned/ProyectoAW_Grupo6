@@ -26,11 +26,11 @@ $categorias = $conn->query("SELECT * FROM Categorias");
 include 'vistas/comun/cabecera.php';
 ?>
 <div class="contenedor-principal">
-    <?php include 'vistas/comun/sideBarIzq.php'; ?>
+
     <main class="contenido-central">
         <div class="cabecera-seccion-flexible">
             <h1>📁 Gestión de Categorías</h1>
-            <a href="<?= RUTA_APP ?>/admin.php" class="btn-gris">⬅️ Volver al Panel</a>
+            <a href="<?= RUTA_APP ?>/admin.php" class="btn-atras">⬅️ Volver al Panel</a>
         </div>
 
         <?php if (isset($_GET['error']) && $_GET['error'] == 'tiene_productos'): ?>
@@ -40,7 +40,7 @@ include 'vistas/comun/cabecera.php';
         <?php endif; ?>
 
         <div class="contenedor-acciones-superior">
-            <a href="categoria.php" class="btn-oscuro">+ NUEVA CATEGORÍA</a>
+            <a href="categoria.php" class="btn">+ NUEVA CATEGORÍA</a>
         </div>
         
         <table class="tabla-gestion">

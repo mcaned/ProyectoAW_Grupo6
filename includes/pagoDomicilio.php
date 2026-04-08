@@ -14,7 +14,7 @@ include __DIR__ . '/vistas/comun/cabecera.php';
         <h1>Pago y Envío a Domicilio</h1>
         
         <div class="alerta-error-critico">
-            Estás finalizando un pedido para Llevar.
+            Estás finalizando un pedido para llevar.
         </div>
         <br>
         <form action="finalizarProceso.php" method="POST" class="formulario-estandar" id="formPago">
@@ -51,7 +51,7 @@ include __DIR__ . '/vistas/comun/cabecera.php';
                 </div>
             </div>
             <br>
-            <button type="submit" class="btn">
+            <button type="submit" class="btn-listo margen-superior">
                 Confirmar y Pagar
             </button>
         </form>

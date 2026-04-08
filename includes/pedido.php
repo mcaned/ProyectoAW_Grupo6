@@ -24,7 +24,7 @@ include __DIR__ . '/vistas/comun/cabecera.php';
     <?php include __DIR__ . '/vistas/comun/sideBarIzq.php'; ?>
     
     <main class="contenido-central">
-        <h1>Mis Pedidos Personales</h1>
+        <h1 class = "texto-centrado">Mis Pedidos Personales</h1>
 
         <?php if ($result && $result->num_rows > 0): ?>
             <table class="tabla-gestion">

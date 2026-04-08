@@ -19,7 +19,7 @@ include 'vistas/comun/cabecera.php';
 <div class="contenedor-principal">
     <?php include 'vistas/comun/sideBarIzq.php'; ?>
 
-    <main class="contenido-central bloque-formulario">
+    <main class="contenido-central">
         <h1><?= $id ? '📝 Editar Producto' : '➕ Crear Nuevo Producto' ?></h1>
         
         <?php

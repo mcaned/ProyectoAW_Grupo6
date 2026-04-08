@@ -36,9 +36,9 @@ include 'vistas/comun/cabecera.php';
         <div class="cabecera-seccion-flexible">
             <h1>📄 Detalle del Pedido #<?= $pedido['numero_pedido'] ?></h1>
             <?php if ($_SESSION['rol'] == 'gerente'): ?>
-                 <a href="pedidos_globales.php" class="btn">⬅️ Volver a la Lista</a>
+                 <a href="pedidos_globales.php" class="btn-atras">⬅️ Volver a la Lista</a>
             <?php else: ?>
-                 <a href="pedido.php" class="btn">⬅️ Volver a Mis Pedidos</a>
+                 <a href="pedido.php" class="btn-atras">⬅️ Volver a Mis Pedidos</a>
             <?php endif; ?>
         </div>
         <hr class="separador">

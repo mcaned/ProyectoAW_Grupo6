@@ -85,7 +85,7 @@ include 'vistas/comun/cabecera.php';
                     <input type="radio" name="tipo" value="Llevar"> Para llevar
                 </div>
                 
-                <button type="submit" class="btn margen-superior">
+                <button type="submit" class="btn-listo margen-superior">
                     Confirmar y Pagar
                 </button>
             </form>

@@ -23,11 +23,11 @@ $prods = $conn->query("SELECT p.*, c.nombre as cat_nom FROM Productos p JOIN Cat
 include 'vistas/comun/cabecera.php';
 ?>
 <div class="contenedor-principal">
-    <?php include 'vistas/comun/sideBarIzq.php'; ?>
+
     <main class="contenido-central">
         <div class="cabecera-seccion-flexible">
             <h1>🍔 Gestión de Productos</h1>
-            <a href="../admin.php" class="btn-gris">⬅️ Volver al Panel</a>
+            <a href="../admin.php" class="btn-atras">⬅️ Volver al Panel</a>
         </div>
 
         <div class="contenedor-acciones-superior">

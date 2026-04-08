@@ -40,12 +40,11 @@ $usuarios = $conn->query("SELECT * FROM Usuarios ORDER BY rol DESC");
 include 'vistas/comun/cabecera.php';
 ?>
 <div class="contenedor-principal">
-    <?php include 'vistas/comun/sideBarIzq.php'; ?>
     
     <main class="contenido-central">
         <div class="cabecera-seccion-flexible">
             <h1>👥 Gestión de Usuarios</h1>
-            <a href="<?= RUTA_APP ?>/admin.php" class="btn-gris">⬅️ Volver al Panel</a>
+            <a href="<?= RUTA_APP ?>/admin.php" class="btn-atras">⬅️ Volver al Panel</a>
         </div>
 
         <!-- ALERTAS DE SEGURIDAD -->
@@ -59,7 +58,7 @@ include 'vistas/comun/cabecera.php';
         <?php endif; ?>
 
         <div class="contenedor-acciones-superior">
-            <a href="usuarios.php" class="btn-oscuro">+ NUEVO USUARIO</a>
+            <a href="usuarios.php" class="btn">+ NUEVO USUARIO</a>
         </div>
         
         <table class="tabla-gestion">
