@@ -1,7 +1,8 @@
 <?php
 require_once __DIR__ . '/includes/config.php';
 require_once __DIR__ . '/includes/clases/aplicacion.php';
-$app = Aplicacion::getInstance(); $app->init();
+$app = Aplicacion::getInstance(); 
+$app->init();
 
 if (!isset($_SESSION['login']) || $_SESSION['rol'] !== 'cocinero') {
     header('Location: index.php');
@@ -11,24 +12,23 @@ if (!isset($_SESSION['login']) || $_SESSION['rol'] !== 'cocinero') {
 include 'includes/vistas/comun/cabecera.php';
 $conn = $app->conexionBd();
 
-// obtener pedidos que están en preparación
+// Obtener pedidos que están en preparación
 $query = "SELECT * FROM pedidos WHERE estado = 'En preparación' ORDER BY fecha_hora ASC";
 $result = $conn->query($query);
 ?>
 
 <div class="contenedor-principal">
-    <?php include 'includes/vistas/comun/sideBarIzq.php'; ?>
-
     <main class="contenido-central">
         <?php if (isset($_SESSION['mensaje_perfil'])): ?>
-            <div class="alerta-exito"><?= $_SESSION['mensaje_perfil'] ?></div>
+            <div class="alerta-exito">
+                <span class="check-icon">✓</span>
+                <?= $_SESSION['mensaje_perfil'] ?>
+            </div>
             <?php unset($_SESSION['mensaje_perfil']); ?>
         <?php endif; ?>
+
         <div class="cabecera-seccion-flexible">
-            <h1>👨‍🍳 PANEL DE COCINA</h1>
-            <div class="estado-servicio">
-                <small class="estado-en-linea">EN SERVICIO</small>
-            </div>
+            <h1 class="titulo-serif">👨‍🍳 PANEL DE COCINA</h1>
         </div>
 
         <div class="cuadricula-pedidos">
@@ -68,7 +68,7 @@ $result = $conn->query($query);
                 <?php endwhile; ?>
             <?php else: ?>
                 <div class="cocina-vacia">
-                    <h3>No hay pedidos pendientes en cocina.</h3>
+                    <h3 class="titulo-serif">No hay pedidos pendientes en cocina.</h3>
                 </div>
             <?php endif; ?>
         </div>

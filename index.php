@@ -15,13 +15,15 @@ include 'includes/vistas/comun/cabecera.php';
             <?php unset($_SESSION['mensaje_perfil']); ?>
         <?php endif; ?>
         <?php if (isset($_SESSION['login'])): ?>
-            <h1>Hola, <?= $_SESSION['nombre'] ?></h1>
-            <p>Bienvenido al sistema del Bistro FDI.</p>
-            
-            <div class="bienvenida">
-                <h3>¿Tienes hambre?</h3>
-                <a href="includes/carta.php" class="btn tamano-grande">Ver la Carta y Pedir</a>
+            <div >
+                <a href="includes/carta.php" class="btn">Ver la Carta y Pedir</a>
             </div>
+
+            <div class="texto-centrado margen-superior">
+                <img src="img/4.jpeg">
+            </div>
+            
+            
 
         <?php else: ?>
             <h1>Bienvenid@</h1>

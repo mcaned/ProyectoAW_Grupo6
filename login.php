@@ -15,7 +15,7 @@ include __DIR__ . '/includes/vistas/comun/cabecera.php';
 <div class="contenedor-principal">
     <?php include __DIR__ . '/includes/vistas/comun/sidebarIzq.php'; ?> 
     <main class="contenido-central">
-        <h1>Acceso al sistema</h1>
+        <h1 class = "texto-centrado">Acceso al sistema</h1>
         <?= $htmlFormulario ?>
     </main>
     <?php include __DIR__ . '/includes/vistas/comun/sidebarDer.php'; ?> 
