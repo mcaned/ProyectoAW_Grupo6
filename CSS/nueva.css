@@ -16,7 +16,7 @@ body {font-family: sans-serif; background-color: #f5f5f5; }
 /*.bg-gris-claro { background-color: #8d6161; }*/
 
 /*solo cuadro blanco*/
-.contenido-central { flex-grow: 1; background-color: white; padding: 40px; }
+.contenido-central { flex-grow: 1; background-color: white; padding: 40px; min-width: 0; overflow: auto; }
 /*Para organizar en columnas gestion-pedidos*/
 .flex-col { display: flex; flex-direction: column; min-width: 0; }
 
@@ -177,3 +177,21 @@ body {font-family: sans-serif; background-color: #f5f5f5; }
 }
 .btn-atras { text-align: center; color: rgb(0, 0, 0); padding: 5px 10px; text-decoration: none;border-radius: 50px; border: none; cursor: pointer; font-weight: 600;
   font-size: 14px; display: inline-flex; align-items: center; justify-content: center;}
+
+
+
+  @media (max-width: 768px) {
+    .contenedor-principal {
+        flex-direction: column;
+    }
+
+    .barra-derecha, .barra-izquierda {
+        width: 100%;
+        min-height: auto;
+        box-sizing: border-box;
+    }
+
+    .contenido-central {
+        padding: 20px;
+    }
+}
