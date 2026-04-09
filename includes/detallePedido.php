@@ -10,9 +10,9 @@ if (!isset($_SESSION['login'])) {
 $conn = $app->conexionBd();
 $idPedido = intval($_GET['id']);
 
-// Consulta ampliada para obtener también los datos del cocinero
-$queryPedido = "SELECT p.*, u.nombre, u.apellidos, u.email, 
-                       c.nombre as nombre_cocinero, c.avatar_url as avatar_cocinero 
+
+$queryPedido = "SELECT p.*, u.nombre, u.apellidos, u.email  ,
+                        c.nombre as nombre_cocinero, c.avatar_url as avatar_cocinero 
                 FROM Pedidos p 
                 JOIN Usuarios u ON p.id_cliente = u.id 
                 LEFT JOIN Usuarios c ON p.id_cocinero = c.id
@@ -22,7 +22,7 @@ $pedido = $resP->fetch_assoc();
 
 if (!$pedido) { die("Pedido no encontrado."); }
 
-$queryItems = "SELECT lp.cantidad, pr.nombre, pr.precio_base, pr.iva, lp.preparado 
+$queryItems = "SELECT lp.cantidad, pr.nombre, pr.precio_base, pr.iva ,lp.preparado 
                FROM Lineas_Pedido lp 
                JOIN Productos pr ON lp.id_producto = pr.id 
                WHERE lp.id_pedido = $idPedido";
@@ -56,13 +56,13 @@ include 'vistas/comun/cabecera.php';
                 <p><strong>Fecha:</strong> <?= date('d/m/Y H:i', strtotime($pedido['fecha_hora'])) ?></p>
                 <p><strong>Tipo:</strong> <?= $pedido['tipo'] ?></p>
                 <p><strong>Estado:</strong> <span class="etiqueta-estado"><?= $pedido['estado'] ?></span></p>
-                
-                <?php if ($pedido['id_cocinero']): ?>
-                    <div style="margin-top: 15px; padding: 10px; background: #f9f9f9; border: 1px solid #ddd; display: inline-block;">
-                        <p style="margin: 0 0 5px 0;"><strong>👨‍🍳 Cocinero Asignado:</strong></p>
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <img src="<?= RUTA_APP ?>/img/<?= $pedido['avatar_cocinero'] ?: 'defecto.png' ?>" style="width: 40px; height: 40px; border-radius: 50%;">
-                            <span><?= htmlspecialchars($pedido['nombre_cocinero']) ?></span>
+
+                 <?php if ($pedido['id_cocinero']): ?>
+                    <div>
+                        <p><strong>👨‍🍳 Cocinero Asignado:</strong></p>
+                        <div>
+                            <img src="<?= RUTA_APP ?>/img/<?= $pedido['avatar_cocinero'] ?: 'defecto.png' ?>" class="avatar-usuario">
+                            <span ><?= htmlspecialchars($pedido['nombre_cocinero']) ?></span>
                         </div>
                     </div>
                 <?php endif; ?>
@@ -88,7 +88,7 @@ include 'vistas/comun/cabecera.php';
                 <tr>
                     <td class="texto-centrado">
                         <?php if ($pedido['estado'] == 'Cocinando' || $pedido['estado'] == 'Listo cocina' || $pedido['estado'] == 'Terminado' || $pedido['estado'] == 'Entregado'): ?>
-                            <?= $it['preparado'] ? '<span style="color: green; font-weight: bold;">✔ Listo</span>' : '<span style="color: orange; font-weight: bold;">⏳ Pendiente</span>' ?>
+                            <?= $it['preparado'] ? '<span>✔ Listo</span>' : '<span>⏳ Pendiente</span>' ?>
                         <?php else: ?>
                             -
                         <?php endif; ?>

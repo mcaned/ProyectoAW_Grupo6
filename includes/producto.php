@@ -16,8 +16,7 @@ $id = $_GET['id'] ?? null;
 include 'vistas/comun/cabecera.php';
 ?>
 
-<div class="contenedor-principal">
-    <?php include 'vistas/comun/sideBarIzq.php'; ?>
+<div class="contenedor-principal">  
 
     <main class="contenido-central">
         <h1><?= $id ? '📝 Editar Producto' : '➕ Crear Nuevo Producto' ?></h1>
