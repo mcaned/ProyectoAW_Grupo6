@@ -12,7 +12,7 @@ if (!isset($_SESSION['login'])) {
 include 'includes/vistas/comun/cabecera.php';
 $conn = $app->conexionBd();
 
-$query = "SELECT * FROM pedidos WHERE estado IN ('Recibido', 'En preparación', 'Listo cocina', 'Terminado') ORDER BY fecha_hora ASC";
+$query = "SELECT * FROM Pedidos WHERE estado IN ('Recibido', 'En preparación', 'Listo cocina', 'Terminado') ORDER BY fecha_hora ASC";
 $result = $conn->query($query);
 $pedidos = [];
 while ($row = $result->fetch_assoc()) {

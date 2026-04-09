@@ -1,7 +1,8 @@
 <?php
 require_once __DIR__ . '/includes/config.php';
 require_once __DIR__ . '/includes/clases/aplicacion.php';
-$app = Aplicacion::getInstance(); $app->init();
+$app = Aplicacion::getInstance();
+ $app->init();
 
 if (!isset($_SESSION['login']) || $_SESSION['rol'] !== 'cocinero') {
     header('Location: index.php');
@@ -20,7 +21,6 @@ $resMios = $conn->query($queryMios);
 ?>
 
 <div class="contenedor-principal">
-    <?php include 'includes/vistas/comun/sideBarIzq.php'; ?>
 
     <main class="contenido-central flex-col">
         <div class="cabecera-seccion-flexible">
@@ -32,7 +32,7 @@ $resMios = $conn->query($queryMios);
         <div class="cuadricula-pedidos">
             <?php if ($resMios && $resMios->num_rows > 0): ?>
                 <?php while ($row = $resMios->fetch_assoc()): ?>
-                    <div class="tarjeta" style="border: 2px solid #d32f2f;">
+                    <div class="tarjeta">
                         <div class="info-tarjeta">
                             <h2 class="id-pedido">#<?= $row['numero_pedido'] ?></h2>
                             <span class="tipo-pedido"><?= strtoupper($row['tipo']) ?></span>
@@ -51,17 +51,16 @@ $resMios = $conn->query($queryMios);
 
                                 while ($item = $items->fetch_assoc()): 
                                     if (!$item['preparado']) $todos_preparados = false;
-                                    $estilo_texto = $item['preparado'] ? 'text-decoration: line-through; color: #aaa;' : 'font-weight: bold;';
                                 ?>
-                                    <li style="display: flex; justify-content: space-between; align-items: center;">
-                                        <span style="<?= $estilo_texto ?>">
+                                    <li >
+                                        <span>
                                             <strong><?= $item['cantidad'] ?>x</strong> <?= htmlspecialchars($item['nombre']) ?>
                                         </span>
-                                        <form action="includes/procesar_cocina.php" method="POST" style="margin:0;">
+                                        <form action="includes/procesar_cocina.php" method="POST">
                                             <input type="hidden" name="accion" value="alternar_producto">
                                             <input type="hidden" name="id_pedido" value="<?= $row['id'] ?>">
                                             <input type="hidden" name="id_producto" value="<?= $item['id_producto'] ?>">
-                                            <button type="submit" class="<?= $item['preparado'] ? 'btn-gris' : 'btn-verde' ?>">
+                                            <button type="submit" class="btn ">
                                                 <?= $item['preparado'] ? 'Deshacer' : '✔ Listo' ?>
                                             </button>
                                         </form>
@@ -73,30 +72,32 @@ $resMios = $conn->query($queryMios);
                         <form action="includes/procesar_cocina.php" method="POST" class="margen-superior">
                             <input type="hidden" name="accion" value="finalizar_pedido">
                             <input type="hidden" name="id_pedido" value="<?= $row['id'] ?>">
-                            <button type="submit" class="btn-listo" <?= !$todos_preparados ? 'style="background: #ccc;" onclick="return confirm(\'Faltan platos. ¿Seguro?\')"' : '' ?>>
+                            <button type="submit" class="btn-listo" <?= !$todos_preparados ? 'onclick="return confirm(\'Faltan platos. ¿Seguro?\')"' : '' ?>>
                                 🛎️ FINALIZAR PEDIDO
                             </button>
                         </form>
                     </div>
                 <?php endwhile; ?>
             <?php else: ?>
-                <p>No tienes pedidos activos.</p>
+                <div class="cocina-vacia">
+                    <h3>No tienes pedidos activos.</h3>
+                </div>
             <?php endif; ?>
         </div>
 
-        <h2 class="margen-superior" style="color: #555;">📥 Pedidos a la espera</h2>
+        <h2 class="margen-superior">📥 Pedidos a la espera</h2>
         <div class="cuadricula-pedidos">
             <?php if ($resPendientes && $resPendientes->num_rows > 0): ?>
                 <?php while ($row = $resPendientes->fetch_assoc()): ?>
-                    <div class="tarjeta" style="background: #f9f9f9;">
+                    <div class="tarjeta">
                         <div class="info-tarjeta">
                             <h2 class="id-pedido">#<?= $row['numero_pedido'] ?></h2>
                             <span class="tipo-pedido"><?= strtoupper($row['tipo']) ?></span>
                         </div>
-                        <form action="includes/procesar_cocina.php" method="POST" class="margen-superior">
+                        <form action="<?= RUTA_APP ?>/includes/procesar_cocina.php"  method="POST" class="margen-superior">
                             <input type="hidden" name="accion" value="tomar_pedido">
                             <input type="hidden" name="id_pedido" value="<?= $row['id'] ?>">
-                            <button type="submit" class="btn-oscuro" style="width: 100%;">
+                            <button type="submit" class="btn-oscuro">
                                 👨‍🍳 TOMAR PEDIDO
                             </button>
                         </form>
