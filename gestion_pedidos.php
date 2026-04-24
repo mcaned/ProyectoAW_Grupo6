@@ -34,7 +34,7 @@ while ($row = $result->fetch_assoc()) {
 
         <div class="contenedor-columnas">
             <section class="columna col-pendiente">
-                <h3 class="texto-centrado">🔴 PENDIENTE PAGO</h3>
+                <h2 class="texto-centrado">🔴 PENDIENTE PAGO</h2>
                 <?php foreach ($pedidos as $p): ?>
                     <?php if ($p['estado'] === 'Recibido'): ?>
                         <div class="tarjeta">

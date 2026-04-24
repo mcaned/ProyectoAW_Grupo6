@@ -20,7 +20,7 @@ include 'includes/vistas/comun/cabecera.php';
             </div>
 
             <div class="texto-centrado margen-superior">
-                <img src="img/4.jpeg">
+                <img alt src="img/4.jpeg">
             </div>
             
             
