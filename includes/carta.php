@@ -57,7 +57,7 @@ include __DIR__ . '/vistas/comun/cabecera.php';
             <?php while($cat = $res_cats->fetch_assoc()): ?>
                 <?php $claseActiva = ($idCatFiltrada == $cat['id']) ?>
                 <a href="?cat=<?= $cat['id'] ?>" class="texto-ops">
-                    <img src="<?= RUTA_APP ?>/img/<?= ($cat['imagen_url'] ?? 'defecto.png') ?>" 
+                    <img alt src="<?= RUTA_APP ?>/img/<?= ($cat['imagen_url'] ?? 'defecto.png') ?>" 
                          class="avatar-usuario" 
                          onerror="this.src='<?= RUTA_APP ?>/img/defecto.png'">
                     <br><small><?= htmlspecialchars($cat['nombre']) ?></small>
@@ -70,16 +70,16 @@ include __DIR__ . '/vistas/comun/cabecera.php';
                 <?php while ($prod = $result->fetch_assoc()): ?>
                     <div class="tarjeta tarjeta-formulario">
                         
-                        <img class = "imagen-carta" src="<?= RUTA_APP ?>/img/<?= ($prod['imagen_url'] ?? 'defecto.png') ?>" 
+                        <img alt class = "imagen-carta" src="<?= RUTA_APP ?>/img/<?= ($prod['imagen_url'] ?? 'defecto.png') ?>" 
                              onerror="this.src='<?= RUTA_APP ?>/img/defecto.png'">
 
                         <div>
                             <span class="texto-rojo" >
                                 <?= strtoupper($prod['nombre_cat']) ?>
                             </span>
-                            <h3 class="titulo-serif">
+                            <h2 class="titulo-serif">
                                 <?= htmlspecialchars($prod['nombre']) ?>
-                            </h3>
+                            </h2>
                             <p class="texto-ayuda">
                                 <?= htmlspecialchars($prod['descripcion']) ?>
                             </p>

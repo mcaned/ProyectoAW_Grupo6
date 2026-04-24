@@ -22,7 +22,7 @@ include __DIR__ . '/vistas/comun/cabecera.php';
         <h1 class = "texto-centrado">Mi Perfil</h1>
         <?php if ($_SESSION['rol'] === 'camarero'): ?>
             
-            <a href="<?= RUTA_APP ?> /gestion_pedidos.php" class="btn"> ATRAS</a>
+            <a href="<?= RUTA_APP ?>/gestion_pedidos.php" class="btn"> ATRAS</a>
            
         <?php endif; ?>
          <?php if ($_SESSION['rol'] === 'gerente'): ?>
@@ -37,7 +37,7 @@ include __DIR__ . '/vistas/comun/cabecera.php';
         <?php endif; ?>
         <?php if ($_SESSION['rol'] === 'cliente'): ?>
             
-            <a href="<?= RUTA_APP ?> /index.php" class="btn"> ATRAS</a>
+            <a href="<?= RUTA_APP ?>/index.php" class="btn">ATRAS</a>
            
         <?php endif; ?>
 

@@ -33,7 +33,7 @@ include __DIR__ . '/vistas/comun/cabecera.php';
             </div>
 
             <div id="camposTarjeta">
-                <h4 class="titulo-serif">Datos de la Tarjeta</h4>
+                <h2 class="titulo-serif">Datos de la Tarjeta</h2>
                 <div class="item-barra-izquierda">
                     <label>Número de tarjeta:</label>
                     <input type="text" name="num_tarjeta" class="input-formulario" placeholder="0000 0000 0000 0000" pattern="\d{16}" title="16 números">
