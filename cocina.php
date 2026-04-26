@@ -11,7 +11,7 @@ if (!isset($_SESSION['login']) || $_SESSION['rol'] !== 'cocinero') {
 
 include 'includes/vistas/comun/cabecera.php';
 $conn = $app->conexionBd();
-$id_mi_usuario = $_SESSION['idUsuario'];
+$id_mi_usuario = (int)$_SESSION['idUsuario'];
 
 $queryPendientes = "SELECT * FROM Pedidos WHERE estado = 'En preparación' ORDER BY fecha_hora ASC";
 $resPendientes = $conn->query($queryPendientes);
@@ -66,6 +66,7 @@ $resMios = $conn->query($queryMios);
                                         </form>
                                     </li>
                                 <?php endwhile; ?>
+                                <?php $items->free();
                             </ul>
                         </div>
 
@@ -78,6 +79,7 @@ $resMios = $conn->query($queryMios);
                         </form>
                     </div>
                 <?php endwhile; ?>
+                <?php $resMios->free();
             <?php else: ?>
                 <div class="cocina-vacia">
                     <h3>No tienes pedidos activos.</h3>
@@ -103,6 +105,7 @@ $resMios = $conn->query($queryMios);
                         </form>
                     </div>
                 <?php endwhile; ?>
+                <?php $resPendientes->free();
             <?php else: ?>
                 <div class="cocina-vacia">
                     <h3>No hay pedidos a la espera.</h3>

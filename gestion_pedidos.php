@@ -18,6 +18,7 @@ $pedidos = [];
 while ($row = $result->fetch_assoc()) {
     $pedidos[] = $row;
 }
+$result->free();
 ?>
 
 <div class="contenedor-principal">
