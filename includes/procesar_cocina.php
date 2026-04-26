@@ -21,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $conn->prepare("UPDATE Pedidos SET estado = 'Cocinando', id_cocinero = ? WHERE id = ? AND estado = 'En preparación'");
         $stmt->bind_param("ii", $id_cocinero, $id_pedido);
         $stmt->execute();
+        $stmt->close();
     }
     elseif ($accion === 'alternar_producto') {
         $id_pedido = intval($_POST['id_pedido']);
@@ -29,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $conn->prepare("UPDATE Lineas_Pedido SET preparado = NOT preparado WHERE id_pedido = ? AND id_producto = ?");
         $stmt->bind_param("ii", $id_pedido, $id_producto);
         $stmt->execute();
+        $stmt->close();
     }
     elseif ($accion === 'finalizar_pedido') {
         $id_pedido = intval($_POST['id_pedido']);
@@ -37,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $conn->prepare("UPDATE Pedidos SET estado = 'Listo cocina' WHERE id = ? AND id_cocinero = ?");
         $stmt->bind_param("ii", $id_pedido, $id_cocinero);
         $stmt->execute();
+        $stmt->close();
     }
 
     header('Location: ../cocina.php');

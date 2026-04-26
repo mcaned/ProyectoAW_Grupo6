@@ -20,10 +20,13 @@ if (isset($_GET['delete'])) {
     // No borrar al último gerente
     $resU = $conn->query("SELECT rol FROM Usuarios WHERE id = $id");
     $u_a_borrar = $resU->fetch_assoc();
+    $resU>free();
 
     if ($u_a_borrar['rol'] === 'gerente') {
         $resCount = $conn->query("SELECT COUNT(*) as total FROM Usuarios WHERE rol = 'gerente'");
-        if ($resCount->fetch_assoc()['total'] <= 1) {
+        $totalGerentes = $resCount->fetch_assoc()['total'];
+        $resCount->free();
+        if ($totalGerentes <= 1) {
             header('Location: gestion_usuarios.php?error=ultimo_gerente'); exit();
         }
     }
@@ -89,4 +92,6 @@ include 'vistas/comun/cabecera.php';
 
     <?php include 'vistas/comun/sideBarDer.php'; ?> 
 </div>
-<?php include 'vistas/comun/pie.php'; ?>
+<?php 
+$usuarios->free();
+include 'vistas/comun/pie.php'; ?>

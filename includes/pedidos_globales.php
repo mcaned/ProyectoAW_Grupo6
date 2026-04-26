@@ -39,10 +39,10 @@ include __DIR__ . '/vistas/comun/cabecera.php';
                             <td>#<?= $pedido['numero_pedido'] ?></td>
                             <td><?= htmlspecialchars($pedido['nombre']) ?></td>
                             <td><?= date('d/m/Y H:i', strtotime($pedido['fecha_hora'])) ?></td>
-                            <td><?= $pedido['tipo'] ?></td>
+                            <td><?= htmlspecialchars($pedido['tipo']) ?></td>
                             <td>
                                 <span>
-                                    <?= $pedido['estado'] ?>
+                                    <?= htmlspecialchars($pedido['estado']) ?>
                                 </span>
                             </td>
                             <td><strong><?= number_format($pedido['total'], 2) ?>€</strong></td>
@@ -53,6 +53,7 @@ include __DIR__ . '/vistas/comun/cabecera.php';
                     <?php endwhile; ?>
                 </tbody>
             </table>
+            <?php $result->free(); ?>
         <?php else: ?>
             <p class="margen-superior">No hay pedidos globales.</p>
         <?php endif; ?>

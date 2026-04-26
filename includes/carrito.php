@@ -43,6 +43,7 @@ include 'vistas/comun/cabecera.php';
                             $cuota_iva = $precio_base_total * ($f['iva'] / 100);
                             $subtotal_con_iva = $precio_base_total + $cuota_iva;
                             $total_iva_incluido += $subtotal_con_iva;
+                        $rs->free();
                     ?>
                         <tr>
                             <td><?= htmlspecialchars($f['nombre']) ?></td>

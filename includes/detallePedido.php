@@ -48,14 +48,14 @@ include 'vistas/comun/cabecera.php';
         <div class="contenedor-info-pedido">
             <div class="columna-info">
                 <h3>Datos del Cliente</h3>
-                <p><strong>Nombre:</strong> <?= $pedido['nombre'] ?> <?= $pedido['apellidos'] ?></p>
-                <p><strong>Email:</strong> <?= $pedido['email'] ?></p>
+                <p><strong>Nombre:</strong> <?= htmlspecialchars($pedido['nombre']) ?> <?= htmlspecialchars($pedido['apellidos']) ?></p>
+                <p><strong>Email:</strong> <?= htmlspecialchars($pedido['email']) ?></p>
             </div>
             <div class="columna-info">
                 <h3>Datos del Pedido</h3>
                 <p><strong>Fecha:</strong> <?= date('d/m/Y H:i', strtotime($pedido['fecha_hora'])) ?></p>
-                <p><strong>Tipo:</strong> <?= $pedido['tipo'] ?></p>
-                <p><strong>Estado:</strong> <span class="etiqueta-estado"><?= $pedido['estado'] ?></span></p>
+                <p><strong>Tipo:</strong> <?= htmlspecialchars($pedido['tipo']) ?></p>
+                <p><strong>Estado:</strong> <span class="etiqueta-estado"><?= htmlspecialchars($pedido['estado']) ?></span></p>
 
                  <?php if ($pedido['id_cocinero']): ?>
                     <div>
@@ -93,7 +93,7 @@ include 'vistas/comun/cabecera.php';
                             -
                         <?php endif; ?>
                     </td>
-                    <td><?= $it['nombre'] ?></td>
+                    <td><?= htmlspecialchars($it['nombre']) ?></td>
                     <td class="texto-centrado"><?= number_format($p_final, 2) ?>€</td>
                     <td class="texto-centrado"><?= $it['cantidad'] ?></td>
                     <td class="texto-centrado"><strong><?= number_format($subtotal, 2) ?>€</strong></td>
@@ -109,4 +109,7 @@ include 'vistas/comun/cabecera.php';
     </main>
     <?php include 'vistas/comun/sideBarDer.php'; ?>
 </div>
-<?php include 'vistas/comun/pie.php'; ?>
+<?php 
+$resP->free();
+$items->free();
+include 'vistas/comun/pie.php'; ?>

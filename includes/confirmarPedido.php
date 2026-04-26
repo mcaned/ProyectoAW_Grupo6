@@ -25,10 +25,12 @@ foreach ($_SESSION['carrito'] as $id_prod => $cantidad) {
 }
 
 $hoy = date('Y-m-d');
-$sqlNum = "SELECT MAX(numero_pedido) as ultimo FROM Pedidos WHERE DATE(fecha_hora) = '$hoy'";
+$fecha = $conn->real_escape_string($hoy);
+$sqlNum = "SELECT MAX(numero_pedido) as ultimo FROM Pedidos WHERE DATE(fecha_hora) = 'fecha'";
 $resNum = $conn->query($sqlNum);
 $filaNum = $resNum->fetch_assoc();
 $nuevo_numero_pedido = ($filaNum['ultimo']) ? $filaNum['ultimo'] + 1 : 1;
+resNum->free(); //liberar cada vez q se hace un select
 
 $queryPedido = sprintf(
     "INSERT INTO Pedidos (numero_pedido, id_cliente, tipo, estado, total) VALUES (%d, %d, '%s', 'Recibido', %s)",
@@ -60,5 +62,6 @@ if ($conn->query($queryPedido)) {
     }
     exit();
 } else {
-    die("Error SQL: " . $conn->error);
+    error_log("Error SQL: " . $conn->error);
+    die("Hubo un error al procesar tu pedido.");
 }

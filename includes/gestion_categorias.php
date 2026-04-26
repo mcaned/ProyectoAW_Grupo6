@@ -67,4 +67,6 @@ include 'vistas/comun/cabecera.php';
     </main>
      <?php include 'vistas/comun/sideBarDer.php'; ?>
 </div>
-<?php include 'vistas/comun/pie.php'; ?>
+<?php
+$categorias->free();
+include 'vistas/comun/pie.php'; ?>
