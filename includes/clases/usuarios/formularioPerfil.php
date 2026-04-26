@@ -59,10 +59,15 @@ EOF;
             return ["Usuario no encontrado."];
         }
 
-        $nombre = $datos['nombre'] ?? '';
-        $apellidos = $datos['apellidos'] ?? '';
-        $email = $datos['email'] ?? '';
-        $avatar = $datos['avatar'] ?? '';
+        $app = Aplicacion::getInstance();
+        $conn = $app->conexionBd();
+
+        $nombre = $con->real_escape_string($datos['nombre'] ?? '');
+        $apellidos = $con->real_escape_string($datos['apellidos'] ?? '');
+        $email = $con->real_escape_string($datos['email'] ?? '');
+        $avatar = $con->real_escape_string($datos['avatar'] ?? '');
+        //recordad q real escape es para asegurar buenos datos
+        //de entrada, no posibles comandos a ejecutar
 
         if (empty($nombre) || empty($apellidos) || empty($email)) {
             return ["Los campos Nombre, Apellidos y Email son obligatorios."];

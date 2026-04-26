@@ -57,12 +57,15 @@ EOF;
 }
 
    protected function procesaFormulario($datos) {
-    $user = $datos['nombreUsuario'] ?? null;
-    $pass = $datos['password'] ?? null;
-    $nombre = $datos['nombre'] ?? null;
-    $apellidos = $datos['apellidos'] ?? null;
-    $email = $datos['email'] ?? null;
-    $rol = $datos['rol'] ?? 'cliente';
+    $app = Aplicacion::getInstance();
+    $conn = $app->conexionBd();
+
+    $user = $conn->real_escape_string($datos['nombreUsuario'] ?? '');
+    $pass = $datos['password'] ?? '';
+    $nombre = $conn->real_escape_string($datos['nombre'] ?? '');
+    $apellidos = $conn->real_escape_string($datos['apellidos'] ?? '');
+    $email = $conn->real_escape_string($datos['email'] ?? '');
+    $rol = $conn->real_escape_string($datos['rol'] ?? 'cliente');
 
     if (empty($user) || empty($pass) || empty($nombre) || empty($apellidos) || empty($email)) { 
         return ["Todos los campos son obligatorios"];

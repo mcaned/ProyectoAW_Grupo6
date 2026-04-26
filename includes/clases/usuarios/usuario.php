@@ -49,6 +49,7 @@ class Usuario {
                 $f['avatar_url'],
                 $f['id']
             );
+            $rs->free();
         }
         return false;
     }
@@ -80,13 +81,18 @@ class Usuario {
     }
 
     public static function buscaPorEmail($email) {
-    $conn = Aplicacion::getInstance()->conexionBd();
-    $query = sprintf("SELECT * FROM Usuarios WHERE email='%s'", $conn->real_escape_string($email));
-    $rs = $conn->query($query);
-    if ($rs && $rs->num_rows == 1) {
-        return true;
-    }
-    return false;
+        $conn = Aplicacion::getInstance()->conexionBd();
+        $query = sprintf("SELECT * FROM Usuarios WHERE email='%s'", $conn->real_escape_string($email));
+        $rs = $conn->query($query);
+        $existe = false;
+        if ($rs ) {
+            if ($rs->num_rows == 1){
+            $existe = true;
+            }
+            $rs->free();
+        }
+        
+        return $existe;
     }
 
     public function actualiza() {
