@@ -34,7 +34,7 @@ abstract class Formulario {
         
         $campos = $this->generaCamposFormulario($datos);
         $html .= "<form method='POST' action='{$this->action}' id='{$this->idForm}'>";
-        $html .= "<input type='hidden' name='idFormulario' value='{$this->idForm}' />";
+        $html .= "<input type='hidden' name='idFormulario' value='{$this->idForm}' >";
         $html .= $campos;
         $html .= "</form>";
         return $html;
