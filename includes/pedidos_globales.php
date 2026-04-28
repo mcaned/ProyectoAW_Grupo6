@@ -1,15 +1,15 @@
 <?php
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/clases/aplicacion.php';
+require_once __DIR__ . '/clases/pedido.php';
+
 $app = Aplicacion::getInstance(); $app->init();
 
 if (!isset($_SESSION['login']) || $_SESSION['rol'] !== 'gerente') {
     header('Location: index.php'); exit();
 }
 
-$conn = $app->conexionBd();
-$query = "SELECT p.*, u.nombre FROM Pedidos p JOIN Usuarios u ON p.id_cliente = u.id ORDER BY p.fecha_hora DESC";
-$result = $conn->query($query);
+$pedidos = Pedido::listar();
 
 include __DIR__ . '/vistas/comun/cabecera.php';
 ?>
@@ -20,7 +20,7 @@ include __DIR__ . '/vistas/comun/cabecera.php';
             <a href="../admin.php" class="btn-atras">⬅️ Volver al Panel</a>
         </div>
 
-        <?php if ($result && $result->num_rows > 0): ?>
+        <?php if (!empty($pedidos)): ?>
             <table class="tabla-gestion">
                 <thead>
                     <tr>
@@ -34,26 +34,25 @@ include __DIR__ . '/vistas/comun/cabecera.php';
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($pedido = $result->fetch_assoc()):  ?>
+                    <?php foreach ($pedido as $p):  ?>
                         <tr>
-                            <td>#<?= $pedido['numero_pedido'] ?></td>
-                            <td><?= htmlspecialchars($pedido['nombre']) ?></td>
-                            <td><?= date('d/m/Y H:i', strtotime($pedido['fecha_hora'])) ?></td>
-                            <td><?= htmlspecialchars($pedido['tipo']) ?></td>
+                            <td>#<?= $p->getNumpedido() ?></td>
+                            <td><?= htmlspecialchars($p->getNombreCliente()) ?></td>
+                            <td><?= date('d/m/Y H:i', strtotime($p->getfechahora())) ?></td>
+                            <td><?= htmlspecialchars($p->getTipo()) ?></td>
                             <td>
                                 <span>
-                                    <?= htmlspecialchars($pedido['estado']) ?>
+                                    <?= htmlspecialchars($p->getEstado()) ?>
                                 </span>
                             </td>
-                            <td><strong><?= number_format($pedido['total'], 2) ?>€</strong></td>
+                            <td><strong><?= number_format($p->getTotal(), 2) ?>€</strong></td>
                             <td>
-                                <a href="detallePedido.php?id=<?= $pedido['id'] ?>" class="enlace-editar">Ver detalle</a>
+                                <a href="detallePedido.php?id=<?= $p->getId() ?>" class="enlace-editar">Ver detalle</a>
                             </td>
                         </tr>
-                    <?php endwhile; ?>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
-            <?php $result->free(); ?>
         <?php else: ?>
             <p class="margen-superior">No hay pedidos globales.</p>
         <?php endif; ?>

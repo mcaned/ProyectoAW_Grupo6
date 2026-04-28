@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/clases/aplicacion.php';
+require_once __DIR__ . '/clases/producto.php';
+
 $app = Aplicacion::getInstance(); $app->init();
 $conn = $app->conexionBd();
 
@@ -9,9 +11,7 @@ if (!isset($_SESSION['login']) || $_SESSION['rol'] !== 'gerente') {
 }
 
 if (isset($_GET['retirar'])) {
-    $id = intval($_GET['retirar']);
-    $query = "DELETE FROM Productos WHERE id = $id";
-    if ($conn->query($query)) {
+    if (Producto::borrar($_GET['retirar'])) {
         header('Location: gestion_productos.php?msg=borrado_ok');
     } else {
         header('Location: gestion_productos.php?error=en_pedido');
@@ -19,7 +19,8 @@ if (isset($_GET['retirar'])) {
     exit();
 }
 
-$prods = $conn->query("SELECT p.*, c.nombre as cat_nom FROM Productos p JOIN Categorias c ON p.id_categoria = c.id WHERE p.ofertado = 1");
+$listaProductos = Producto::listar(false);
+
 include 'vistas/comun/cabecera.php';
 ?>
 <div class="contenedor-principal">
@@ -44,24 +45,24 @@ include 'vistas/comun/cabecera.php';
                 </tr>
             </thead>
             <tbody>
-                <?php while($p = $prods->fetch_assoc()): 
-                    $final = $p['precio_base'] * (1 + $p['iva']/100);
+                <?php 
+                foreach($listaProductos as $p): 
                 ?>
                 <tr>
-                    <td><?= htmlspecialchars($p['nombre']) ?></td>
-                    <td><?= htmlspecialchars($p['cat_nom']) ?></td>
-                    <td><strong><?= number_format($final, 2) ?>€</strong></td>
+                   <td><?= htmlspecialchars($p->getNombre()) ?></td>
+                    <td><?= htmlspecialchars($p->getCatNom()) ?></td>
+                   
+                    <td><strong><?= number_format($p->getPrecioFinal(), 2) ?>€</strong></td>
                     <td>
-                        <a href="producto.php?id=<?= $p['id'] ?>" class="enlace-editar">📝 Editar</a> | 
-                        <a href="?retirar=<?= $p['id'] ?>" class="enlace-borrar" onclick="return confirm('¿Retirar de la carta?')">🚫 Retirar</a>
+                        <a href="producto.php?id=<?= $p->getId() ?>" class="enlace-editar">📝 Editar</a> | 
+                        <a href="?retirar=<?= $p->getId() ?>" class="enlace-borrar" onclick="return confirm('¿Retirar de la carta?')">🚫 Retirar</a>
                     </td>
                 </tr>
-                <?php endwhile; ?>
+                <?php endforeach; ?>
             </tbody>
         </table>
     </main>
      <?php include 'vistas/comun/sideBarDer.php'; ?>
 </div>
 <?php 
-$prods->free();
 include 'vistas/comun/pie.php'; ?>

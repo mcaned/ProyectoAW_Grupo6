@@ -1,8 +1,9 @@
 <?php
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/clases/aplicacion.php';
+require_once __DIR__ . '/clases/categorias.php';
+
 $app = Aplicacion::getInstance(); $app->init();
-$conn = $app->conexionBd();
 
 if (!isset($_SESSION['login']) || $_SESSION['rol'] !== 'gerente') {
     header('Location: index.php'); exit();
@@ -10,19 +11,17 @@ if (!isset($_SESSION['login']) || $_SESSION['rol'] !== 'gerente') {
 
 if (isset($_GET['delete'])) {
     $id = intval($_GET['delete']);
-    $check = $conn->query("SELECT COUNT(*) as total FROM Productos WHERE id_categoria = $id");
-    $res = $check->fetch_assoc();
     
-    if ($res['total'] > 0) {
-        header('Location: gestion_categorias.php?error=tiene_productos');
-    } else {
-        $conn->query("DELETE FROM Categorias WHERE id = $id");
+    if (Categoria::borrar($id)) {
         header('Location: gestion_categorias.php?deleted=1');
+    } else {
+        header('Location: gestion_categorias.php?error=tiene_productos');
     }
     exit();
 }
 
-$categorias = $conn->query("SELECT * FROM Categorias");
+$listaCategorias = Categoria::listarTodas();
+
 include 'vistas/comun/cabecera.php';
 ?>
 <div class="contenedor-principal">
@@ -39,6 +38,10 @@ include 'vistas/comun/cabecera.php';
             </div>
         <?php endif; ?>
 
+        <?php if (isset($_GET['deleted'])): ?>
+            <div class="alerta-exito">✅ Categoría eliminada correctamente.</div>
+        <?php endif; ?>
+
         <div class="contenedor-acciones-superior">
             <a href="categoria.php" class="btn">+ NUEVA CATEGORÍA</a>
         </div>
@@ -52,21 +55,30 @@ include 'vistas/comun/cabecera.php';
                 </tr>
             </thead>
             <tbody>
-                <?php while($c = $categorias->fetch_assoc()): ?>
-                <tr>
-                    <td><?= htmlspecialchars($c['nombre']) ?></td>
-                    <td><?= htmlspecialchars($c['descripcion']) ?></td>
-                    <td>
-                        <a href="categoria.php?id=<?= $c['id'] ?>" class="enlace-editar">📝 Editar</a>
-                        <a href="?delete=<?= $c['id'] ?>" class="enlace-borrar" onclick="return confirm('¿Borrar categoría?')">🗑️ Borrar</a>
-                    </td>
-                </tr>
-                <?php endwhile; ?>
+                <?php if (!empty($listaCategorias)): ?>
+                    <?php foreach($listaCategorias as $cat): ?>
+                    <tr>
+                        <td><strong><?= htmlspecialchars($cat->getNombre()) ?></strong></td>
+                        <td><?= htmlspecialchars($cat->getDescripcion()) ?></td>
+                        <td>
+                            <a href="categoria.php?id=<?= $cat->getId() ?>" class="enlace-editar">📝 Editar</a>
+                            
+                            <a href="?delete=<?= $cat->getId() ?>" 
+                               class="enlace-borrar" 
+                               onclick="return confirm('¿Estás seguro de borrar la categoría \'<?= addslashes($cat->getNombre()) ?>\'?')">
+                               🗑️ Borrar
+                            </a>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="3">No hay categorías registradas.</td>
+                    </tr>
+                <?php endif; ?>
             </tbody>
         </table>
     </main>
      <?php include 'vistas/comun/sideBarDer.php'; ?>
 </div>
-<?php
-$categorias->free();
-include 'vistas/comun/pie.php'; ?>
+<?php include 'vistas/comun/pie.php'; ?>

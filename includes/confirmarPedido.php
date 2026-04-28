@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/clases/aplicacion.php';
+require_once __DIR__ . '/clases/producto.php';
+require_once __DIR__ . '/clases/pedidos.php';
 
 $app = Aplicacion::getInstance();
 $app->init(); 
@@ -11,57 +13,19 @@ if (!isset($_SESSION['login']) || !isset($_SESSION['idUsuario'])) {
 }
 
 
-$conn = $app->conexionBd();
 $id_cliente = $_SESSION['idUsuario']; 
-$tipo = $conn->real_escape_string($_POST['tipo'] ?? 'Local');
+$tipo = $_POST['tipo'] ?? 'Local';
+
+$id_pedido = Pedido::crear($id_cliente, $tipo, $_SESSION['carrito']);
 
 
-$total = 0;
-foreach ($_SESSION['carrito'] as $id_prod => $cantidad) {
-    $rs = $conn->query(sprintf("SELECT precio_base, iva FROM Productos WHERE id=%d", $id_prod));
-    if ($f = $rs->fetch_assoc()) {
-        $total += ($f['precio_base'] * (1 + (float)$f['iva']/100)) * $cantidad;
-    }
-}
-
-$hoy = date('Y-m-d');
-$fecha = $conn->real_escape_string($hoy);
-$sqlNum = "SELECT MAX(numero_pedido) as ultimo FROM Pedidos WHERE DATE(fecha_hora) = 'fecha'";
-$resNum = $conn->query($sqlNum);
-$filaNum = $resNum->fetch_assoc();
-$nuevo_numero_pedido = ($filaNum['ultimo']) ? $filaNum['ultimo'] + 1 : 1;
-resNum->free(); //liberar cada vez q se hace un select
-
-$queryPedido = sprintf(
-    "INSERT INTO Pedidos (numero_pedido, id_cliente, tipo, estado, total) VALUES (%d, %d, '%s', 'Recibido', %s)",
-    $nuevo_numero_pedido,
-    $id_cliente,
-    $tipo,
-    number_format($total, 2, '.', '')
-);
-
-if ($conn->query($queryPedido)) {
+if ($id_pedido) {
     $id_pedido = $conn->insert_id;
-
-    foreach ($_SESSION['carrito'] as $id_prod => $cantidad) {
-        $queryLinea = sprintf(
-            "INSERT INTO Lineas_Pedido (id_pedido, id_producto, cantidad) VALUES (%d, %d, %d)",
-            $id_pedido,
-            $id_prod,
-            $cantidad
-        );
-        $conn->query($queryLinea);
-    }
-
+    unset($_SESSION['carrito']); 
     $_SESSION['ultimo_pedido'] = $id_pedido;
 
-    if ($tipo === 'Llevar') {
-        header('Location: pagoDomicilio.php');
-    } else {
-        header('Location: pagoLocal.php');
-    }
-    exit();
+    $destino = ($tipo === 'Llevar') ? 'pagoDomicilio.php' : 'pagoLocal.php';
+    header("Location: $destino");
 } else {
-    error_log("Error SQL: " . $conn->error);
-    die("Hubo un error al procesar tu pedido.");
+    die("Error al procesar el pedido.");
 }

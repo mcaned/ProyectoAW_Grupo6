@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/clases/aplicacion.php';
+require_once __DIR__ . '/clases/producto.php';
 $app = Aplicacion::getInstance(); $app->init();
 
 if (!isset($_SESSION['login'])) {

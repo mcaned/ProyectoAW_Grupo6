@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/clases/aplicacion.php';
+require_once __DIR__ . '/clases/producto.php';
+require_once __DIR__ . '/clases/categorias.php';
 
 $app = Aplicacion::getInstance();
 $app->init();
@@ -10,24 +12,13 @@ if (!isset($_SESSION['login'])) {
     exit();
 }
 
-$conn = $app->conexionBd();
 $idCatFiltrada = isset($_GET['cat']) ? intval($_GET['cat']) : null;
 
 $mensajeExito = isset($_GET['añadido']) ? "Producto añadido al carrito correctamente." : null;
 
-$res_cats = $conn->query("SELECT * FROM Categorias");   
+$listaCategorias = Categoria::listarTodas();
 
-$query = "SELECT p.*, c.nombre AS nombre_cat 
-          FROM Productos p 
-          JOIN Categorias c ON p.id_categoria = c.id 
-          WHERE p.disponible = 1 AND p.ofertado = 1";
-
-if ($idCatFiltrada) {
-    $query .= " AND p.id_categoria = $idCatFiltrada";
-}
-
-$query .= " ORDER BY c.nombre, p.nombre";
-$result = $conn->query($query);
+$productos = Producto::listar(true, $idCatFiltrada);
 
 include __DIR__ . '/vistas/comun/cabecera.php';
 ?>
@@ -54,42 +45,41 @@ include __DIR__ . '/vistas/comun/cabecera.php';
                 TODOS
             </a>
             
-            <?php while($cat = $res_cats->fetch_assoc()): ?>
-                <?php $claseActiva = ($idCatFiltrada == $cat['id']) ?>
-                <a href="?cat=<?= $cat['id'] ?>" class="texto-ops">
-                    <img alt src="<?= RUTA_APP ?>/img/<?= ($cat['imagen_url'] ?? 'defecto.png') ?>" 
+            <?php foreach($listaCategorias as $cat): ?>
+                <a href="?cat=<?= $cat->getId() ?>" class="texto-ops <?= ($idCatFiltrada == $cat->getId()) ? 'activa' : '' ?>">
+                    <img alt src="<?= RUTA_APP ?>/img/<?= $cat->getImagenUrl() ?? 'defecto.png' ?>" 
                          class="avatar-usuario" 
                          onerror="this.src='<?= RUTA_APP ?>/img/defecto.png'">
-                    <br><small><?= htmlspecialchars($cat['nombre']) ?></small>
+                    <br><small><?= htmlspecialchars($cat->getNombre()) ?></small>
                 </a>
-            <?php endwhile; ?>
+            <?php endforeach; ?>
         </div>
 
-        <?php if ($result && $result->num_rows > 0): ?>
+        <?php if (!empty($productos)): ?>
             <div class="cuadricula-pedidos">
-                <?php while ($prod = $result->fetch_assoc()): ?>
+                <?php foreach ($productos as $prod): ?>
                     <div class="tarjeta tarjeta-formulario">
                         
-                        <img alt class = "imagen-carta" src="<?= RUTA_APP ?>/img/<?= ($prod['imagen_url'] ?? 'defecto.png') ?>" 
+                        <img alt class = "imagen-carta" src="<?= RUTA_APP ?>/img/<?= ($prod->getImagenUrl() ?? 'defecto.png') ?>" 
                              onerror="this.src='<?= RUTA_APP ?>/img/defecto.png'">
 
                         <div>
                             <span class="texto-rojo" >
-                                <?= strtoupper($prod['nombre_cat']) ?>
+                                <?= strtoupper(htmlspecialchars($prod->getCatNom())) ?>
                             </span>
                             <h2 class="titulo-serif">
-                                <?= htmlspecialchars($prod['nombre']) ?>
+                                <?= htmlspecialchars($prod->getNombre()) ?>
                             </h2>
                             <p class="texto-ayuda">
-                                <?= htmlspecialchars($prod['descripcion']) ?>
+                                <?= htmlspecialchars($prod->getDescripcion()) ?>
                             </p>
                             
                             <p>
-                                <?= number_format($prod['precio_base'] * (1 + $prod['iva']/100), 2) ?>€
+                                <?= number_format($prod->getPrecioFinal(),2)?>€
                             </p>
                             
                             <form action="procesarCarrito.php" method="POST">
-                                <input type="hidden" name="id_producto" value="<?= $prod['id'] ?>">
+                                <input type="hidden" name="id_producto" value="<?= $prod->getId() ?>">
                                 <div>
                                     <input type="number" name="cantidad" value="1" min="1" class="input-formulario">
                                     <br><br>
@@ -100,7 +90,7 @@ include __DIR__ . '/vistas/comun/cabecera.php';
                             </form>
                         </div>
                     </div>
-                <?php endwhile; ?>
+                <?php endforeach; ?>
             </div>
         <?php else: ?>
             <div class="cocina-vacia">

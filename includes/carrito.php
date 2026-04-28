@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/clases/aplicacion.php';
+require_once __DIR__ . '/clases/producto.php';
 
 $app = Aplicacion::getInstance();
 $app->init();
@@ -36,20 +37,16 @@ include 'vistas/comun/cabecera.php';
                     <?php
                     $total_iva_incluido = 0;
                     foreach ($_SESSION['carrito'] as $id_prod => $cantidad):
-                        $query = sprintf("SELECT * FROM Productos WHERE id=%d", $id_prod);
-                        $rs = $conn->query($query);
-                        if ($f = $rs->fetch_assoc()):
-                            $precio_base_total = $f['precio_base'] * $cantidad;
-                            $cuota_iva = $precio_base_total * ($f['iva'] / 100);
-                            $subtotal_con_iva = $precio_base_total + $cuota_iva;
+                        $p = Producto::buscaPorId($id_prod);
+                        if ($p):
+                            $subtotal_con_iva = $p->getPrecioFinal() * $cantidad;
                             $total_iva_incluido += $subtotal_con_iva;
-                        $rs->free();
                     ?>
                         <tr>
-                            <td><?= htmlspecialchars($f['nombre']) ?></td>
+                            <td><?= htmlspecialchars($p->getNombre()) ?></td>
                             <td class="texto-centrado">
                                 <form action="procesarCarrito.php" method="POST" class="form-cantidad">
-                                    <input type="hidden" name="id_producto" value="<?= $id_prod ?>">
+                                    <input type="hidden" name="id_producto" value="<?= $p->getId()?>">
                                     <input type="hidden" name="action" value="update">
                                     
                                     <button type="submit" name="cantidad" value="<?= $cantidad - 1 ?>"  <?= ($cantidad <= 1) ? 'disabled' : '' ?>>-</button>
@@ -57,12 +54,12 @@ include 'vistas/comun/cabecera.php';
                                     <button type="submit" name="cantidad" value="<?= $cantidad + 1 ?>">+</button>
                                 </form>
                             </td>
-                            <td><?= number_format($f['precio_base'], 2) ?>€</td>
-                            <td><?= $f['iva'] ?>%</td>
+                            <td><?= number_format($p->getPrecioBase(), 2) ?>€</td>
+                            <td><?= $p->getIva()?>%</td>
                             <td><strong><?= number_format($subtotal_con_iva, 2) ?>€</strong></td>
                             <td class="texto-centrado">
                                 <form action="procesarCarrito.php" method="POST">
-                                    <input type="hidden" name="id_producto" value="<?= $id_prod ?>">
+                                    <input type="hidden" name="id_producto" value="<?= $p->getId() ?>">
                                     <input type="hidden" name="action" value="remove">
                                     <button type="submit">
                                         🗑️
