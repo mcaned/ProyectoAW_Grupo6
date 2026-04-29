@@ -2,32 +2,27 @@
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/clases/aplicacion.php';
 require_once __DIR__ . '/clases/producto.php';
-$app = Aplicacion::getInstance(); $app->init();
+require_once __DIR__ . '/clases/pedidos.php';
+require_once __DIR__ . '/clases/lineas_pedido.php';
+require_once __DIR__ . '/clases/usuarios/usuario.php';
+
+$app = Aplicacion::getInstance(); 
+$app->init();
 
 if (!isset($_SESSION['login'])) {
     header('Location: login.php'); exit();
 }
 
-$conn = $app->conexionBd();
+
 $idPedido = intval($_GET['id']);
-
-
-$queryPedido = "SELECT p.*, u.nombre, u.apellidos, u.email  ,
-                        c.nombre as nombre_cocinero, c.avatar_url as avatar_cocinero 
-                FROM Pedidos p 
-                JOIN Usuarios u ON p.id_cliente = u.id 
-                LEFT JOIN Usuarios c ON p.id_cocinero = c.id
-                WHERE p.id = $idPedido";
-$resP = $conn->query($queryPedido);
-$pedido = $resP->fetch_assoc();
+$pedido = Pedido::buscaPorId($idPedido);
 
 if (!$pedido) { die("Pedido no encontrado."); }
 
-$queryItems = "SELECT lp.cantidad, pr.nombre, pr.precio_base, pr.iva ,lp.preparado 
-               FROM Lineas_Pedido lp 
-               JOIN Productos pr ON lp.id_producto = pr.id 
-               WHERE lp.id_pedido = $idPedido";
-$items = $conn->query($queryItems);
+$cliente = $pedido->getCliente();
+$cocinero = $pedido->getCocinero();
+$lineas = $pedido->getLineas();
+
 
 include 'vistas/comun/cabecera.php';
 ?>
@@ -37,7 +32,7 @@ include 'vistas/comun/cabecera.php';
 
     <main class="contenido-central">
         <div class="cabecera-seccion-flexible">
-            <h1>📄 Detalle del Pedido #<?= $pedido['numero_pedido'] ?></h1>
+            <h1>📄 Detalle del Pedido #<?= $pedido->getNumpedido() ?></h1>
             <?php if ($_SESSION['rol'] == 'gerente'): ?>
                  <a href="pedidos_globales.php" class="btn-atras">⬅️ Volver a la Lista</a>
             <?php else: ?>
@@ -49,21 +44,21 @@ include 'vistas/comun/cabecera.php';
         <div class="contenedor-info-pedido">
             <div class="columna-info">
                 <h3>Datos del Cliente</h3>
-                <p><strong>Nombre:</strong> <?= htmlspecialchars($pedido['nombre']) ?> <?= htmlspecialchars($pedido['apellidos']) ?></p>
-                <p><strong>Email:</strong> <?= htmlspecialchars($pedido['email']) ?></p>
+                <p><strong>Nombre:</strong> <?= htmlspecialchars($cliente->getNombre() . " " . $cliente->getApellidos()) ?></p>
+                <p><strong>Email:</strong> <?= htmlspecialchars($cliente->getEmail()) ?></p>
             </div>
             <div class="columna-info">
                 <h3>Datos del Pedido</h3>
-                <p><strong>Fecha:</strong> <?= date('d/m/Y H:i', strtotime($pedido['fecha_hora'])) ?></p>
-                <p><strong>Tipo:</strong> <?= htmlspecialchars($pedido['tipo']) ?></p>
-                <p><strong>Estado:</strong> <span class="etiqueta-estado"><?= htmlspecialchars($pedido['estado']) ?></span></p>
+                <p><strong>Fecha:</strong> <?= date('d/m/Y H:i', strtotime($pedido->getfechahora())) ?></p>
+                <p><strong>Tipo:</strong> <?= htmlspecialchars($pedido->getTipo()) ?></p>
+                <p><strong>Estado:</strong> <span class="etiqueta-estado"><?= htmlspecialchars($pedido->getEstado()) ?></span></p>
 
-                 <?php if ($pedido['id_cocinero']): ?>
+                 <?php if ($cocinero): ?>
                     <div>
                         <p><strong>👨‍🍳 Cocinero Asignado:</strong></p>
                         <div>
-                            <img src="<?= RUTA_APP ?>/img/<?= $pedido['avatar_cocinero'] ?: 'defecto.png' ?>" class="avatar-usuario">
-                            <span ><?= htmlspecialchars($pedido['nombre_cocinero']) ?></span>
+                            <img src="<?= RUTA_APP ?>/img/<?= $cocinero->getAvatar() ?: 'defecto.png' ?>" class="avatar-usuario">
+                            <span><?= htmlspecialchars($cocinero->getNombre()) ?></span>
                         </div>
                     </div>
                 <?php endif; ?>
@@ -82,35 +77,34 @@ include 'vistas/comun/cabecera.php';
                 </tr>
             </thead>
             <tbody>
-                <?php while ($it = $items->fetch_assoc()): 
-                    $p_final = $it['precio_base'] * (1 + $it['iva']/100);
-                    $subtotal = $p_final * $it['cantidad'];
+                <?php foreach ($lineas as $linea): 
+                    $producto = $linea->getProducto();
+                    $p_final = $producto->getPrecioFinal();
+                    $subtotal = $p_final * $linea->getCantidad();
                 ?>
                 <tr>
                     <td class="texto-centrado">
-                        <?php if ($pedido['estado'] == 'Cocinando' || $pedido['estado'] == 'Listo cocina' || $pedido['estado'] == 'Terminado' || $pedido['estado'] == 'Entregado'): ?>
-                            <?= $it['preparado'] ? '<span>✔ Listo</span>' : '<span>⏳ Pendiente</span>' ?>
+                        <?php if (in_array($pedido->getEstado(), ['Cocinando', 'Listo cocina', 'Terminado', 'Entregado'])): ?>
+                            <?= $linea->estaPreparado() ? '<span>✔ Listo</span>' : '<span>⏳ Pendiente</span>' ?>
                         <?php else: ?>
                             -
                         <?php endif; ?>
                     </td>
-                    <td><?= htmlspecialchars($it['nombre']) ?></td>
+                    <td><?= htmlspecialchars($producto->getNombre()) ?></td>
                     <td class="texto-centrado"><?= number_format($p_final, 2) ?>€</td>
-                    <td class="texto-centrado"><?= $it['cantidad'] ?></td>
+                    <td class="texto-centrado"><?= $linea->getCantidad() ?></td>
                     <td class="texto-centrado"><strong><?= number_format($subtotal, 2) ?>€</strong></td>
                 </tr>
-                <?php endwhile; ?>
+                <?php endforeach; ?>
             </tbody>
         </table>
 
         <div class="bloque-total-pedido">
-            <h2 class="texto-rojo">TOTAL PAGADO: <?= number_format($pedido['total'], 2) ?>€</h2>
+            <h2 class="texto-rojo">TOTAL PAGADO: <?= number_format($pedido->getTotal(), 2) ?>€</h2>
         </div>
          
     </main>
     <?php include 'vistas/comun/sideBarDer.php'; ?>
 </div>
 <?php 
-$resP->free();
-$items->free();
 include 'vistas/comun/pie.php'; ?>

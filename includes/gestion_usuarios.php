@@ -1,8 +1,12 @@
 <?php
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/clases/aplicacion.php';
-$app = Aplicacion::getInstance(); $app->init();
-$conn = $app->conexionBd();
+require_once __DIR__ . '/clases/aplicacion.php';
+require_once __DIR__ . '/clases/usuarios/usuario.php';
+require_once __DIR__ . '/clases/pedidos.php';
+
+$app = Aplicacion::getInstance(); 
+$app->init();
 
 if (!isset($_SESSION['login']) || $_SESSION['rol'] !== 'gerente') {
     header('Location: index.php'); exit();
@@ -11,35 +15,30 @@ if (!isset($_SESSION['login']) || $_SESSION['rol'] !== 'gerente') {
 // --- LÓGICA DE BORRADO ---
 if (isset($_GET['delete'])) {
     $id = intval($_GET['delete']);
+    $usuarioBorrar = Usuario::buscaPorId($id);
     
-    //  No borrarse a uno mismo
-    if ($id == $_SESSION['idUsuario']) {
-        header('Location: gestion_usuarios.php?error=autoborrado'); exit();
-    }
-
-    // No borrar al último gerente
-    $resU = $conn->query("SELECT rol FROM Usuarios WHERE id = $id");
-    $u_a_borrar = $resU->fetch_assoc();
-    $resU>free();
-
-    if ($u_a_borrar['rol'] === 'gerente') {
-        $resCount = $conn->query("SELECT COUNT(*) as total FROM Usuarios WHERE rol = 'gerente'");
-        $totalGerentes = $resCount->fetch_assoc()['total'];
-        $resCount->free();
-        if ($totalGerentes <= 1) {
-            header('Location: gestion_usuarios.php?error=ultimo_gerente'); exit();
+    if ($usuarioBorrar){
+        //no borrarse a si mismo
+        if ($id == $_SESSION['idUsuario']) {
+            header('Location: gestion_usuarios.php?error=autoborrado'); exit();
         }
-    }
+        
+        // No borrar al último gerente
+       if ($usuarioBorrar->getRol() === 'gerente') {
+            if (Usuario::contarPorRol('gerente') <= 1) {
+                header('Location: gestion_usuarios.php?error=ultimo_gerente');
+                exit();
+            }
+        }
 
-    // Borrado en cascada
-    $conn->query("DELETE FROM Lineas_Pedido WHERE id_pedido IN (SELECT id FROM Pedidos WHERE id_cliente = $id)");
-    $conn->query("DELETE FROM Pedidos WHERE id_cliente = $id");
-    $conn->query("DELETE FROM Usuarios WHERE id = $id");
-    
-    header('Location: gestion_usuarios.php?msg=borrado_ok'); exit();
+        $usuarioBorrar->borrar();
+        header('Location: gestion_usuarios.php?msg=borrado_ok'); 
+        exit();
+    }
+   
 }
 
-$usuarios = $conn->query("SELECT * FROM Usuarios ORDER BY rol DESC");
+$usuarios = Usuario::listar();
 include 'vistas/comun/cabecera.php';
 ?>
 <div class="contenedor-principal">
@@ -71,21 +70,21 @@ include 'vistas/comun/cabecera.php';
                 </tr>
             </thead>
             <tbody>
-                <?php while($u = $usuarios->fetch_assoc()): ?>
+                <?php foreach($usuarios as $u): ?>
                 <?php 
-                    $confirmMsg = ($u['rol'] === 'cliente') ? "¿Borrar usuario? (Se eliminarán sus pedidos)" : "¿Seguro que quieres borrar este usuario?";
+                    $confirmMsg = ($u->getRol() === 'cliente') ? "¿Borrar usuario? (Se eliminarán sus pedidos)" : "¿Seguro que quieres borrar este usuario?";
                 ?>
                 <tr>
-                    <td><?= htmlspecialchars($u['username']) ?></td>
-                    <td><?= htmlspecialchars($u['nombre']) ?></td>
-                    <td><span class="etiqueta-rol <?= $u['rol'] ?>"><?= strtoupper($u['rol']) ?></span></td>
+                    <td><?= htmlspecialchars($u->getNombreUsuario()) ?></td>
+                    <td><?= htmlspecialchars($u->getNombre()) ?></td>
+                    <td><span class="etiqueta-rol <?= $u->getRol() ?>"><?= strtoupper($u->getRol()) ?></span></td>
                     <td>
-                        <a href="usuarios.php?id=<?= $u['id'] ?>" class="enlace-editar">📝 Editar</a> | 
-                        <a href="?delete=<?= $u['id'] ?>" class="enlace-borrar" 
+                        <a href="usuarios.php?id=<?= $u->getId() ?>" class="enlace-editar">📝 Editar</a> | 
+                        <a href="?delete=<?= $u->getId() ?>" class="enlace-borrar" 
                            onclick="return confirm('<?= $confirmMsg ?>')">🗑️ Borrar</a>
                     </td>
                 </tr>
-                <?php endwhile; ?>
+                <?php endforeach; ?>
             </tbody>
         </table>
     </main>

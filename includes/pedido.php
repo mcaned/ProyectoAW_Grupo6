@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/clases/aplicacion.php';
+require_once __DIR__ . '/clases/pedidos.php';
 $app = Aplicacion::getInstance(); $app->init();
 
 if (!isset($_SESSION['login'])) {
@@ -10,13 +11,8 @@ if (!isset($_SESSION['login'])) {
 $conn = $app->conexionBd();
 $idUsuario = $_SESSION['idUsuario']; 
 
-$query = sprintf("SELECT p.*, u.nombre 
-                  FROM Pedidos p 
-                  JOIN Usuarios u ON p.id_cliente = u.id 
-                  WHERE p.id_cliente = %d 
-                  ORDER BY p.fecha_hora DESC", $idUsuario);
+$pedidos = Pedido::buscaPorUsuario($idUsuario);
 
-$result = $conn->query($query);
 include __DIR__ . '/vistas/comun/cabecera.php';
 ?>
 
@@ -26,7 +22,7 @@ include __DIR__ . '/vistas/comun/cabecera.php';
     <main class="contenido-central">
         <h1 class = "texto-centrado">Mis Pedidos Personales</h1>
 
-        <?php if ($result && $result->num_rows > 0): ?>
+        <?php if (!empty($pedidos)): ?>
             <table class="tabla-gestion">
                 <thead>
                     <tr>
@@ -40,28 +36,27 @@ include __DIR__ . '/vistas/comun/cabecera.php';
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($pedido = $result->fetch_assoc()): ?>
+                    <?php foreach ($pedidos as $pedido): ?>
                         <tr>
-                            <td>#<?= $pedido['numero_pedido'] ?></td>
-                            <td><?= htmlspecialchars($pedido['nombre']) ?></td>
-                            <td><?= date('d/m/Y H:i', strtotime($pedido['fecha_hora'])) ?></td>
-                            <td><?= htmlspecialchars($pedido['tipo']) ?></td>
+                            <td>#<?= $pedido->getNumpedido() ?></td>
+                            <td><?= htmlspecialchars($pedido->getNombreCliente()) ?></td>
+                            <td><?= date('d/m/Y H:i', strtotime($pedido->getFechahora())) ?></td>
+                            <td><?= htmlspecialchars($pedido->getTipo()) ?></td>
                             <td>
                                 <span class="etiqueta-estado">
-                                    <?= htmlspecialchars($pedido['estado']) ?>
+                                    <?= htmlspecialchars($pedido->getEstado()) ?>
                                 </span>
                             </td>
-                            <td><strong><?= number_format($pedido['total'], 2) ?>€</strong></td>
+                            <td><strong><?= number_format($pedido->getTotal(), 2) ?>€</strong></td>
                             <td>
-                                <a href="detallePedido.php?id=<?= $pedido['id'] ?>" class="enlace-editar">
+                                <a href="detallePedido.php?id=<?= $pedido->getId() ?>" class="enlace-editar">
                                     Ver detalle
                                 </a>
                             </td>
                         </tr>
-                    <?php endwhile; ?>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
-            <?php $result->free(); ?>
         <?php else: ?>
             <div class="cocina-vacia">
                 <p>No has realizado ningún pedido aún.</p>

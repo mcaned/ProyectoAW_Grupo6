@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/clases/aplicacion.php';
+require_once __DIR__ . '/clases/pedidos.php';
+require_once __DIR__ . '/clases/lineas_pedido.php';
 
 $app = Aplicacion::getInstance();
 $app->init();
@@ -11,35 +13,19 @@ if (!isset($_SESSION['login']) || $_SESSION['rol'] !== 'cocinero') {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $conn = $app->conexionBd();
     $accion = $_POST['accion'] ?? '';
-
+    $id_pedido = isset($_POST['id_pedido']) ? intval($_POST['id_pedido']) : null;
+    $id_usuario = $_SESSION['idUsuario'];
+    
     if ($accion === 'tomar_pedido') {
-        $id_pedido = intval($_POST['id_pedido']);
-        $id_cocinero = $_SESSION['idUsuario'];
-        
-        $stmt = $conn->prepare("UPDATE Pedidos SET estado = 'Cocinando', id_cocinero = ? WHERE id = ? AND estado = 'En preparación'");
-        $stmt->bind_param("ii", $id_cocinero, $id_pedido);
-        $stmt->execute();
-        $stmt->close();
+       Pedido::tomarPedido($id_pedido, $id_usuario);
     }
     elseif ($accion === 'alternar_producto') {
-        $id_pedido = intval($_POST['id_pedido']);
         $id_producto = intval($_POST['id_producto']);
-        
-        $stmt = $conn->prepare("UPDATE Lineas_Pedido SET preparado = NOT preparado WHERE id_pedido = ? AND id_producto = ?");
-        $stmt->bind_param("ii", $id_pedido, $id_producto);
-        $stmt->execute();
-        $stmt->close();
+        LineaPedido::alternarPreparado($id_pedido, $id_producto);
     }
     elseif ($accion === 'finalizar_pedido') {
-        $id_pedido = intval($_POST['id_pedido']);
-        $id_cocinero = $_SESSION['idUsuario'];
-        
-        $stmt = $conn->prepare("UPDATE Pedidos SET estado = 'Listo cocina' WHERE id = ? AND id_cocinero = ?");
-        $stmt->bind_param("ii", $id_pedido, $id_cocinero);
-        $stmt->execute();
-        $stmt->close();
+        Pedido::finalizarPedido($id_pedido, $id_usuario);
     }
 
     header('Location: ../cocina.php');

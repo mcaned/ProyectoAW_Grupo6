@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/clases/aplicacion.php';
-require_once __DIR__ . '/clases/pedido.php';
+require_once __DIR__ . '/clases/pedidos.php';
 
 $app = Aplicacion::getInstance(); $app->init();
 
@@ -34,7 +34,7 @@ include __DIR__ . '/vistas/comun/cabecera.php';
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($pedido as $p):  ?>
+                    <?php foreach ($pedidos as $p):  ?>
                         <tr>
                             <td>#<?= $p->getNumpedido() ?></td>
                             <td><?= htmlspecialchars($p->getNombreCliente()) ?></td>
