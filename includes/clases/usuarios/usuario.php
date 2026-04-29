@@ -97,7 +97,8 @@ class Usuario {
 
     public function actualiza() {
         $conn = Aplicacion::getInstance()->conexionBd();
-        $query = sprintf("UPDATE Usuarios SET nombre='%s', apellidos='%s', email='%s', rol='%s', avatar_url='%s' WHERE id=%d",
+        $query = sprintf("UPDATE Usuarios SET username='%s', nombre='%s', apellidos='%s', email='%s', rol='%s', avatar_url='%s' WHERE id=%d",
+            $conn->real_escape_string($this->nombreUsuario),
             $conn->real_escape_string($this->nombre),
             $conn->real_escape_string($this->apellidos),
             $conn->real_escape_string($this->email),
@@ -105,6 +106,53 @@ class Usuario {
             $conn->real_escape_string($this->avatar),
             $this->id
         );
+        return $conn->query($query);
+    }
+
+    public static function listar() {
+        $conn = Aplicacion::getInstance()->conexionBd();
+        $query = "SELECT * FROM usuarios ORDER BY rol DESC";
+        $rs = $conn->query($query);
+        $lista = [];
+        if ($rs) {
+            while ($f = $rs->fetch_assoc()) {
+                $lista[] = new Usuario(
+                    $f['username'], $f['password_hash'], $f['nombre'], 
+                    $f['apellidos'], $f['email'], $f['rol'], $f['avatar_url'], $f['id']
+                );
+            }
+            $rs->free();
+        }
+        return $lista;
+    }
+
+    public static function buscaPorId($id) {
+        $conn = Aplicacion::getInstance()->conexionBd();
+        $query = sprintf("SELECT * FROM Usuarios WHERE id=%d", intval($id));
+        $rs = $conn->query($query);
+        if ($rs && $f = $rs->fetch_assoc()) {
+            return new Usuario(
+                $f['username'], $f['password_hash'], $f['nombre'], 
+                $f['apellidos'], $f['email'], $f['rol'], $f['avatar_url'], $f['id']
+            );
+        }
+        return false;
+    }
+
+    public static function contarPorRol($rol) {
+        $conn = Aplicacion::getInstance()->conexionBd();
+        $query = sprintf("SELECT COUNT(*) as total FROM Usuarios WHERE rol='%s'", $conn->real_escape_string($rol));
+        $rs = $conn->query($query);
+        return ($rs) ? $rs->fetch_assoc()['total'] : 0;
+    }
+
+    public function borrar() {
+        if (!$this->id) return false;
+        $conn = Aplicacion::getInstance()->conexionBd();
+        
+        Pedido::borrarPorCliente($this->id);
+        
+        $query = sprintf("DELETE FROM Usuarios WHERE id = %d", $this->id);
         return $conn->query($query);
     }
 
@@ -116,6 +164,7 @@ class Usuario {
     public function getEmail() { return $this->email; }
     public function getAvatar() { return $this->avatar; }
 
+    public function setUser($nombreUsuario) { $this->nombreUsuario = $nombreUsuario; }
     public function setNombre($nombre) { $this->nombre = $nombre; }
     public function setApellidos($apellidos) { $this->apellidos = $apellidos; }
     public function setEmail($email) { $this->email = $email; }

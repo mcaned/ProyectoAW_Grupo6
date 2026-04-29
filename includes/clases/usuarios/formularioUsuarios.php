@@ -1,11 +1,13 @@
 <?php
 require_once __DIR__ . '/../formulario.php';
 require_once __DIR__ . '/../aplicacion.php';
+require_once __DIR__ . '/usuario.php';
+require_once __DIR__ . '/../pedidos.php';
 
 class formularioUsuario extends Formulario {
 
     private $idUsuario;
-    private $datosUsuario;
+    private $objetoUsuario;
 
     public function __construct($idUsuario = null) {
         $this->idUsuario = $idUsuario;
@@ -16,43 +18,27 @@ class formularioUsuario extends Formulario {
     }
 
     private function cargarDatos() {
-        $app = Aplicacion::getInstance();
-        $conn = $app->conexionBd();
-
-        // Valores por defecto para creación
-        $this->datosUsuario = [
-            'username' => '', 
-            'email' => '', 
-            'nombre' => '', 
-            'apellidos' => '', 
-            'rol' => 'cliente'
-        ];
-
-        if ($this->idUsuario) {
-            $id = intval($this->idUsuario);
-            $res = $conn->query("SELECT * FROM Usuarios WHERE id = $id");
-            if ($res && $res->num_rows > 0) {
-                $this->datosUsuario = $res->fetch_assoc();
-            }
+        if ($this->idUsuario){
+            $this->objetoUsuario = Usuario::buscaPorId($this->idUsuario);
         }
     }
 
     protected function generaCamposFormulario($datosIniciales) {
-        // Combinamos datos de la BD con lo que el usuario haya escrito si hubo error
-        $u = array_merge($this->datosUsuario, $datosIniciales);
         
-        $user = htmlspecialchars($u['username']);
-        $email = htmlspecialchars($u['email']);
-        $nom = htmlspecialchars($u['nombre']);
-        $ape = htmlspecialchars($u['apellidos']);
+        $user = htmlspecialchars($datosIniciales['username'] ?? ($this->objetoUsuario ? $this->objetoUsuario->getNombreUsuario() : ''));
+        $email = htmlspecialchars($datosIniciales['email'] ?? ($this->objetoUsuario ? $this->objetoUsuario->getEmail() : ''));
+        $nom = htmlspecialchars($datosIniciales['nombre'] ?? ($this->objetoUsuario ? $this->objetoUsuario->getNombre() : ''));
+        $ape = htmlspecialchars($datosIniciales['apellidos'] ?? ($this->objetoUsuario ? $this->objetoUsuario->getApellidos() : ''));
+        $rolActual = $datosIniciales['rol'] ?? ($this->objetoUsuario ? $this->objetoUsuario->getRol() : 'cliente');
         
         $id = $this->idUsuario;
         $labelPass = $id ? '(vacío para no cambiar)' : '';
         $requiredPass = $id ? '' : 'required';
 
         // Helper para marcar el select
-        $selRol = function($rol) use ($u) { return $u['rol'] == $rol ? 'selected' : ''; };
-
+        $selRol = function($rol) use ($rolActual) { 
+            return $rolActual == $rol ? 'selected' : ''; 
+        };
         // El onsubmit se mantiene en la etiqueta <form> (inyectada por la clase base)
         // pero aquí definimos el contenido interno
         return <<<EOF
@@ -81,7 +67,7 @@ class formularioUsuario extends Formulario {
         
         <script>
         document.getElementById('formEdicionUsuario').onsubmit = function() {
-            var rolOriginal = "{$this->datosUsuario['rol']}";
+            var rolOriginal = "$rolActual";
             var nuevoRol = document.getElementById('selector_rol').value;
             if (rolOriginal === 'cliente' && nuevoRol !== 'cliente') {
                 return confirm("¡ADVERTENCIA! Se borrarán los pedidos del cliente al cambiarle el rol. ¿Continuar?");
@@ -93,46 +79,43 @@ EOF;
     }
 
     protected function procesaFormulario($datos) {
-        $app = Aplicacion::getInstance();
-        $conn = $app->conexionBd();
 
         $id = $this->idUsuario;
-        $user = $conn->real_escape_string($datos['username'] ?? '');
-        $email = $conn->real_escape_string($datos['email'] ?? '');
-        $nom = $conn->real_escape_string($datos['nombre'] ?? '');
-        $ape = $conn->real_escape_string($datos['apellidos'] ?? '');
-        $nuevo_rol = $conn->real_escape_string($datos['rol'] ?? 'cliente');
-        $pass_plana = $datos['password'] ?? '';
+        $nuevo_rol = $datos['rol'] ?? 'cliente';
 
         // 1. Lógica de seguridad: No dejar al sistema sin gerentes
-        if ($id && $this->datosUsuario['rol'] === 'gerente' && $nuevo_rol !== 'gerente') {
-            $resCount = $conn->query("SELECT COUNT(*) as total FROM Usuarios WHERE rol = 'gerente'");
-            if ($resCount->fetch_assoc()['total'] <= 1) {
+        if ($id && $this->objetoUsuario->getRol() === 'gerente' && $nuevo_rol !== 'gerente') {
+            if (Usuario::contarPorRol('gerente') <= 1) {
                 return ["⚠️ No puedes cambiar el rol al último GERENTE."];
             }
         }
 
         // 2. Lógica de integridad: Borrar pedidos si deja de ser cliente
-        if ($id && $this->datosUsuario['rol'] === 'cliente' && $nuevo_rol !== 'cliente') {
-            $conn->query("DELETE FROM Lineas_Pedido WHERE id_pedido IN (SELECT id FROM Pedidos WHERE id_cliente = $id)");
-            $conn->query("DELETE FROM Pedidos WHERE id_cliente = $id");
+        if ($id && $this->objetoUsuario->getRol() === 'cliente' && $nuevo_rol !== 'cliente') {
+           Pedido::borrarPorCliente($id);
         }
 
         // 3. Preparar SQL
         if ($id) {
-            $sql = "UPDATE Usuarios SET username='$user', email='$email', nombre='$nom', apellidos='$ape', rol='$nuevo_rol'";
-            if (!empty($pass_plana)) {
-                $hash = password_hash($pass_plana, PASSWORD_DEFAULT);
-                $sql .= ", password_hash='$hash'";
-            }
-            $sql .= " WHERE id=$id";
+            $u = $this->objetoUsuario;
+            $u->setUser($datos['username']);
+            $u->setNombre($datos['nombre']);
+            $u->setApellidos($datos['apellidos']);
+            $u->setEmail($datos['email']);
+            $u->setRol($nuevo_rol);
+            $resultado = $u->actualiza();
         } else {
-            $hash = password_hash($pass_plana, PASSWORD_DEFAULT);
-            $sql = "INSERT INTO Usuarios (username, email, nombre, apellidos, password_hash, rol, avatar_url) 
-                    VALUES ('$user', '$email', '$nom', '$ape', '$hash', '$nuevo_rol', 'defecto.png')";
+           $resultado = Usuario::crea(
+                $datos['username'], 
+                $datos['password'], 
+                $datos['nombre'], 
+                $datos['apellidos'], 
+                $datos['email'], 
+                $nuevo_rol
+            );
         }
 
-        if ($conn->query($sql)) {
+        if ($resultado) {
             // 4. Lógica de Sesión: Si el editado soy YO mismo
             if ($id == $_SESSION['idUsuario']) {
                 session_destroy(); 
@@ -142,7 +125,7 @@ EOF;
             header('Location: gestion_usuarios.php?msg=ok'); 
             exit();
         } else { 
-            return ["Error al guardar: " . $conn->error];
+            return ["Error al guardar: " ];
         }
     }
 }
