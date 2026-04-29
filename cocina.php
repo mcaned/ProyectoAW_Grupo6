@@ -1,7 +1,9 @@
 <?php
 require_once __DIR__ . '/includes/config.php';
 require_once __DIR__ . '/includes/clases/aplicacion.php';
-require_once __DIR__ . '/includes/clases/Producto.php';
+require_once __DIR__ . '/includes/clases/producto.php';
+require_once __DIR__ . '/includes/clases/pedidos.php';
+require_once __DIR__ . '/includes/clases/lineas_pedido.php';
 
 $app = Aplicacion::getInstance();
 $app->init();
@@ -10,16 +12,11 @@ if (!isset($_SESSION['login']) || $_SESSION['rol'] !== 'cocinero') {
     header('Location: index.php');
     exit();
 }
+$id_mi_usuario = (int)$_SESSION['idUsuario'];
+$pedidosPendientes = Pedido::buscarPedidosPorEstado('En preparación');
+$pedidosMios = Pedido::buscarPedidosPorEstado('Cocinando', $id_mi_usuario); 
 
 include 'includes/vistas/comun/cabecera.php';
-$conn = $app->conexionBd();
-$id_mi_usuario = (int)$_SESSION['idUsuario'];
-
-$queryPendientes = "SELECT * FROM Pedidos WHERE estado = 'En preparación' ORDER BY fecha_hora ASC";
-$resPendientes = $conn->query($queryPendientes);
-
-$queryMios = "SELECT * FROM Pedidos WHERE estado = 'Cocinando' AND id_cocinero = $id_mi_usuario ORDER BY fecha_hora ASC";
-$resMios = $conn->query($queryMios);
 ?>
 
 <div class="contenedor-principal">
@@ -32,58 +29,49 @@ $resMios = $conn->query($queryMios);
 
         <h2 class="texto-rojo">🔥 Mis Fogones (Cocinando)</h2>
         <div class="cuadricula-pedidos">
-            <?php if ($resMios && $resMios->num_rows > 0): ?>
-                <?php while ($row = $resMios->fetch_assoc()): ?>
+            <?php if (!empty($pedidosMios)): ?>
+                <?php foreach ($pedidosMios as $pedido): ?>
                     <div class="tarjeta">
                         <div class="info-tarjeta">
-                            <h2 class="id-pedido">#<?= $row['numero_pedido'] ?></h2>
-                            <span class="tipo-pedido"><?= strtoupper($row['tipo']) ?></span>
+                            <h2 class="id-pedido">#<?= $pedido->getNumpedido() ?></h2>
+                            <span class="tipo-pedido"><?= strtoupper($pedido->getTipo()) ?></span>
                         </div>
 
                         <div class="lista-productos-cocina">
                             <ul>
                                 <?php 
-                                $idPedido = (int)$row['id'];
-                                $queryItems = "SELECT lp.cantidad, pr.nombre, pr.id as id_producto, lp.preparado 
-                                               FROM Lineas_Pedido lp 
-                                               JOIN Productos pr ON lp.id_producto = pr.id 
-                                               WHERE lp.id_pedido = $idPedido";
-                                $items = $conn->query($queryItems); 
+                                $lineas = $pedido->getLineas();
                                 $todos_preparados = true;
 
-                                while ($item = $items->fetch_assoc()): 
-                                    $producto = Producto::buscaPorId($item['id_producto']);
-                                    if ($producto):
-                                        if (!$item['preparado']) $todos_preparados = false;
+                                foreach ($lineas as $linea): 
+                                    $producto = $linea->getProducto();
+                                    if (!$linea->estaPreparado()) $todos_preparados = false;
                                 ?>
                                     <li >
                                         <span>
-                                            <strong><?= $item['cantidad'] ?>x</strong> <?= htmlspecialchars($producto->getNombre()) ?>
+                                            <strong><?= $linea->getCantidad() ?>x</strong> <?= htmlspecialchars($producto->getNombre()) ?>
                                         </span>
                                         <form action="includes/procesar_cocina.php" method="POST">
                                             <input type="hidden" name="accion" value="alternar_producto">
-                                            <input type="hidden" name="id_pedido" value="<?= $row['id'] ?>">
-                                            <input type="hidden" name="id_producto" value="<?= (int)$producto->getId() ?>">
-                                            <button type="submit" class="btn ">
-                                                <?= $item['preparado'] ? 'Deshacer' : '✔ Listo' ?>
+                                            <input type="hidden" name="id_pedido" value="<?= $pedido->getId() ?>">
+                                            <input type="hidden" name="id_producto" value="<?= $producto->getId() ?>">
+                                            <button type="submit" class="btn">
+                                                <?= $linea->estaPreparado() ? 'Deshacer' : '✔ Listo' ?>
                                             </button>
-                                        </form>
+                                        </form
                                     </li>
-                                <?php endif; endwhile; ?>
-                                <?php if($items) $items->free(); ?>
-                            </ul>
+                                <?php endforeach; ?>
                         </div>
 
                         <form action="includes/procesar_cocina.php" method="POST" class="margen-superior">
                             <input type="hidden" name="accion" value="finalizar_pedido">
-                            <input type="hidden" name="id_pedido" value="<?= $row['id'] ?>">
+                            <input type="hidden" name="id_pedido" value="<?= $pedido->getId() ?>">
                             <button type="submit" class="btn-listo" <?= !$todos_preparados ? 'onclick="return confirm(\'Faltan platos. ¿Seguro?\')"' : '' ?>>
                                 🛎️ FINALIZAR PEDIDO
                             </button>
                         </form>
                     </div>
-                <?php endwhile; ?>
-                <?php $resMios->free(); ?>
+                <?php endforeach; ?>
             <?php else: ?>
                 <div class="cocina-vacia">
                     <h3>No tienes pedidos activos.</h3>
@@ -93,23 +81,21 @@ $resMios = $conn->query($queryMios);
 
         <h2 class="margen-superior">📥 Pedidos a la espera</h2>
         <div class="cuadricula-pedidos">
-            <?php if ($resPendientes && $resPendientes->num_rows > 0): ?>
-                <?php while ($row = $resPendientes->fetch_assoc()): ?>
+            <?php if (!empty($pedidosPendientes)): ?>
+                <?php foreach ($pedidosPendientes as $pedido): ?>
                     <div class="tarjeta">
                         <div class="info-tarjeta">
-                            <h2 class="id-pedido">#<?= (int)$row['numero_pedido'] ?></h2>
-                            <span class="tipo-pedido"><?= strtoupper($row['tipo']) ?></span>
-                        </div>
+                            <h2 class="id-pedido">#<?= $pedido->getNumpedido() ?></h2>
+                            <span class="tipo-pedido"><?= strtoupper($pedido->getTipo()) ?></span></div>
                         <form action="<?= RUTA_APP ?>/includes/procesar_cocina.php"  method="POST" class="margen-superior">
                             <input type="hidden" name="accion" value="tomar_pedido">
-                            <input type="hidden" name="id_pedido" value="<?= $row['id'] ?>">
+                            <input type="hidden" name="id_pedido" value="<?= $pedido->getId() ?>">
                             <button type="submit" class="btn-oscuro">
                                 👨‍🍳 TOMAR PEDIDO
                             </button>
                         </form>
                     </div>
-                <?php endwhile; ?>
-                <?php if($resPendientes) $resPendientes->free();?>
+                <?php endforeach; ?>
             <?php else: ?>
                 <div class="cocina-vacia">
                     <h3>No hay pedidos a la espera.</h3>
