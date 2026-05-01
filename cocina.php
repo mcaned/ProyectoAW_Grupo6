@@ -47,7 +47,7 @@ include 'includes/vistas/comun/cabecera.php';
                                     $producto = $linea->getProducto();
                                     if (!$linea->estaPreparado()) $todos_preparados = false;
                                 ?>
-                                    <li >
+                                    <li>
                                         <span>
                                             <strong><?= $linea->getCantidad() ?>x</strong> <?= htmlspecialchars($producto->getNombre()) ?>
                                         </span>
@@ -58,9 +58,10 @@ include 'includes/vistas/comun/cabecera.php';
                                             <button type="submit" class="btn">
                                                 <?= $linea->estaPreparado() ? 'Deshacer' : '✔ Listo' ?>
                                             </button>
-                                        </form
+                                        </form>
                                     </li>
                                 <?php endforeach; ?>
+                            </ul>
                         </div>
 
                         <form action="includes/procesar_cocina.php" method="POST" class="margen-superior">

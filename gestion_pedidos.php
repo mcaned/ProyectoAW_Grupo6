@@ -34,7 +34,7 @@ include 'includes/vistas/comun/cabecera.php';
                         <div class="tarjeta">
                             <div class="info-tarjeta">
                                 <strong class="id-pedido">Pedido #<?= $p->getId() ?></strong>
-                                <form action="<?= RUTA_APP ?>/includes/actualizarEstado.php" method="POST" style="margin:0;">
+                                <form action="<?= RUTA_APP ?>/includes/actualizarEstado.php" method="POST" >
                                     <input type="hidden" name="id_pedido" value="<?= $p->getId() ?>">
                                     <input type="hidden" name="nuevo_estado" value="En preparación">
                                     <button type="submit" class="btn">COBRAR</button>

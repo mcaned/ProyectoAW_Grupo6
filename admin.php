@@ -1,7 +1,8 @@
 <?php
 require_once __DIR__ . '/includes/config.php';
 require_once __DIR__ . '/includes/clases/aplicacion.php';
-$app = Aplicacion::getInstance(); $app->init();
+$app = Aplicacion::getInstance(); 
+$app->init();
 
 if (!isset($_SESSION['login']) || $_SESSION['rol'] !== 'gerente') {
     header('Location: index.php'); exit();
@@ -34,6 +35,9 @@ include 'includes/vistas/comun/cabecera.php';
             </li>
             <li class="item-admin">
                 <a href="includes/gestion_usuarios.php" class="enlace-admin">👥 Gestionar Usuarios</a>
+            </li>
+            <li class="item-admin">
+                <a href="includes/gestion_ofertas.php" class="enlace-admin">💰 Gestionar Ofertas</a>
             </li>
         </ul>
     </main>
