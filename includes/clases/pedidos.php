@@ -12,8 +12,10 @@ class Pedido {
     private $tipo;
     private $estado;
     private $total; 
+    private $subtotal_sinDescuento;
+    private $totalAhorrado;
 
-    public function __construct($id, $numero_pedido, $id_cliente, $id_cocinero, $fecha_hora, $tipo, $estado, $total, $nombreCliente = null) {
+    public function __construct($id, $numero_pedido, $id_cliente, $id_cocinero, $fecha_hora, $tipo, $estado, $total, $nombreCliente = null, $subtotal_sinDescuento, $totalAhorrado) {
         $this->id = $id;
         $this->numero_pedido = $numero_pedido;
         $this->id_cliente = $id_cliente;
@@ -23,6 +25,8 @@ class Pedido {
         $this->estado = $estado;
         $this->total = $total;
         $this->nombreCliente = $nombreCliente;
+        $this->subtotal_sinDescuento = $subtotal_sinDescuento; 
+        $this->totalAhorrado = $totalAhorrado; 
     }
 
 
@@ -56,23 +60,33 @@ class Pedido {
         return $pedidos;
     }
 
-    public static function crear($id_cliente, $tipo, $carrito) {
+    public static function crear($id_cliente, $tipo, $carrito, $idOfertas = []) {
         $app = Aplicacion::getInstance();
         $conn = $app->conexionBd();
 
-        $total = 0;
+        $subtotal_sinDescuento = 0;
         foreach ($carrito as $id_prod => $cantidad) {
             $p = Producto::buscaPorId($id_prod);
-            if ($p) $total += $p->getPrecioFinal() * $cantidad;
+            if ($p) $subtotal_sinDescuento += $p->getPrecioFinal() * $cantidad;
         }
+
+
+        $totalAhorrado = GestorOfertas::calcularAhorro($carrito, $idOfertas);
+        $totalAPagar = $subtotal_sinDescuento - $totalAhorrado;
 
         $resNum = $conn->query("SELECT MAX(numero_pedido) as ultimo FROM pedidos WHERE DATE(fecha_hora) = CURDATE()");
         $filaNum = $resNum->fetch_assoc();
+        $resNum->free();
         $nuevo_num = ($filaNum['ultimo'] ?? 0) + 1;
 
         $queryPedido = sprintf(
-            "INSERT INTO pedidos (numero_pedido, id_cliente, tipo, estado, total) VALUES (%d, %d, '%s', 'Recibido', %F)",
-            $nuevo_num, $id_cliente, $conn->real_escape_string($tipo), $total
+            "INSERT INTO pedidos (numero_pedido, id_cliente, tipo, estado, total, subtotal_sin_descuento, ahorro_ofertas) VALUES (%d, %d, '%s', 'Recibido', %F, %F, %F)",
+            $nuevo_num,
+            $id_cliente, 
+            $conn->real_escape_string($tipo), 
+            $totalAPagar, 
+            $subtotal_sinDescuento, 
+            $totalAhorrado
         );
 
         if ($conn->query($queryPedido)) {
@@ -99,13 +113,15 @@ class Pedido {
             $f['tipo'],
             $f['estado'],
             $f['total'],
-            $f['nombre_cliente'] ?? null
+            $f['nombre_cliente'] ?? null,
+            $f['subtotal_sin_descuento'],
+            $f['ahorro_ofertas']
         );
     }
 
     public static function borrar($id) {
         $conn = Aplicacion::getInstance()->conexionBd();
-        $query = "DELETE FROM pedidos WHERE id = intval($id)";
+        $query = "DELETE FROM pedidos WHERE id = ". intval($id);
         
         return $conn->query($query);
     }
@@ -191,8 +207,8 @@ class Pedido {
         return $conn->query($queryPedidos);
     }
 
-    // Método extendido para el detalle con información del cliente y cocinero
-    public static function buscaDetallePorId($id) { //detallePedido
+   
+    public static function buscaDetallePorId($id) { 
         $conn = Aplicacion::getInstance()->conexionBd();
         $query = sprintf("SELECT p.*, u.nombre as nombre_cliente, u.apellidos as apellidos_cliente, u.email as email_cliente,
                                 c.nombre as nombre_cocinero, c.avatar_url as avatar_cocinero 
@@ -203,11 +219,12 @@ class Pedido {
         $rs = $conn->query($query);
         if ($rs && $f = $rs->fetch_assoc()) {
             $p = self::creaDesdeFila($f);
-            // Guardamos datos extra dinámicamente o mediante propiedades nuevas
+     
             $p->nombreCliente = $f['nombre_cliente'] . ' ' . $f['apellidos_cliente'];
             $p->emailCliente = $f['email_cliente'];
             $p->nombreCocinero = $f['nombre_cocinero'];
             $p->avatarCocinero = $f['avatar_cocinero'];
+            $rs->free();
             return $p;
         }
         return null;
@@ -215,7 +232,7 @@ class Pedido {
 
 
     public static function buscarPedidosPorEstado($estado, $idCocinero = null) {    
-        $conn = Aplicacion::getInstance()->conexionBd(); // Base de la consulta 
+        $conn = Aplicacion::getInstance()->conexionBd(); 
         if ($idCocinero !== null) { 
             $query = sprintf( "SELECT * FROM pedidos WHERE estado = '%s' AND id_cocinero = %d ORDER BY fecha_hora ASC", 
             $conn->real_escape_string($estado), intval($idCocinero) ); 
@@ -254,5 +271,8 @@ class Pedido {
     public function getEstado() { return $this->estado; }
     public function getTotal() { return $this->total; }
     public function getNombreCliente() { return $this->nombreCliente; }
-    
+    public function getTotalAhorrado(){
+        return $this->totalAhorrado;
+    }
+    public function getSinDescuento(){return $this->subtotal_sinDescuento;}
 }

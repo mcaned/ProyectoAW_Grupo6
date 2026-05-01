@@ -76,7 +76,6 @@ class Categoria {
             $rs->free(); 
             return ($f['total'] > 0);
         }
-    
         return false;
     }
 
