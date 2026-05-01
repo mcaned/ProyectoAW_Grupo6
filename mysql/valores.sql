@@ -33,3 +33,37 @@ INSERT INTO `Productos` (`id`, `id_categoria`, `nombre`, `descripcion`, `imagen_
 (18, 7, 'Agua Mineral', 'Botella 50cl','productos/aguamineral.jpg', 1.80, '10', 1, 1);
 
 
+INSERT INTO Ofertas (id, nombre, descripcion, comienzo, fin, descuento)
+VALUES (1, 'Menu Hamburguesa', 'Hamburguesa clasica + patatas bravas + coke', '2025-05-01', '2026-12-31', 15.00);
+
+INSERT INTO Ofertas_Productos (id_oferta, id_producto, cantidad)
+VALUES
+(1, 8, 1),  -- Hamburguesa Clásica
+(1, 5, 1),  -- Patatas Bravas
+(1, 17, 1); -- Coca-Cola
+
+INSERT INTO Ofertas (id, nombre, descripcion, comienzo, fin, descuento)
+VALUES (2, 'Pizza Pareja', '2 pizzas bbq + coca-cola', '2025-05-01', '2026-10-31', 20.00);
+
+INSERT INTO Ofertas_Productos (id_oferta, id_producto, cantidad)
+VALUES
+(2, 2, 2),  -- Pizza Barbacoa (2 unidades)
+(2, 17, 1); -- Coca-Cola
+
+INSERT INTO Ofertas (id, nombre, descripcion, comienzo, fin, descuento)
+VALUES (3, 'Menu Italiano', 'Pasta Carbonara + coca-cola + Tarta de Queso', '2025-05-01', '2026-09-30', 18.00);
+
+INSERT INTO Ofertas_Productos (id_oferta, id_producto, cantidad)
+VALUES
+(3, 11, 1), -- Spaghetti Carbonara
+(3, 17, 1), -- Coca-Cola
+(3, 15, 1); -- Tarta de Queso
+
+INSERT INTO Ofertas (id, nombre, descripcion, comienzo, fin, descuento)
+VALUES (4, 'Menú Picoteo', 'Alitas + Agua + Tarta de Queso', '2025-05-01', '2026-09-30', 10.00);
+
+INSERT INTO Ofertas_Productos (id_oferta, id_producto, cantidad)
+VALUES
+(4, 6, 1),  -- Alitas de Pollo
+(4, 18, 1), -- Agua Mineral
+(4, 15, 1); -- Tarta de Queso
