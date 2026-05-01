@@ -63,8 +63,7 @@ EOF;
         $apellidos = $datos['apellidos'] ?? '';
         $email = $datos['email'] ?? '';
         $avatar = $datos['avatar'] ?? '';
-        //recordad q real escape es para asegurar buenos datos
-        //de entrada, no posibles comandos a ejecutar
+
 
         if (empty($nombre) || empty($apellidos) || empty($email)) {
             return ["Los campos Nombre, Apellidos y Email son obligatorios."];

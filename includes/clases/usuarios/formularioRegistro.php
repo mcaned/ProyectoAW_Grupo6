@@ -6,6 +6,7 @@ class FormularioRegistro extends Formulario {
     public function __construct() {
         parent::__construct('formRegistro', ['action' => 'registro.php']);
     }
+    
 protected function generaCamposFormulario($datosIniciales) {
     return <<<EOF
     <div class="tarjeta-formulario formulario-estandar">
