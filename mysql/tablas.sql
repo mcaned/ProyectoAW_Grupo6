@@ -57,3 +57,27 @@ CREATE TABLE Lineas_Pedido (
     FOREIGN KEY (id_pedido) REFERENCES Pedidos(id),
     FOREIGN KEY (id_producto) REFERENCES Productos(id)
 );
+
+-- 6. Ofertas
+CREATE TABLE Ofertas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    comienzo DATETIME NOT NULL,
+    fin DATETIME NOT NULL,
+    descuento DECIMAL(5,2) NOT NULL -- porcentaje (ej: 15.00 = 15%)
+);
+
+-- 7. Relación Ofertas - Productos (con cantidades)
+CREATE TABLE Ofertas_Productos (
+    id_oferta INT NOT NULL,
+    id_producto INT NOT NULL,
+    cantidad INT NOT NULL,
+    PRIMARY KEY (id_oferta, id_producto),
+    FOREIGN KEY (id_oferta) REFERENCES Ofertas(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_producto) REFERENCES Productos(id)
+);
+
+ALTER TABLE Pedidos 
+ADD COLUMN subtotal_sin_descuento DECIMAL(10,2) NOT NULL AFTER total,
+ADD COLUMN ahorro_ofertas DECIMAL(10,2) NOT NULL AFTER subtotal_sin_descuento;
