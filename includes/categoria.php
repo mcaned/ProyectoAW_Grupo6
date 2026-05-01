@@ -24,7 +24,6 @@ include __DIR__ . '/vistas/comun/cabecera.php';
         <hr><br>
         
         <?php
-            // Instanciamos y gestionamos el formulario
             $form = new formularioCategoria($id);
             echo $form->gestiona();
         ?>

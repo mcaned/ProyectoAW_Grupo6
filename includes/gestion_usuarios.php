@@ -12,7 +12,6 @@ if (!isset($_SESSION['login']) || $_SESSION['rol'] !== 'gerente') {
     header('Location: index.php'); exit();
 }
 
-// --- LÓGICA DE BORRADO ---
 if (isset($_GET['delete'])) {
     $id = intval($_GET['delete']);
     $usuarioBorrar = Usuario::buscaPorId($id);
@@ -23,7 +22,7 @@ if (isset($_GET['delete'])) {
             header('Location: gestion_usuarios.php?error=autoborrado'); exit();
         }
         
-        // No borrar al último gerente
+        // no borrar al último gerente
        if ($usuarioBorrar->getRol() === 'gerente') {
             if (Usuario::contarPorRol('gerente') <= 1) {
                 header('Location: gestion_usuarios.php?error=ultimo_gerente');
@@ -49,9 +48,8 @@ include 'vistas/comun/cabecera.php';
             <a href="<?= RUTA_APP ?>/admin.php" class="btn-atras">⬅️ Volver al Panel</a>
         </div>
 
-        <!-- ALERTAS DE SEGURIDAD -->
         <?php if (isset($_GET['error'])): ?>
-            <div class="alerta-error-critico" style="background:#fee; color:red; padding:15px; border:1px solid red; margin-bottom:20px;">
+            <div class="alerta-error-critico">
                 <?php 
                     if($_GET['error'] == 'ultimo_gerente') echo "⚠️ Error: No puedes eliminar al último GERENTE. El sistema debe tener al menos uno.";
                     if($_GET['error'] == 'autoborrado') echo "⚠️ Error: No puedes eliminar tu propia cuenta mientras estás conectado.";
@@ -92,5 +90,4 @@ include 'vistas/comun/cabecera.php';
     <?php include 'vistas/comun/sideBarDer.php'; ?> 
 </div>
 <?php 
-$usuarios->free();
 include 'vistas/comun/pie.php'; ?>

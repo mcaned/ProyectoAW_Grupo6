@@ -10,7 +10,6 @@ if (!isset($_SESSION['ultimo_pedido'])) {
     exit();
 }
 
-$conn = $app->conexionBd();
 $id_pedido = $_SESSION['ultimo_pedido'];
 
 unset($_SESSION['carrito']);

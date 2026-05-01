@@ -2,13 +2,13 @@
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/clases/aplicacion.php';
 require_once __DIR__ . '/clases/pedidos.php';
-$app = Aplicacion::getInstance(); $app->init();
+$app = Aplicacion::getInstance(); 
+$app->init();
 
 if (!isset($_SESSION['login'])) {
     header('Location: login.php'); exit();
 }
 
-$conn = $app->conexionBd();
 $idUsuario = $_SESSION['idUsuario']; 
 
 $pedidos = Pedido::buscaPorUsuario($idUsuario);

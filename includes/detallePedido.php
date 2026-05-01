@@ -43,12 +43,12 @@ include 'vistas/comun/cabecera.php';
 
         <div class="contenedor-info-pedido">
             <div class="columna-info">
-                <h3>Datos del Cliente</h3>
+                <h2>Datos del Cliente</h2>
                 <p><strong>Nombre:</strong> <?= htmlspecialchars($cliente->getNombre() . " " . $cliente->getApellidos()) ?></p>
                 <p><strong>Email:</strong> <?= htmlspecialchars($cliente->getEmail()) ?></p>
             </div>
             <div class="columna-info">
-                <h3>Datos del Pedido</h3>
+                <h2>Datos del Pedido</h2>
                 <p><strong>Fecha:</strong> <?= date('d/m/Y H:i', strtotime($pedido->getfechahora())) ?></p>
                 <p><strong>Tipo:</strong> <?= htmlspecialchars($pedido->getTipo()) ?></p>
                 <p><strong>Estado:</strong> <span class="etiqueta-estado"><?= htmlspecialchars($pedido->getEstado()) ?></span></p>
@@ -98,6 +98,14 @@ include 'vistas/comun/cabecera.php';
                 <?php endforeach; ?>
             </tbody>
         </table>
+
+        <div class="bloque-total-pedido">
+            <h2 class="texto-rojo">TOTAL SIN DESCUENTO: <?= number_format($pedido->getSinDescuento(), 2) ?>€</h2>
+        </div>
+
+        <div class="bloque-total-pedido">
+            <h2 class="texto-rojo">TOTAL AHORRADO: <?= number_format($pedido->getTotalAhorrado(), 2) ?>€</h2>
+        </div>
 
         <div class="bloque-total-pedido">
             <h2 class="texto-rojo">TOTAL PAGADO: <?= number_format($pedido->getTotal(), 2) ?>€</h2>

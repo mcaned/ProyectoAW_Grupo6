@@ -3,7 +3,8 @@ require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/clases/aplicacion.php';
 require_once __DIR__ . '/clases/pedidos.php';
 
-$app = Aplicacion::getInstance(); $app->init();
+$app = Aplicacion::getInstance(); 
+$app->init();
 
 if (!isset($_SESSION['login']) || $_SESSION['rol'] !== 'gerente') {
     header('Location: index.php'); exit();
@@ -16,7 +17,7 @@ include __DIR__ . '/vistas/comun/cabecera.php';
 <div class="contenedor-principal">
     <main class="contenido-central">
         <div class="cabecera-seccion-flexible">
-            <h1>Gestión Global de Pedidos</h1>
+            <h1>📋 Gestión de Pedidos</h1>
             <a href="../admin.php" class="btn-atras">⬅️ Volver al Panel</a>
         </div>
 

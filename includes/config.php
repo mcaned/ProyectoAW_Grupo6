@@ -4,7 +4,7 @@
  * Parámetros de conexión a la BD
  */
 define('BD_HOST', 'localhost');
-define('BD_NAME', 'gluen');
+define('BD_NAME', 'martacaned');
 define('BD_USER', 'root');
 define('BD_PASS', '');
 
