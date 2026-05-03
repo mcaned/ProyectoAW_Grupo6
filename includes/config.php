@@ -3,7 +3,7 @@
 /**
  * Parámetros de conexión a la BD
  */
-define('BD_HOST', 'vm.008.db.swarm.test');
+define('BD_HOST', 'vm008.db.swarm.test');
 define('BD_NAME', 'Grupo06');
 define('BD_USER', 'Grupo06');
 define('BD_PASS', 'Grupo06');
