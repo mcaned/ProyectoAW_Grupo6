@@ -16,7 +16,7 @@ class Categoria {
 
     public static function buscaPorId($id) {
         $conn = Aplicacion::getInstance()->conexionBd();
-        $query = sprintf("SELECT * FROM categorias WHERE id=%d", intval($id));
+        $query = sprintf("SELECT * FROM Categorias WHERE id=%d", intval($id));
         $rs = $conn->query($query);
         if ($rs && $f = $rs->fetch_assoc()) {
             $result = new Categoria($f['id'], $f['nombre'], $f['descripcion'], $f['imagen_url']);
@@ -28,7 +28,7 @@ class Categoria {
 
     public static function listarTodas() {
         $conn = Aplicacion::getInstance()->conexionBd();
-        $query = "SELECT * FROM categorias ORDER BY nombre ASC";
+        $query = "SELECT * FROM Categorias ORDER BY nombre ASC";
         $rs = $conn->query($query);
         $categorias = [];
         if ($rs) {
@@ -48,9 +48,9 @@ class Categoria {
 
         if (isset($datos['id']) && !empty($datos['id'])) {
             $id = intval($datos['id']);
-            $query = "UPDATE categorias SET nombre='$nombre', descripcion='$desc', imagen_url='$img' WHERE id=$id";
+            $query = "UPDATE Categorias SET nombre='$nombre', descripcion='$desc', imagen_url='$img' WHERE id=$id";
         } else {
-            $query = "INSERT INTO categorias (nombre, descripcion, imagen_url) VALUES ('$nombre', '$desc', '$img')";
+            $query = "INSERT INTO Categorias (nombre, descripcion, imagen_url) VALUES ('$nombre', '$desc', '$img')";
         }
         return $conn->query($query);
     }
@@ -63,13 +63,13 @@ class Categoria {
             return false;
         }
 
-        $query = "DELETE FROM categorias WHERE id = $idLimpiado";
+        $query = "DELETE FROM Categorias WHERE id = $idLimpiado";
         return $conn->query($query);
     }
 
     public static function tieneProductos($id) {
         $conn = Aplicacion::getInstance()->conexionBd();
-        $query = sprintf("SELECT COUNT(*) as total FROM productos WHERE id_categoria = %d", intval($id));
+        $query = sprintf("SELECT COUNT(*) as total FROM Productos WHERE id_categoria = %d", intval($id));
         $rs = $conn->query($query);
         if ($rs) {
             $f = $rs->fetch_assoc();
