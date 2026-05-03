@@ -25,7 +25,7 @@ class LineaPedido {
 
     public static function buscaPorPedido($id_pedido) {
         $conn = Aplicacion::getInstance()->conexionBd();
-        $query = sprintf("SELECT * FROM lineas_pedido WHERE id_pedido = %d", intval($id_pedido));
+        $query = sprintf("SELECT * FROM Lineas_Pedido WHERE id_pedido = %d", intval($id_pedido));
         $rs = $conn->query($query);
         $lineas = [];
         while ($rs && $f = $rs->fetch_assoc()) {
