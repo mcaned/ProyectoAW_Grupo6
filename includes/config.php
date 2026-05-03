@@ -3,7 +3,7 @@
 /**
  * Parámetros de conexión a la BD
  */
-define('BD_HOST', 'localhost');
+define('BD_HOST', 'vm.008.db.swarm.test');
 define('BD_NAME', 'martacaned');
 define('BD_USER', 'root');
 define('BD_PASS', '');
@@ -12,7 +12,7 @@ define('BD_PASS', '');
  * Parámetros de configuración utilizados para generar las URLs y las rutas a ficheros en la aplicación
  */
 define('RAIZ_APP', __DIR__);
-define('RUTA_APP', '/ProyectoAW_Grupo6-main');
+define('RUTA_APP', '');
 define('RUTA_IMGS', RUTA_APP.'img/');
 define('RUTA_CSS', RUTA_APP.'CSS/');
 define('RUTA_JS', RUTA_APP.'JS/');
