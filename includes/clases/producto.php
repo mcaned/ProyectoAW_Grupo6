@@ -28,7 +28,7 @@ class Producto {
 
     public static function buscaPorId($id) {
         $conn = Aplicacion::getInstance()->conexionBd();
-        $query = sprintf("SELECT * FROM productos WHERE id=%d", intval($id));
+        $query = sprintf("SELECT * FROM Productos WHERE id=%d", intval($id));
         $rs = $conn->query($query);
         $result = null;
         if ($rs && $f = $rs->fetch_assoc()) {
@@ -41,8 +41,8 @@ class Producto {
     public static function listar($soloOfertados = false, $idCategoria = null) {
         $conn = Aplicacion::getInstance()->conexionBd();
         $query = "SELECT p.*, c.nombre as cat_nom 
-                  FROM productos p 
-                  JOIN categorias c ON p.id_categoria = c.id 
+                  FROM Productos p 
+                  JOIN Categorias c ON p.id_categoria = c.id 
                   WHERE 1=1";
 
         if ($soloOfertados) {
@@ -82,7 +82,7 @@ class Producto {
     public static function borrar($id) {
         $conn = Aplicacion::getInstance()->conexionBd();
         $idLimpiado = intval($id);
-        $query = "DELETE FROM productos WHERE id = $idLimpiado";
+        $query = "DELETE FROM Productos WHERE id = $idLimpiado";
         
         return $conn->query($query);
     }
@@ -99,9 +99,9 @@ class Producto {
         $img = $conn->real_escape_string($datos['imagen_url'] ?: 'productos/default.jpg');
 
         if (isset($datos['id']) && $datos['id'] != null) {
-            $query = "UPDATE productos SET id_categoria=$id_cat, nombre='$nombre', descripcion='$desc', precio_base=$precio, iva='$iva', disponible=$disp, imagen_url='$img' WHERE id=" . intval($datos['id']);
+            $query = "UPDATE Productos SET id_categoria=$id_cat, nombre='$nombre', descripcion='$desc', precio_base=$precio, iva='$iva', disponible=$disp, imagen_url='$img' WHERE id=" . intval($datos['id']);
         } else {
-            $query = "INSERT INTO productos (id_categoria, nombre, descripcion, precio_base, iva, disponible, imagen_url, ofertado) VALUES ($id_cat, '$nombre', '$desc', $precio, '$iva', $disp, '$img', 1)";
+            $query = "INSERT INTO Productos (id_categoria, nombre, descripcion, precio_base, iva, disponible, imagen_url, ofertado) VALUES ($id_cat, '$nombre', '$desc', $precio, '$iva', $disp, '$img', 1)";
         }
 
         return $conn->query($query);
