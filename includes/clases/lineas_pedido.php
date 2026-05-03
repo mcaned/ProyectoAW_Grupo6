@@ -31,7 +31,7 @@ class LineaPedido {
         while ($rs && $f = $rs->fetch_assoc()) {
             $lineas[] = new LineaPedido($f['id_pedido'], $f['id_producto'], $f['cantidad'], $f['preparado']);
         }
-        $rs->free():
+        $rs->free();
         return $lineas;
     }
 
