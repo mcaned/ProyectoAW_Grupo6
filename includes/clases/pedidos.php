@@ -32,7 +32,7 @@ class Pedido {
 
     public static function buscaPorId($id) {
         $conn = Aplicacion::getInstance()->conexionBd();
-        $query = sprintf("SELECT * FROM pedidos WHERE id=%d", intval($id));
+        $query = sprintf("SELECT * FROM Pedidos WHERE id=%d", intval($id));
         $rs = $conn->query($query);
         $result = null;
         if ($rs && $f = $rs->fetch_assoc()) {
@@ -74,13 +74,13 @@ class Pedido {
         $totalAhorrado = GestorOfertas::calcularAhorro($carrito, $idOfertas);
         $totalAPagar = $subtotal_sinDescuento - $totalAhorrado;
 
-        $resNum = $conn->query("SELECT MAX(numero_pedido) as ultimo FROM pedidos WHERE DATE(fecha_hora) = CURDATE()");
+        $resNum = $conn->query("SELECT MAX(numero_pedido) as ultimo FROM Pedidos WHERE DATE(fecha_hora) = CURDATE()");
         $filaNum = $resNum->fetch_assoc();
         $resNum->free();
         $nuevo_num = ($filaNum['ultimo'] ?? 0) + 1;
 
         $queryPedido = sprintf(
-            "INSERT INTO pedidos (numero_pedido, id_cliente, tipo, estado, total, subtotal_sin_descuento, ahorro_ofertas) VALUES (%d, %d, '%s', 'Recibido', %F, %F, %F)",
+            "INSERT INTO Pedidos (numero_pedido, id_cliente, tipo, estado, total, subtotal_sin_descuento, ahorro_ofertas) VALUES (%d, %d, '%s', 'Recibido', %F, %F, %F)",
             $nuevo_num,
             $id_cliente, 
             $conn->real_escape_string($tipo), 
@@ -92,7 +92,7 @@ class Pedido {
         if ($conn->query($queryPedido)) {
             $id_pedido = $conn->insert_id;
             foreach ($carrito as $id_prod => $cantidad) {
-                $queryLinea = sprintf("INSERT INTO lineas_pedido (id_pedido, id_producto, cantidad) VALUES (%d, %d, %d)",
+                $queryLinea = sprintf("INSERT INTO Lineas_Pedido (id_pedido, id_producto, cantidad) VALUES (%d, %d, %d)",
                     $id_pedido, $id_prod, $cantidad);
                 $conn->query($queryLinea);
             }
@@ -121,7 +121,7 @@ class Pedido {
 
     public static function borrar($id) {
         $conn = Aplicacion::getInstance()->conexionBd();
-        $query = "DELETE FROM pedidos WHERE id = ". intval($id);
+        $query = "DELETE FROM Pedidos WHERE id = ". intval($id);
         
         return $conn->query($query);
     }
@@ -129,7 +129,7 @@ class Pedido {
     public static function actualizarEstado($id_pedido, $nuevo_estado) {
         $conn = Aplicacion::getInstance()->conexionBd();
         
-        $stmt = $conn->prepare("UPDATE pedidos SET estado = ? WHERE id = ?");
+        $stmt = $conn->prepare("UPDATE Pedidos SET estado = ? WHERE id = ?");
         $id_pedido = intval($id_pedido);
         $stmt->bind_param("si", $nuevo_estado, $id_pedido);
         
@@ -142,8 +142,8 @@ class Pedido {
     public static function buscaPorUsuario($idUsuario) {
         $conn = Aplicacion::getInstance()->conexionBd();
         $query = sprintf("SELECT p.*, u.nombre as nombre_cliente 
-                          FROM pedidos p 
-                          JOIN usuarios u ON p.id_cliente = u.id 
+                          FROM Pedidos p 
+                          JOIN Usuarios u ON p.id_cliente = u.id 
                           WHERE p.id_cliente = %d 
                           ORDER BY p.fecha_hora DESC", intval($idUsuario));
         
@@ -163,7 +163,7 @@ class Pedido {
        
         $estados = "('Recibido', 'En preparación', 'Listo cocina', 'Terminado')";
         
-        $query = "SELECT * FROM pedidos WHERE estado IN $estados ORDER BY fecha_hora ASC";
+        $query = "SELECT * FROM Pedidos WHERE estado IN $estados ORDER BY fecha_hora ASC";
         $rs = $conn->query($query);
         
         $pedidos = [];
@@ -179,7 +179,7 @@ class Pedido {
 
     public static function tomarPedido($id_pedido, $id_cocinero) {
         $conn = Aplicacion::getInstance()->conexionBd();
-        $stmt = $conn->prepare("UPDATE pedidos SET estado = 'Cocinando', id_cocinero = ? WHERE id = ? AND estado = 'En preparación'");
+        $stmt = $conn->prepare("UPDATE Pedidos SET estado = 'Cocinando', id_cocinero = ? WHERE id = ? AND estado = 'En preparación'");
         $stmt->bind_param("ii", $id_cocinero, $id_pedido);
         $ok = $stmt->execute();
         $stmt->close();
@@ -189,7 +189,7 @@ class Pedido {
     
     public static function finalizarPedido($id_pedido, $id_cocinero) {
         $conn = Aplicacion::getInstance()->conexionBd();
-        $stmt = $conn->prepare("UPDATE pedidos SET estado = 'Listo cocina' WHERE id = ? AND id_cocinero = ?");
+        $stmt = $conn->prepare("UPDATE Pedidos SET estado = 'Listo cocina' WHERE id = ? AND id_cocinero = ?");
         $stmt->bind_param("ii", $id_pedido, $id_cocinero);
         $ok = $stmt->execute();
         $stmt->close();
@@ -200,10 +200,10 @@ class Pedido {
         $conn = Aplicacion::getInstance()->conexionBd();
         $idCliente = intval($idCliente);
         
-        $queryLineas = "DELETE FROM lineas_pedido WHERE id_pedido IN (SELECT id FROM Pedidos WHERE id_cliente = $idCliente)";
+        $queryLineas = "DELETE FROM Lineas_Pedido WHERE id_pedido IN (SELECT id FROM Pedidos WHERE id_cliente = $idCliente)";
         $conn->query($queryLineas);
         
-        $queryPedidos = "DELETE FROM pedidos WHERE id_cliente = $idCliente";
+        $queryPedidos = "DELETE FROM Pedidos WHERE id_cliente = $idCliente";
         return $conn->query($queryPedidos);
     }
 
@@ -212,9 +212,9 @@ class Pedido {
         $conn = Aplicacion::getInstance()->conexionBd();
         $query = sprintf("SELECT p.*, u.nombre as nombre_cliente, u.apellidos as apellidos_cliente, u.email as email_cliente,
                                 c.nombre as nombre_cocinero, c.avatar_url as avatar_cocinero 
-                        FROM pedidos p 
-                        JOIN usuarios u ON p.id_cliente = u.id 
-                        LEFT JOIN usuarios c ON p.id_cocinero = c.id
+                        FROM Pedidos p 
+                        JOIN Usuarios u ON p.id_cliente = u.id 
+                        LEFT JOIN Usuarios c ON p.id_cocinero = c.id
                         WHERE p.id = %d", intval($id));
         $rs = $conn->query($query);
         if ($rs && $f = $rs->fetch_assoc()) {
@@ -234,11 +234,11 @@ class Pedido {
     public static function buscarPedidosPorEstado($estado, $idCocinero = null) {    
         $conn = Aplicacion::getInstance()->conexionBd(); 
         if ($idCocinero !== null) { 
-            $query = sprintf( "SELECT * FROM pedidos WHERE estado = '%s' AND id_cocinero = %d ORDER BY fecha_hora ASC", 
+            $query = sprintf( "SELECT * FROM Pedidos WHERE estado = '%s' AND id_cocinero = %d ORDER BY fecha_hora ASC", 
             $conn->real_escape_string($estado), intval($idCocinero) ); 
         } 
         else { 
-            $query = sprintf( "SELECT * FROM pedidos WHERE estado = '%s' ORDER BY fecha_hora ASC", 
+            $query = sprintf( "SELECT * FROM Pedidos WHERE estado = '%s' ORDER BY fecha_hora ASC", 
             $conn->real_escape_string($estado)); 
         } 
         $rs = $conn->query($query); 
