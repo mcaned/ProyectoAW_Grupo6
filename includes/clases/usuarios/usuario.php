@@ -111,7 +111,7 @@ class Usuario {
 
     public static function listar() {
         $conn = Aplicacion::getInstance()->conexionBd();
-        $query = "SELECT * FROM usuarios ORDER BY rol DESC";
+        $query = "SELECT * FROM Usuarios ORDER BY rol DESC";
         $rs = $conn->query($query);
         $lista = [];
         if ($rs) {
